@@ -10,7 +10,7 @@ About half is reserved for testing, freeze and packaging by design.
 
 ## Where the project is
 
-**Scope is locked. The design is sound. Nothing is built.**
+**Scope is locked. The design is sound. The slice runs. The question set does not exist.**
 
 The 13 Sep checkpoint was a thin working slice end to end. **It runs**, one day late in effect
 and on the day in fact. Open `app/index.html`; `?arm=B` flips the arm. Verified in a headless
@@ -20,8 +20,8 @@ the smoke run.
 Two caveats, both stated in `app/README.md`: the questions in it are the **burned** round-2
 screener questions, and `callModel` is a stub. It is a dev harness, not the study app.
 
-The last thing produced was the round-2 screener on 10 Sep. It was built to screen people, not to be
-the product.
+The binding constraint has moved. It is no longer code — it is the question set, which is blocked
+behind decisions 1 and 3.
 
 ### What exists
 
