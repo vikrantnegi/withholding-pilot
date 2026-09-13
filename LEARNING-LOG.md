@@ -1,6 +1,6 @@
 # Learning log — assumptions that broke
 
-**Nine assumptions have broken so far.** Each entry says what was believed, what proved it wrong,
+**Ten assumptions have broken so far.** Each entry says what was believed, what proved it wrong,
 what changed, and the lesson.
 
 The lesson is the point. An entry without one is just a bug report.
@@ -213,6 +213,31 @@ pool, found late.
 
 **Why it matters:** keep straight which document says what. The brief gives the hypothesis and the
 rubric. The FAQ gives the process rules.
+
+---
+
+## L10 — Deferring the duplicate in `hackathon/` was harmless
+
+**Believed from 13 Sep 2026.** L8 deleted the duplicate round-2 folder under `screener/`. It noted
+the same problem still existed in `hackathon/` and marked it deferred.
+
+**What broke it.** The hackathon copy was already producing a wrong number. `rounds-compare.py`
+read `hackathon/evidence/mini-screen-submission/`, which held 6 of the 7 round-2 logs.
+
+The missing file was nabin's. The same person L8 dropped, five hours earlier.
+
+`SUBMISSION.md` then claimed "all 6 round-2 returners scored 1/10 or less on the cold test". Nabin
+scored 3/10. The word "all" was true only because his file was absent.
+
+**What changed.** The whole `hackathon/` folder was deleted on 13 Sep. The First Action Hackathon
+will be restarted from scratch after the capstone is clear. The folder survives in git history at
+commit `7439b80`.
+
+**The lesson.** A deferred duplicate is not a dormant problem. It is a live wrong answer that
+nobody has read yet. L8 found the mechanism and then left a second instance of it running.
+
+**Why it matters:** when a class of bug is found, fix every instance or delete them. Deferring one
+means the lesson was written down but not applied.
 
 ---
 

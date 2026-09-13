@@ -123,7 +123,6 @@ Sorted this way on purpose. How a file behaves over time tells you how much to t
 | folder | what |
 |---|---|
 | `screener/` | both screening rounds. Start at `screener/README.md` |
-| `hackathon/` | First Action Hackathon, 12 to 14 Sep. **Out of scope and untouched.** Has a known duplicate-copies problem, deferred |
 
 **Why it matters:** a new reader can trust the Living files and skip the Superseded ones. That is
 the whole point of the grouping.

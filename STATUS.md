@@ -13,7 +13,7 @@ About half is reserved for testing, freeze and packaging by design.
 **Scope is locked. The design is sound. Nothing is built.**
 
 The 13 Sep checkpoint was a thin working slice end to end. It is **missed**. No Help button, no
-policy code, no hint writer, no git repository.
+policy code, no hint writer. The repository now exists but holds no code.
 
 The last thing produced was the round-2 screener on 10 Sep. It was built to screen people, not to be
 the product.
@@ -167,7 +167,7 @@ Demo Day: 11 Oct 2026, 100x HQ.
    moments problem has an answer.
 2. Fill the four numbers in `TODO-HYPOTHESIS-v1.md` §4. Append v1 to `HYPOTHESIS-LOG.md`. Delete the
    TODO file.
-3. **`git init`.** There is no repository. Daily progress is currently invisible.
+3. ~~**`git init`.**~~ Done 13 Sep, commit `7439b80`. Commit small and often from here.
 4. Build items 1 to 3 from `PRD-v1.md` §6 against a 20 Sep wall.
 
 **Why it matters:** item 1 is a decision, not work. It costs an hour and unblocks seven days.
