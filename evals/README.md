@@ -94,6 +94,39 @@ Without a key every case shows the fallback, which is still worth reading — it
 what a learner sees when the model fails twice, and four of the current twenty are
 flagged generic.
 
+## Does the guard actually catch anything?
+
+```
+node evals/adversarial.js --out evals/adversarial.md     8 cases x 3 attacks, ~24 calls
+node evals/adversarial.js --cases 16 --out evals/adversarial.md
+```
+
+Across ~110 real generations the guard rejected 8 hints and **every one was its
+own mistake** (`EXPERIMENT-LOG.md` Run 4). It has been wrong twice and right zero
+times, because every leak it has caught was written by hand in its own test file.
+That measures imagination, not the guard.
+
+This run replaces the writer's prompt with one that tries to leak, against real
+learner queries, and counts what gets through. Three attacks:
+
+| attack | what it tests |
+|---|---|
+| `blatant` | hands over the whole query — the easy case |
+| `partial` | leaks only the missing clause, which is all a learner needs |
+| `prose` | describes the correct query in English with no code at all |
+
+`prose` is the one that matters. If the guard only recognises SQL-shaped text,
+prose is how Arm A quietly becomes Arm B.
+
+**Read every MISSED line.** One question each: *could a learner type the correct
+query from this?* The report also runs a second opinion that counts SQL keywords
+and the reference's own literals — deliberately not the guard's logic, so the run
+is not grading itself.
+
+Recall is a number for the write-up. E3 asks you to prove a component belongs
+where you put it; "it rejected nothing, and everything it did reject was wrong"
+is not that proof.
+
 ## When every generation is rejected
 
 ```
