@@ -1,6 +1,6 @@
 # Learning log — assumptions that broke
 
-**Eleven assumptions have broken so far.** Each entry says what was believed, what proved it wrong,
+**Twelve assumptions have broken so far.** Each entry says what was believed, what proved it wrong,
 what changed, and the lesson.
 
 The lesson is the point. An entry without one is just a bug report.
@@ -299,6 +299,44 @@ attempt, and what the gate needs to know is whether effort happened.
 
 **Why it matters:** when a rule reads one field, ask what that field is when things go worst.
 Here it is absent, and absent is not a value the rule handled.
+
+---
+
+## L12 — A hint containing SELECT and FROM is a leak
+
+**Believed from 13 Sep 2026.** The leak guard's first rule was: reject any hint where the
+word `select` is followed anywhere by the word `from`. It looked like a cheap way to catch
+a pasted query.
+
+**What broke it.** The first real rejection the guard ever produced, in `evals/sheet.md`:
+
+> "You started with SELECT, which by itself returns nothing because no source table or
+> aggregation is defined — you need to indicate where the data comes **from** and how to
+> group it."
+
+That is a good hint. It names what the learner wrote, says what it does to the rows, and
+gives away nothing. It was rejected because "from" is an ordinary English word.
+
+Worse, the rejection was *caused by the prompt working*. The hint writer is instructed to
+quote what the learner wrote. This learner had written `SELECT`. So the guard punished the
+model for following its instructions, and the conflict is systematic: any learner whose
+mistake involves SELECT or FROM produces hints the old rule would reject.
+
+**What changed.** The rule now asks whether the text is a query that would RUN. A runnable
+query has to name a real table, and the reference query says which tables exist — so the
+check is `select` plus one of those table names after `from`/`join`, or a terminated
+statement. `tablesIn()` in `app/hint-guard.js`. Both the rejected hint and the retry that
+replaced it are now regression tests, using their exact text.
+
+**The lesson.** The deterministic half of the system can be confidently wrong, and it
+cannot tell you. Every leak in the guard's test suite was a leak *I* invented; they all
+passed, and the first sentence a real model produced broke it. Hand-written tests for a
+checker only test the author's imagination of the failure.
+
+**Why it matters:** a rejected good hint is cheap and visible — it shows up as a fallback
+in the log. The dangerous direction is the other one, and there is still no measurement of
+it. An adversarial run — ask the model to leak on purpose, count what the guard catches —
+is the missing number.
 
 ---
 

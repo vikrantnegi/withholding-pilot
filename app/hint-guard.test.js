@@ -26,11 +26,21 @@ check('points at the learner\'s own mistake',
 check('mentions a bare keyword as a concept',
   inspect('The clause you want is HAVING. Work out what to put in it.', ctx).ok, true);
 
+console.log('\nTHE REAL FALSE POSITIVE — from evals/sheet.md, 13 Sep');
+// This hint was rejected by the first version of the guard because the English
+// word "from" followed the word "SELECT". It is a good hint. LEARNING-LOG L12.
+check('names SELECT and uses "from" as an English word',
+  inspect('You started with SELECT, which by itself returns nothing because no source table or aggregation is defined\u2014you need to indicate where the data comes from and how to group it.', ctx).ok, true);
+check('the retry that replaced it also passes',
+  inspect('You wrote only SELECT, which yields no data source or grouping, so you must indicate the table and define how to aggregate the rows before filtering and sorting.', ctx).ok, true);
+
 console.log('\nHINTS THAT MUST BE REJECTED');
 check('the whole answer',
   inspect(`Use this: ${REF}`, ctx).reason, REJECT.RUNNABLE_QUERY);
-check('a runnable fragment',
+check('a runnable fragment naming a real table',
   inspect('Try SELECT category FROM products instead.', ctx).reason, REJECT.RUNNABLE_QUERY);
+check('a terminated statement, however phrased',
+  inspect('Something like: select the category and the biggest price;', ctx).reason, REJECT.RUNNABLE_QUERY);
 check('the distinguishing HAVING clause',
   inspect('Replace your WHERE with HAVING MAX(price) > 10000.', ctx).reason, REJECT.REFERENCE_CLAUSE);
 check('the GROUP BY with its column',

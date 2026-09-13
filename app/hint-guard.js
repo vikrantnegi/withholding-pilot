@@ -52,6 +52,15 @@ const norm = s => String(s == null ? '' : s).replace(/\s+/g, ' ').trim().toLower
  * A hint may say "which clause filters after a GROUP BY?". It may not say
  * "HAVING MAX(price) > 10000".
  */
+/* The tables this question's data actually lives in. A hint that names one of
+ * them right after FROM or JOIN is writing a query, not describing a mistake. */
+function tablesIn(referenceQuery) {
+  const q = norm(referenceQuery);
+  const out = new Set();
+  for (const m of q.matchAll(/\b(?:from|join|into|update)\s+([a-z_][a-z0-9_]*)/g)) out.add(m[1]);
+  return [...out];
+}
+
 function distinguishingClauses(referenceQuery) {
   const q = norm(referenceQuery);
   const out = [];
@@ -74,9 +83,26 @@ function inspect(hint, { referenceQuery }) {
   const h = norm(hint);
   if (!h) return { ok: false, reason: REJECT.EMPTY };
 
-  // 1. a runnable query, whoever wrote it
-  if (/\bselect\b[^]*\bfrom\b/.test(h)) {
-    return { ok: false, reason: REJECT.RUNNABLE_QUERY };
+  // 1. a runnable query, whoever wrote it.
+  //
+  // NOT "the words select and from appear". They are ordinary English —
+  // "you started with SELECT ... where the data comes FROM" is a good hint and
+  // the first version of this check rejected it (LEARNING-LOG L12). The prompt
+  // asks the model to quote what the learner wrote, so naming SELECT is
+  // expected, not suspicious.
+  //
+  // A query that RUNS has to name a real table. The reference tells us which
+  // tables exist, so that is what we look for.
+  const tables = tablesIn(referenceQuery);
+  if (tables.length) {
+    const named = new RegExp(`\\b(from|join|into|update)\\s+\`?"?(${tables.join('|')})\\b`, 'i');
+    if (/\bselect\b/.test(h) && named.test(h)) {
+      return { ok: false, reason: REJECT.RUNNABLE_QUERY, matched: 'select + a real table name' };
+    }
+  }
+  // A statement terminator after a select is a query however it is phrased.
+  if (/\bselect\b[\s\S]{0,200};/.test(h)) {
+    return { ok: false, reason: REJECT.RUNNABLE_QUERY, matched: 'a terminated statement' };
   }
 
   // 2. any clause that distinguishes the reference query
@@ -212,7 +238,7 @@ function checkFallback(text, { referenceQuery }) {
 }
 
 const GUARD = { MAX_MODEL_ATTEMPTS, SOURCE, REJECT, LAST_RESORT, inspect, serveHint,
-                distinguishingClauses, isGeneric, checkFallback };
+                distinguishingClauses, tablesIn, isGeneric, checkFallback };
 if (typeof module !== 'undefined' && module.exports) module.exports = GUARD;
 if (typeof window !== 'undefined') window.GUARD = GUARD;
 })();
