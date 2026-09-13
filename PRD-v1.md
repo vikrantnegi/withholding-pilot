@@ -134,6 +134,26 @@ learner solved it after being refused help (the gate alone was enough) or only a
 hint. Correlational, not causal — but it is exactly the item-level evidence the arm averages
 cannot carry at n=3.
 
+### The log writes two entries per Help press, not one — decided 13 Sep
+
+```
+help_decided    { action, counted, sinceHelp }        written immediately
+help_delivered  { source, modelAttempts, rejections } written after the guard
+```
+
+Why two. The policy decides before the hint exists, so a single entry written at decision
+time records a choice but reads like an outcome. Two learners — one served a hint about
+their own query, one served the canned fallback after two leaks — would produce identical
+logs. On 28 Sep they must be countable apart.
+
+Why not one entry filled in later. To write a complete entry the policy would have to wait
+for the model to return. That puts the LLM in the control path in the code, whatever §3
+says. Two entries keep `decide()` a pure, instant function of the log.
+
+**`decide()` reads only `help_decided`.** So a learner whose hint came back as boilerplate
+still climbs the ladder on the normal schedule. The arms must be comparable by policy, not
+by whether the model behaved that day. Built in `app/help-session.js`, 20 tests.
+
 **Correctness feedback is NOT withheld** from either arm (Koedinger). Both arms always learn
 right/wrong. Only the *help* differs.
 

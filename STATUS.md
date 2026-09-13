@@ -25,7 +25,9 @@ the product.
 | Scope lock and spec | `PRD-v1.md` | Done 10 Sep, four days late |
 | Architecture diagram | `PRD-v1.md` §3 | Done. The LLM is not in the control path |
 | The policy, written out | `PRD-v1.md` §4 | Specified, and **built** in `app/policy.js` |
-| The level selector | `app/policy.js` + `app/policy.test.js` | Done 13 Sep. 20 tests green. Not yet wired to a UI |
+| The level selector | `app/policy.js` | Done 13 Sep. 20 tests green |
+| Leak guard + rejection policy | `app/hint-guard.js` | Done 13 Sep. 19 tests. **This is the 18 Sep deliverable, early** |
+| Help-press orchestration + log shape | `app/help-session.js` | Done 13 Sep. 20 tests. Not yet wired to a UI |
 | Browser SQL environment | `screener/round-2-runbutton/sql-mini-screen.html` | Working. Editor, Run, result comparison, error display, per-attempt logging |
 | Screening data, 2 rounds, 7 people | `screener/` | Done. See `EXPERIMENT-LOG.md` |
 | Participant pool | `RECRUITMENT.md` | 8 named, 7 active. Need 6 alive on 27 Sep |
