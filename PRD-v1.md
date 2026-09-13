@@ -132,7 +132,7 @@ tracing definition and it is what the scoring script implements.
 
 ## 5. What is already built
 
-The round-2 mini-screen (`screener/mini-screen/sql-mini-screen.html`, 10 Sep) is the thin
+The round-2 mini-screen (`screener/round-2-runbutton/sql-mini-screen.html`, 10 Sep) is the thin
 vertical slice, minus the help path. It already has: SQLite in the browser, an editor, a Run
 button, result-set comparison, error surfacing, per-attempt logging. That is most of §3's
 deterministic column.
