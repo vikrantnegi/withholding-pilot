@@ -155,6 +155,20 @@ deterministic column.
 2. **Hint writer.** One LLM call, grounded on the reference query + the learner's query + the
    result diff. Plus the leak guard: reject any hint containing a runnable SELECT or the
    reference query's distinguishing clause. The leak guard is the 18 Sep evals deliverable.
+   Built 13 Sep in `app/hint-guard.js`, 19 tests in `app/hint-guard.test.js`.
+
+   **On rejection — decided 13 Sep.** Up to 2 model attempts. If both are rejected, serve the
+   question's own hand-written fallback hint. Every attempt and rejection is logged.
+
+   Two consequences, both load-bearing:
+
+   - **`hint_source` must be logged per served hint**, `model` or `fallback`. A canned fallback
+     is not the same treatment as a sentence about this learner's own mistake. If a large share
+     of Arm A's hints were fallbacks, Arm A received something closer to a generic nudge, and
+     the write-up has to say so. The count is a reportable number on 28 Sep, not a footnote.
+   - **Every question needs a hand-written fallback hint**, authored with its reference query.
+     One global string is either useless or, on a short query, is itself the answer. This is
+     part of item 4, and `serveHint` throws without it rather than degrading quietly.
 3. **Log persistence.** Supabase table. If it threatens 20 Sep, fall back to the copy-log
    button already working in the mini-screen — 6 people pasting a blob is not the bottleneck.
 4. **The question set.** Two concepts (GROUP BY/HAVING; two-table joins), practice items plus a
