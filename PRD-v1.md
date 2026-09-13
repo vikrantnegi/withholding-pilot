@@ -34,6 +34,8 @@ n=6 and I am not pretending otherwise — see §7.
 
 ## 3. Architecture (rubric E3)
 
+Drawn version, with the three zones marked: `diagrams/architecture-arm-a.png`.
+
 The one claim that matters: **the LLM is not in the control path.** It never decides whether to
 help or how much. A deterministic policy decides; the LLM only renders the help text once that
 decision is made.

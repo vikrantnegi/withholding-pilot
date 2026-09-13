@@ -59,6 +59,7 @@ There is no third group working without any assistant. It is not affordable at s
 | Where does it stand, and what is next? | `STATUS.md` |
 
 **The architecture diagram is `PRD-v1.md` §3.** It is a mermaid flowchart.
+The presentable version is `diagrams/architecture-arm-a.png` — same graph, with the three zones drawn.
 
 Its one load-bearing claim: **the LLM never decides whether to help.** Plain code makes that
 decision. The LLM only writes the hint text afterwards.
@@ -121,7 +122,7 @@ Sorted this way on purpose. How a file behaves over time tells you how much to t
 | folder | what |
 |---|---|
 | `screener/` | both screening rounds. Start at `screener/README.md` |
-| `diagrams/` | `architecture-arm-a.excalidraw` — PRD-v1 §3 as an editable Excalidraw file |
+| `diagrams/` | `architecture-arm-a.png` — the Arm A control graph, three zones, drawn 13 Sep. Editable sources alongside it |
 
 **Why it matters:** a new reader can trust the Living files and skip the Superseded ones. That is
 the whole point of the grouping.
