@@ -1,6 +1,6 @@
 # Experiment log
 
-**Two rounds of screening have been run. Nothing else.** Both are recorded below, in order.
+**Two rounds of screening, and one offline eval of the hint writer.** All three are recorded below, in order.
 
 Each entry answers the same five things, in the same order. What it was for. What was predicted.
 What happened. What it changed. Where the raw data sits. Plus what it cost.
@@ -218,6 +218,87 @@ About a day to build, a day in the field. Cheap.
 
 **Why it matters:** it caught a failure early. Otherwise that failure surfaces on 28 Sep, as a
 result nobody can read.
+
+---
+
+## Run 3 — hint-writer eval, replayed offline
+
+**Built 13 Sep 2026. Run 13 Sep 2026.** `node evals/replay.js --out evals/sheet.md`
+
+**Nobody was contacted.** 20 of the 104 wrong or errored attempts already on disk from
+Run 2, replayed through the real hint writer. `openai/gpt-oss-120b` at temperature 0.3,
+`reasoning_effort: low`, prompt from `app/hint-writer.js` — the same module the app
+serves.
+
+### What it was for
+
+Two questions, neither of which can be asked of a participant before 21 Sep without
+burning them.
+
+1. Does the writer leak the answer? If it does, Arm A silently becomes Arm B on that
+   item.
+2. Does it produce boilerplate? If it does, Arm A's treatment is really *gate and
+   nothing*, and a null on 28 Sep would look like the hypothesis failing when the
+   writer failed.
+
+### What was predicted
+
+That leaking would be the dominant failure. The whole retry-then-fallback policy exists
+because of that expectation: two attempts, then the question's hand-written hint.
+A meaningful share of cases were expected to fall back.
+
+### What happened
+
+| | |
+|---|---|
+| cases | 20 |
+| served from the model | **20** |
+| fell back to the hand-written hint | **0** |
+| generations rejected by the leak guard | **1** |
+| flagged generic | **0** |
+
+One leak in roughly 21 generations, caught, and the retry recovered. Cost: 480 tokens
+per call — 421 prompt, 59 completion, 20 of them reasoning.
+
+The prediction was wrong in a useful direction. Leaking is real but rare, and the
+guard plus one retry is enough to absorb it.
+
+### What it changed
+
+1. **The fallback is not the common path.** It was budgeted as a frequent outcome; it
+   fired zero times in 20. The `hint_source` field still has to be logged and reported —
+   at n=3 per arm, a 5% leak rate is still a couple of learners — but it is a footnote,
+   not a headline.
+2. **The guard is load-bearing and demonstrably live.** A zero-rejection run would have
+   been ambiguous: a guard that never fires cannot be distinguished from a guard that
+   does not work. One rejection on real output is the evidence.
+3. **No model swap.** The reasoning overhead is 20 tokens, so the token budget holds at
+   ~415 calls a day. `gpt-oss-120b` stays pinned through 21 Sep.
+4. **`MAX_TOKENS` was 120 and had to become 900.** Found by `evals/probe.js`. Reasoning
+   tokens count against the cap even when hidden, so every generation returned empty and
+   surfaced as "empty hint" — indistinguishable from a guard problem in the sheet.
+   The sheet now prints rejected generations for exactly this reason.
+
+### What this does NOT establish
+
+- **Usefulness is unjudged.** Not-a-leak and not-generic are machine checks. Whether a
+  hint would actually help is the three-box review in `evals/sheet.md`, and the boxes are
+  unfilled.
+- **These are burned questions.** M1–M3 are out of bounds for the study. The run shows the
+  writer can name a difference in general, not that it handles the real question set,
+  which does not exist yet.
+
+### Where the raw data is
+
+- `evals/sheet.md` — the 20 cases with hints and review boxes. Gitignored; regenerate with
+  the command above
+- `evals/replay.js`, `evals/probe.js`, `app/hint-writer.js`, `app/hint-guard.js`
+- Inputs: `screener/round-2-runbutton/logs/` — unchanged, one folder, one grader
+
+### What it cost
+
+About 20 minutes of build and 40 model calls, roughly 19K of the 200K daily tokens.
+No participant contact. It is the 18 Sep checkpoint, five days early.
 
 ---
 

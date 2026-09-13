@@ -34,7 +34,7 @@ behind decisions 1 and 3.
 | Leak guard + rejection policy | `app/hint-guard.js` | Done 13 Sep. 22 tests |
 | Hint writer, prompt + pinned model | `app/hint-writer.js` | Done 13 Sep. 14 tests. Needs a Groq key and the function deployed |
 | Key out of the page | `supabase/functions/hint/` | Written 13 Sep. **Not deployed** |
-| Hint-quality eval | `evals/replay.js` | Done 13 Sep. **The 18 Sep deliverable, 5 days early.** Runs against the same writer the app uses |
+| Hint-quality eval | `evals/replay.js` | Done and **run** 13 Sep. 20/20 from the model, 0 fallbacks, 1 leak caught. `EXPERIMENT-LOG.md` Run 3 |
 | Help-press orchestration + log shape | `app/help-session.js` | Done 13 Sep. 20 tests. Not yet wired to a UI |
 | Browser SQL environment | `screener/round-2-runbutton/sql-mini-screen.html` | Working. Editor, Run, result comparison, error display, per-attempt logging |
 | Screening data, 2 rounds, 7 people | `screener/` | Done. See `EXPERIMENT-LOG.md` |
@@ -159,7 +159,7 @@ writing item 1.
 |---|---|---|
 | 6 Sep | Scope lock | Done 10 Sep, late |
 | 13 Sep | Thin working slice end to end | **Done**, on the day |
-| 18 Sep | Testing and guards | `app/hint-guard.js` done 13 Sep, 5 days early |
+| 18 Sep | Testing and guards | **Done 13 Sep.** Guard built, eval run, Run 3 logged |
 | 20 Sep | First version on real data | 7 days out, nothing built |
 | 21 Sep | Practice session | App frozen from here |
 | 27 Sep | **REMOVAL TEST** | The measurement. Cannot move |
