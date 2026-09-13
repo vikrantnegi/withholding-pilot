@@ -1,0 +1,81 @@
+{
+  "version": "mini-2",
+  "started": "2026-09-12T14:32:48.182Z",
+  "events": [
+    {
+      "q": "M1",
+      "at": "2026-09-12T14:33:32.518Z",
+      "n": 1,
+      "sql": "SELECT category, COUNT() AS productSCount\nFROM products\nGROUP BY category\nHAVING COUNT() >= 3",
+      "rows": 3,
+      "cols": 2,
+      "outcome": "correct"
+    },
+    {
+      "q": "M2",
+      "at": "2026-09-12T14:34:10.238Z",
+      "n": 1,
+      "sql": "SELECT category, MAX(price) AS hiGhprice\nFROM products\nGROUP BY category\nHAVING price > 10000\nORDER BY category ASC;",
+      "rows": 3,
+      "cols": 2,
+      "outcome": "correct"
+    },
+    {
+      "q": "M2",
+      "at": "2026-09-12T14:34:15.940Z",
+      "n": 2,
+      "sql": "SELECT category, MAX(price) AS hiGhprice\nFROM products\nGROUP BY category\nHAVING price > 10000\nORDER BY ASC;",
+      "outcome": "error",
+      "error": "no such column: ASC"
+    },
+    {
+      "q": "M3",
+      "at": "2026-09-12T14:35:03.405Z",
+      "n": 0,
+      "outcome": "skipped"
+    },
+    {
+      "q": "M1",
+      "at": "2026-09-12T14:35:57.665Z",
+      "n": 2,
+      "sql": "SELECT category, COUNT(*) AS productSCount\nFROM products\nGROUP BY category\nHAVING COUNT >= 3",
+      "outcome": "error",
+      "error": "no such column: COUNT"
+    },
+    {
+      "q": "M1",
+      "at": "2026-09-12T14:36:14.898Z",
+      "n": 3,
+      "sql": "SELECT category, COUNT() AS productSCount\nFROM products\nGROUP BY category\nHAVING COUNT() >= 3",
+      "rows": 3,
+      "cols": 2,
+      "outcome": "correct"
+    },
+    {
+      "q": "M2",
+      "at": "2026-09-12T14:36:39.105Z",
+      "n": 3,
+      "sql": "SELECT category, MAX(price) AS hiGhprice\nFROM products\nGROUP BY category\nHAVING price > 10000\nORDER BY ASC;",
+      "outcome": "error",
+      "error": "no such column: ASC"
+    }
+  ],
+  "finished": "2026-09-12T14:36:43.096Z",
+  "summary": {
+    "M1": {
+      "attempts": 3,
+      "solved": true,
+      "skipped": false
+    },
+    "M2": {
+      "attempts": 3,
+      "solved": true,
+      "skipped": false
+    },
+    "M3": {
+      "attempts": 0,
+      "solved": false,
+      "skipped": true
+    }
+  }
+}

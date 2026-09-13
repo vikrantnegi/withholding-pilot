@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SQL — 3 questions, with a run button</title>
+<style>
+  :root{
+    --bg:#faf9f7; --panel:#fff; --ink:#1c1c1a; --muted:#6b6b66; --line:#e3e1dc;
+    --accent:#2f6f4f; --accent-soft:#e8f1ec; --bad:#a4342a; --bad-soft:#fbeceb;
+    --warn:#8a6312; --warn-soft:#fbf3e2; --code:#f3f1ed;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --bg:#17171a; --panel:#1f1f23; --ink:#eceae6; --muted:#9b9a95; --line:#33333a;
+      --accent:#7dbd9a; --accent-soft:#1d2f26; --bad:#e58a80; --bad-soft:#2e1e1c;
+      --warn:#d9b368; --warn-soft:#2d2617; --code:#26262b;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}
+  .wrap{max-width:860px;margin:0 auto;padding-block:32px;padding-left:20px;padding-right:20px}
+  h1{font-size:24px;margin:0 0 6px;letter-spacing:-.2px}
+  .sub{color:var(--muted);margin:0 0 24px;font-size:14px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+    padding:18px 20px;margin-bottom:18px}
+  .intro{font-size:14px}
+  .intro p{margin:0 0 10px}
+  .intro p:last-child{margin-bottom:0}
+  details{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+    padding:14px 18px;margin-bottom:22px}
+  summary{cursor:pointer;font-weight:600;font-size:14px}
+  .schema{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:16px;margin-top:14px}
+  .tbl h4{margin:0 0 6px;font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--accent)}
+  .tbl ul{margin:0;padding-left:16px;font-size:12.5px;color:var(--muted);line-height:1.7}
+  .tbl code{font-size:12.5px;color:var(--ink)}
+  .qhead{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .qnum{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .pill{font-size:11.5px;padding:3px 9px;border-radius:20px;background:var(--code);color:var(--muted);white-space:nowrap}
+  .pill.ok{background:var(--accent-soft);color:var(--accent);font-weight:600}
+  .ask{margin:10px 0 14px;font-size:15px}
+  .ask b{font-weight:600}
+  textarea{width:100%;min-height:110px;resize:vertical;padding:12px;border-radius:8px;
+    border:1px solid var(--line);background:var(--code);color:var(--ink);
+    font:13.5px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace}
+  textarea:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .row{display:flex;gap:10px;align-items:center;margin-top:10px;flex-wrap:wrap}
+  button{font:inherit;font-size:14px;padding:8px 16px;border-radius:7px;cursor:pointer;
+    border:1px solid var(--line);background:var(--panel);color:var(--ink)}
+  button.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+  button:disabled{opacity:.5;cursor:not-allowed}
+  .hint{font-size:12.5px;color:var(--muted)}
+  .out{margin-top:14px;font-size:13.5px}
+  .verdict{padding:10px 13px;border-radius:7px;font-size:13.5px;margin-bottom:10px}
+  .v-ok{background:var(--accent-soft);color:var(--accent);font-weight:600}
+  .v-err{background:var(--bad-soft);color:var(--bad)}
+  .v-warn{background:var(--warn-soft);color:var(--warn)}
+  .v-err code{font-family:ui-monospace,Menlo,monospace;font-size:12.5px}
+  .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{border-collapse:collapse;font-size:13px;min-width:100%}
+  th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;white-space:nowrap}
+  th{background:var(--code);font-weight:600;font-size:12px}
+  .send{background:var(--accent-soft);border-color:var(--accent)}
+  .send h3{margin:0 0 8px;font-size:16px}
+  .send p{margin:0 0 12px;font-size:14px}
+  #logbox{width:100%;min-height:90px;font-size:11px;margin-top:10px;display:none}
+  .tiny{font-size:12px;color:var(--muted);margin-top:10px}
+  .boot{padding:14px;border-radius:8px;background:var(--warn-soft);color:var(--warn);font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Three SQL questions</h1>
+  <p class="sub">Round 2. Should take 15–20 minutes.</p>
+
+  <div class="card intro">
+    <p><b>What changed from last time:</b> there's a real database in this page and a Run
+    button. Write a query, run it, see what comes back, fix it, run it again. That's the
+    point — last round asked you to write SQL blind, which isn't how anyone actually works.</p>
+    <p><b>Still on your own</b> — no Google, no ChatGPT/Claude, no asking a colleague. But
+    iterate as much as you like. There's no attempt limit and nothing is penalised.</p>
+    <p><b>I'm measuring the questions, not you.</b> Getting stuck is useful data. If one
+    won't crack, hit "I'm stuck" and move on. You can stop whenever, and pull out of the
+    whole thing later with no explanation needed.</p>
+    <p>When you're done, scroll to the bottom and send me the log.</p>
+  </div>
+
+  <details open>
+    <summary>The database — same four tables as last time</summary>
+    <div class="schema">
+      <div class="tbl"><h4>customers</h4><ul>
+        <li><code>id</code> integer</li><li><code>name</code> text</li>
+        <li><code>city</code> text</li><li><code>signup_date</code> date</li></ul></div>
+      <div class="tbl"><h4>products</h4><ul>
+        <li><code>id</code> integer</li><li><code>name</code> text</li>
+        <li><code>category</code> text</li><li><code>price</code> number</li></ul></div>
+      <div class="tbl"><h4>orders</h4><ul>
+        <li><code>id</code> integer</li><li><code>customer_id</code> → customers.id</li>
+        <li><code>order_date</code> date</li>
+        <li><code>status</code> text — <code>completed</code> or <code>cancelled</code></li></ul></div>
+      <div class="tbl"><h4>order_items</h4><ul>
+        <li><code>id</code> integer</li><li><code>order_id</code> → orders.id</li>
+        <li><code>product_id</code> → products.id</li>
+        <li><code>quantity</code> integer</li><li><code>unit_price</code> number</li></ul></div>
+    </div>
+  </details>
+
+  <div id="boot" class="boot">Loading the database…</div>
+
+  <div id="questions" hidden></div>
+
+  <div class="card send">
+    <h3>Send it back</h3>
+    <p>Click copy, then paste into our chat. It's a record of the queries you ran — no
+    personal data in it.</p>
+    <div class="row">
+      <button class="primary" id="copy">Copy my log</button>
+      <button id="dl">Download instead</button>
+      <button id="show">Show me what it says</button>
+    </div>
+    <textarea id="logbox" readonly></textarea>
+    <p class="tiny">Thanks. Genuinely useful either way.</p>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
+<script>
+const SCHEMA = `-- Screener schema: small e-commerce store.
+-- Portable subset: runs on Supabase/Postgres AND on SQLite (so you can grade with zero setup).
+
+DROP TABLE IF EXISTS order_items;
+DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTS products;
+DROP TABLE IF EXISTS customers;
+
+CREATE TABLE customers (
+  id          INTEGER PRIMARY KEY,
+  name        TEXT NOT NULL,
+  city        TEXT NOT NULL,
+  signup_date DATE NOT NULL
+);
+
+CREATE TABLE products (
+  id       INTEGER PRIMARY KEY,
+  name     TEXT NOT NULL,
+  category TEXT NOT NULL,
+  price    NUMERIC(10,2) NOT NULL
+);
+
+CREATE TABLE orders (
+  id          INTEGER PRIMARY KEY,
+  customer_id INTEGER NOT NULL REFERENCES customers(id),
+  order_date  DATE NOT NULL,
+  status      TEXT NOT NULL          -- 'completed' or 'cancelled'
+);
+
+CREATE TABLE order_items (
+  id         INTEGER PRIMARY KEY,
+  order_id   INTEGER NOT NULL REFERENCES orders(id),
+  product_id INTEGER NOT NULL REFERENCES products(id),
+  quantity   INTEGER NOT NULL,
+  unit_price NUMERIC(10,2) NOT NULL
+);
+
+-- Deliberate traps in the data:
+--   customers 9 and 10 have no orders at all
+--   customer 7 (Priya Das) has orders, but both are cancelled  <- separates
+--     "no rows in orders" from "no completed orders" in Q8
+--   product 12 (Rain Jacket) was never ordered
+--   Bengaluru has 3 customers; Delhi/Mumbai/Pune have 2 each   <- forces a tiebreak in Q3
+
+INSERT INTO customers (id, name, city, signup_date) VALUES
+ (1,'Aarti Menon','Bengaluru','2024-01-15'),
+ (2,'Rohit Sharma','Delhi','2024-02-03'),
+ (3,'Neha Gupta','Bengaluru','2024-02-20'),
+ (4,'Imran Qureshi','Mumbai','2024-03-11'),
+ (5,'Sneha Rao','Pune','2024-04-02'),
+ (6,'Vikas Nair','Bengaluru','2024-04-18'),
+ (7,'Priya Das','Chennai','2024-05-05'),
+ (8,'Karan Mehta','Delhi','2024-05-22'),
+ (9,'Divya Iyer','Mumbai','2024-06-09'),
+ (10,'Sameer Joshi','Pune','2024-06-25');
+
+INSERT INTO products (id, name, category, price) VALUES
+ (1,'Wireless Mouse','Electronics',899.00),
+ (2,'Mechanical Keyboard','Electronics',4500.00),
+ (3,'27-inch Monitor','Electronics',18999.00),
+ (4,'USB-C Hub','Electronics',2499.00),
+ (5,'Office Chair','Furniture',12500.00),
+ (6,'Standing Desk','Furniture',24999.00),
+ (7,'Bookshelf','Furniture',6800.00),
+ (8,'Espresso Machine','Kitchen',15999.00),
+ (9,'Steel Cookware Set','Kitchen',3200.00),
+ (10,'Air Fryer','Kitchen',7499.00),
+ (11,'Cotton T-Shirt','Apparel',799.00),
+ (12,'Rain Jacket','Apparel',3499.00);
+
+INSERT INTO orders (id, customer_id, order_date, status) VALUES
+ (1,1,'2024-03-01','completed'),
+ (2,1,'2024-04-12','completed'),
+ (3,2,'2024-03-15','completed'),
+ (4,3,'2024-04-01','cancelled'),
+ (5,3,'2024-05-10','completed'),
+ (6,4,'2024-04-20','completed'),
+ (7,5,'2024-05-01','completed'),
+ (8,6,'2024-05-15','completed'),
+ (9,7,'2024-06-01','cancelled'),
+ (10,8,'2024-06-10','completed'),
+ (11,1,'2024-06-20','cancelled'),
+ (12,2,'2024-07-02','completed'),
+ (13,4,'2024-07-15','completed'),
+ (14,6,'2024-07-20','completed'),
+ (15,5,'2024-08-01','completed'),
+ (16,7,'2024-08-05','cancelled'),
+ (17,8,'2024-08-12','completed'),
+ (18,3,'2024-08-20','completed');
+
+INSERT INTO order_items (id, order_id, product_id, quantity, unit_price) VALUES
+ (1,1,1,2,899.00),(2,1,4,1,2499.00),
+ (3,2,5,1,12500.00),
+ (4,3,3,1,18999.00),(5,3,2,1,4500.00),
+ (6,4,11,3,799.00),
+ (7,5,10,1,7499.00),
+ (8,6,8,1,15999.00),(9,6,9,2,3200.00),
+ (10,7,7,1,6800.00),
+ (11,8,6,1,24999.00),
+ (12,9,1,1,899.00),(13,9,11,2,799.00),
+ (14,10,2,1,4500.00),(15,10,4,2,2499.00),
+ (16,11,3,1,18999.00),
+ (17,12,5,2,12500.00),
+ (18,13,10,1,7499.00),(19,13,9,1,3200.00),
+ (20,14,1,3,899.00),
+ (21,15,8,1,15999.00),
+ (22,16,6,1,24999.00),
+ (23,17,7,2,6800.00),
+ (24,18,2,1,4500.00),(25,18,11,5,799.00);
+`;
+const EXPECTED = JSON.parse(atob("eyJNMSI6IFtbIkVsZWN0cm9uaWNzIiwgIjQiXSwgWyJGdXJuaXR1cmUiLCAiMyJdLCBbIktpdGNoZW4iLCAiMyJdXSwgIk0yIjogW1siRWxlY3Ryb25pY3MiLCAiMTg5OTkiXSwgWyJGdXJuaXR1cmUiLCAiMjQ5OTkiXSwgWyJLaXRjaGVuIiwgIjE1OTk5Il1dLCAiTTMiOiBbWyI0IiwgIk5laGEgR3VwdGEiLCAiQmVuZ2FsdXJ1IiwgIjIwMjQtMDQtMDEiXSwgWyI5IiwgIlByaXlhIERhcyIsICJDaGVubmFpIiwgIjIwMjQtMDYtMDEiXSwgWyIxMSIsICJBYXJ0aSBNZW5vbiIsICJCZW5nYWx1cnUiLCAiMjAyNC0wNi0yMCJdLCBbIjE2IiwgIlByaXlhIERhcyIsICJDaGVubmFpIiwgIjIwMjQtMDgtMDUiXV19"));
+
+const QUESTIONS = [
+  { id:"M1",
+    ask:'For each product <b>category</b>, how many products are in it. Only include categories with <b>at least 3</b> products. Return the category and the count, sorted by count highest first; where two categories tie, sort those by category name A–Z.' },
+  { id:"M2",
+    ask:'For each product <b>category</b>, the <b>highest</b> price in that category. Only include categories where that highest price is <b>above 10000</b>. Return the category and that price, sorted by category name A–Z.' },
+  { id:"M3",
+    ask:'Every <b>cancelled</b> order, with the name and city of the customer who placed it. Return the order id, the customer name, the customer city, and the order date — in that order. Sort by order date oldest first; where two share a date, sort those by order id.' },
+];
+
+const LOG = { version:"mini-2", started:new Date().toISOString(), events:[] };
+let db = null;
+
+function norm(v){
+  if (v === null || v === undefined) return "∅";
+  if (typeof v === "number") return String(Math.round(v*100)/100);
+  const s = String(v).trim();
+  if (s !== "" && !isNaN(Number(s))) return String(Math.round(Number(s)*100)/100);
+  return s;
+}
+const normRows = rows => rows.map(r => r.map(norm));
+const eqOrdered = (a,b) => JSON.stringify(a) === JSON.stringify(b);
+const eqUnordered = (a,b) =>
+  a.length===b.length &&
+  JSON.stringify([...a].map(r=>r.join("")).sort()) ===
+  JSON.stringify([...b].map(r=>r.join("")).sort());
+
+function render(){
+  const host = document.getElementById("questions");
+  QUESTIONS.forEach((q,i) => {
+    const el = document.createElement("div");
+    el.className = "card";
+    el.innerHTML = `
+      <div class="qhead">
+        <span class="qnum">Question ${i+1} of 3</span>
+        <span class="pill" id="pill-${q.id}">not started</span>
+      </div>
+      <p class="ask">${q.ask}</p>
+      <textarea id="sql-${q.id}" spellcheck="false" placeholder="SELECT ..."></textarea>
+      <div class="row">
+        <button class="primary" id="run-${q.id}">Run</button>
+        <button id="skip-${q.id}">I'm stuck, skip it</button>
+        <span class="hint" id="cnt-${q.id}"></span>
+      </div>
+      <div class="out" id="out-${q.id}"></div>`;
+    host.appendChild(el);
+    document.getElementById(`run-${q.id}`).onclick  = () => runQ(q.id);
+    document.getElementById(`skip-${q.id}`).onclick = () => skipQ(q.id);
+    document.getElementById(`sql-${q.id}`).addEventListener("keydown", e => {
+      if ((e.metaKey||e.ctrlKey) && e.key === "Enter") { e.preventDefault(); runQ(q.id); }
+    });
+  });
+  host.hidden = false;
+}
+
+const state = {};
+QUESTIONS.forEach(q => state[q.id] = { attempts:0, solved:false, skipped:false });
+
+function counts(id){
+  const s = state[id];
+  const pill = document.getElementById(`pill-${id}`);
+  const cnt  = document.getElementById(`cnt-${id}`);
+  if (s.solved)       { pill.textContent = `solved in ${s.attempts}`; pill.className = "pill ok"; }
+  else if (s.skipped) { pill.textContent = `skipped after ${s.attempts}`; pill.className = "pill"; }
+  else if (s.attempts){ pill.textContent = `${s.attempts} attempt${s.attempts>1?"s":""}`; pill.className = "pill"; }
+  else                { pill.textContent = "not started"; pill.className = "pill"; }
+  cnt.textContent = s.attempts ? `Ctrl/Cmd + Enter also runs it.` : `Ctrl/Cmd + Enter also runs it.`;
+}
+
+function table(rows, cols){
+  if (!rows.length) return `<p class="hint">Query ran, returned 0 rows.</p>`;
+  const head = cols.map(c => `<th>${c}</th>`).join("");
+  const body = rows.slice(0,25).map(r =>
+    `<tr>${r.map(v => `<td>${v===null?"NULL":String(v)}</td>`).join("")}</tr>`).join("");
+  const more = rows.length > 25 ? `<p class="hint">…and ${rows.length-25} more rows.</p>` : "";
+  return `<div class="scroll"><table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>${more}`;
+}
+
+function runQ(id){
+  const sql = document.getElementById(`sql-${id}`).value.trim();
+  const out = document.getElementById(`out-${id}`);
+  if (!sql) { out.innerHTML = `<div class="verdict v-warn">Nothing to run — the box is empty.</div>`; return; }
+
+  const s = state[id];
+  s.attempts++;
+  const ev = { q:id, at:new Date().toISOString(), n:s.attempts, sql };
+
+  let res;
+  try { res = db.exec(sql); }
+  catch (err) {
+    ev.outcome = "error"; ev.error = String(err.message || err);
+    LOG.events.push(ev); counts(id);
+    out.innerHTML = `<div class="verdict v-err">Didn't run: <code>${ev.error}</code></div>`;
+    return;
+  }
+
+  const cols = res.length ? res[0].columns : [];
+  const raw  = res.length ? res[0].values  : [];
+  const got  = normRows(raw);
+  const want = EXPECTED[id];
+
+  ev.rows = raw.length; ev.cols = cols.length;
+
+  if (eqOrdered(got, want)) {
+    ev.outcome = "correct"; s.solved = true;
+    LOG.events.push(ev); counts(id);
+    out.innerHTML = `<div class="verdict v-ok">Correct. That's the one.</div>` + table(raw, cols);
+    document.getElementById(`run-${id}`).textContent = "Run again";
+    return;
+  }
+  if (eqUnordered(got, want)) {
+    ev.outcome = "right_rows_wrong_order";
+    LOG.events.push(ev); counts(id);
+    out.innerHTML = `<div class="verdict v-warn">Right rows, wrong order — check your ORDER BY.</div>` + table(raw, cols);
+    return;
+  }
+  if (cols.length !== (want[0] ? want[0].length : 0)) {
+    ev.outcome = "wrong_columns";
+    LOG.events.push(ev); counts(id);
+    out.innerHTML = `<div class="verdict v-warn">Not right yet — you returned ${cols.length} column${cols.length===1?"":"s"}, the question asks for ${want[0].length}.</div>` + table(raw, cols);
+    return;
+  }
+  ev.outcome = "wrong";
+  LOG.events.push(ev); counts(id);
+  out.innerHTML = `<div class="verdict v-warn">Not right yet. Here's what your query returned — compare it against what the question asked for.</div>` + table(raw, cols);
+}
+
+function skipQ(id){
+  const s = state[id];
+  s.skipped = true;
+  LOG.events.push({ q:id, at:new Date().toISOString(), n:s.attempts, outcome:"skipped" });
+  counts(id);
+  document.getElementById(`out-${id}`).innerHTML =
+    `<div class="verdict v-warn">Marked as stuck. That's genuinely useful — thanks.</div>`;
+}
+
+function payload(){
+  LOG.finished = new Date().toISOString();
+  LOG.summary = {};
+  QUESTIONS.forEach(q => LOG.summary[q.id] = { ...state[q.id] });
+  return JSON.stringify(LOG, null, 1);
+}
+document.getElementById("copy").onclick = async () => {
+  const btn = document.getElementById("copy");
+  try { await navigator.clipboard.writeText(payload()); btn.textContent = "Copied ✓"; }
+  catch { const b = document.getElementById("logbox"); b.style.display="block"; b.value = payload(); b.select(); btn.textContent = "Select it all and copy"; }
+  setTimeout(() => btn.textContent = "Copy my log", 2500);
+};
+document.getElementById("dl").onclick = () => {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([payload()], {type:"application/json"}));
+  a.download = "sql-mini-screen-log.json"; a.click();
+};
+document.getElementById("show").onclick = () => {
+  const b = document.getElementById("logbox");
+  b.style.display = b.style.display === "block" ? "none" : "block";
+  b.value = payload();
+};
+
+initSqlJs({ locateFile: f => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${f}` })
+  .then(SQL => {
+    db = new SQL.Database();
+    db.run(SCHEMA);
+    document.getElementById("boot").remove();
+    render();
+    QUESTIONS.forEach(q => counts(q.id));
+  })
+  .catch(e => {
+    document.getElementById("boot").innerHTML =
+      `Couldn't load the database engine (needs internet the first time). Error: ${e}. ` +
+      `Try reloading, or tell me and I'll send another format.`;
+  });
+</script>
+</body>
+</html>

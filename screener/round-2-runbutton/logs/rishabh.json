@@ -1,0 +1,670 @@
+{
+ "version": "mini-2",
+ "started": "2026-09-12T09:05:19.211Z",
+ "events": [
+  {
+   "q": "M1",
+   "at": "2026-09-12T09:31:59.517Z",
+   "n": 1,
+   "sql": "Select category,count As prodcutcount from products GroupBy category havingcount>=3 orderby prodcutcount DESC, category ASC;",
+   "outcome": "error",
+   "error": "near \"category\": syntax error"
+  },
+  {
+   "q": "M1",
+   "at": "2026-09-12T09:32:26.092Z",
+   "n": 2,
+   "sql": "Select category,count As prodcutcount from products GroupBy category havingcount>=3 orderby prodcutcount DESC, category ASC",
+   "outcome": "error",
+   "error": "near \"category\": syntax error"
+  },
+  {
+   "q": "M1",
+   "at": "2026-09-12T09:32:27.450Z",
+   "n": 3,
+   "sql": "Select category,count As prodcutcount from products GroupBy category havingcount>=3 orderby prodcutcount DESC, category ASC",
+   "outcome": "error",
+   "error": "near \"category\": syntax error"
+  },
+  {
+   "q": "M1",
+   "at": "2026-09-12T09:32:42.725Z",
+   "n": 4,
+   "sql": "Select category,count As prodcutcount from products GroupBy category havingcount>=3 orderby prodcutcount DESC, category ASC",
+   "outcome": "error",
+   "error": "near \"category\": syntax error"
+  },
+  {
+   "q": "M1",
+   "at": "2026-09-12T09:32:44.024Z",
+   "n": 5,
+   "sql": "Select category,count As prodcutcount from products GroupBy category havingcount>=3 orderby prodcutcount DESC, category ASC",
+   "outcome": "error",
+   "error": "near \"category\": syntax error"
+  },
+  {
+   "q": "M1",
+   "at": "2026-09-12T09:33:59.725Z",
+   "n": 6,
+   "sql": "Select category,COUNT As prodcutcount FROM products GroupBy category Having COUNT >= 3 ORDERBY prodcutcount DESC, category ASC",
+   "outcome": "error",
+   "error": "near \"category\": syntax error"
+  },
+  {
+   "q": "M1",
+   "at": "2026-09-12T09:34:01.052Z",
+   "n": 7,
+   "sql": "Select category,COUNT As prodcutcount FROM products GroupBy category Having COUNT >= 3 ORDERBY prodcutcount DESC, category ASC",
+   "outcome": "error",
+   "error": "near \"category\": syntax error"
+  },
+  {
+   "q": "M1",
+   "at": "2026-09-12T09:35:01.756Z",
+   "n": 8,
+   "sql": "Select category,COUNT As prodcutcount FROM products GroupBy category Having COUNT >= 3 ORDERBY prodcutcount DESC, category ASC",
+   "outcome": "error",
+   "error": "near \"category\": syntax error"
+  },
+  {
+   "q": "M1",
+   "at": "2026-09-12T09:35:02.279Z",
+   "n": 9,
+   "sql": "Select category,COUNT As prodcutcount FROM products GroupBy category Having COUNT >= 3 ORDERBY prodcutcount DESC, category ASC",
+   "outcome": "error",
+   "error": "near \"category\": syntax error"
+  },
+  {
+   "q": "M1",
+   "at": "2026-09-12T09:36:33.779Z",
+   "n": 10,
+   "sql": "Select category,COUNT As prodcutcount FROM products GroupBy category HAVING COUNT >= 3 ORDERBY prodcutcount DESC, category ASC",
+   "outcome": "error",
+   "error": "near \"category\": syntax error"
+  },
+  {
+   "q": "M1",
+   "at": "2026-09-12T09:36:35.988Z",
+   "n": 11,
+   "sql": "Select category,COUNT As prodcutcount FROM products GroupBy category HAVING COUNT >= 3 ORDERBY prodcutcount DESC, category ASC",
+   "outcome": "error",
+   "error": "near \"category\": syntax error"
+  },
+  {
+   "q": "M1",
+   "at": "2026-09-12T09:36:36.412Z",
+   "n": 12,
+   "sql": "Select category,COUNT As prodcutcount FROM products GroupBy category HAVING COUNT >= 3 ORDERBY prodcutcount DESC, category ASC",
+   "outcome": "error",
+   "error": "near \"category\": syntax error"
+  },
+  {
+   "q": "M1",
+   "at": "2026-09-12T09:36:36.714Z",
+   "n": 13,
+   "sql": "Select category,COUNT As prodcutcount FROM products GroupBy category HAVING COUNT >= 3 ORDERBY prodcutcount DESC, category ASC",
+   "outcome": "error",
+   "error": "near \"category\": syntax error"
+  },
+  {
+   "q": "M1",
+   "at": "2026-09-12T09:36:37.138Z",
+   "n": 14,
+   "sql": "Select category,COUNT As prodcutcount FROM products GroupBy category HAVING COUNT >= 3 ORDERBY prodcutcount DESC, category ASC",
+   "outcome": "error",
+   "error": "near \"category\": syntax error"
+  },
+  {
+   "q": "M1",
+   "at": "2026-09-12T09:37:14.646Z",
+   "n": 15,
+   "sql": "Select category,COUNT As prodcutcount FROM products GroupBy category HAVING COUNT >= 3 ORDERBY prodcutcount DESC, category ASC",
+   "outcome": "error",
+   "error": "near \"category\": syntax error"
+  },
+  {
+   "q": "M1",
+   "at": "2026-09-12T09:37:15.065Z",
+   "n": 16,
+   "sql": "Select category,COUNT As prodcutcount FROM products GroupBy category HAVING COUNT >= 3 ORDERBY prodcutcount DESC, category ASC",
+   "outcome": "error",
+   "error": "near \"category\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:43:54.838Z",
+   "n": 1,
+   "sql": "Select category,MAX(price) AS highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:43:56.529Z",
+   "n": 2,
+   "sql": "Select category,MAX(price) AS highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:29.614Z",
+   "n": 3,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:30.463Z",
+   "n": 4,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:30.738Z",
+   "n": 5,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:30.955Z",
+   "n": 6,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:31.156Z",
+   "n": 7,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:31.363Z",
+   "n": 8,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:31.613Z",
+   "n": 9,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:31.863Z",
+   "n": 10,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:32.097Z",
+   "n": 11,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:32.314Z",
+   "n": 12,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:32.521Z",
+   "n": 13,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:32.755Z",
+   "n": 14,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:33.005Z",
+   "n": 15,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:33.280Z",
+   "n": 16,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:33.855Z",
+   "n": 17,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:34.613Z",
+   "n": 18,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:34.971Z",
+   "n": 19,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:35.196Z",
+   "n": 20,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:35.421Z",
+   "n": 21,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:35.630Z",
+   "n": 22,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:35.880Z",
+   "n": 23,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:36.729Z",
+   "n": 24,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:37.114Z",
+   "n": 25,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:37.438Z",
+   "n": 26,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:37.746Z",
+   "n": 27,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:38.048Z",
+   "n": 28,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:38.296Z",
+   "n": 29,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:38.530Z",
+   "n": 30,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:38.730Z",
+   "n": 31,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:38.963Z",
+   "n": 32,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:39.206Z",
+   "n": 33,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:39.438Z",
+   "n": 34,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:39.680Z",
+   "n": 35,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:39.913Z",
+   "n": 36,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:40.121Z",
+   "n": 37,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:44.734Z",
+   "n": 38,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY Highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"Highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:45.002Z",
+   "n": 39,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY Highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"Highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:45.234Z",
+   "n": 40,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY Highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"Highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:45.434Z",
+   "n": 41,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY Highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"Highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:45.684Z",
+   "n": 42,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY Highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"Highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:45.918Z",
+   "n": 43,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY Highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"Highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:46.134Z",
+   "n": 44,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY Highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"Highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:46.367Z",
+   "n": 45,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY Highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"Highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:46.601Z",
+   "n": 46,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY Highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"Highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:46.801Z",
+   "n": 47,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY Highest>10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"Highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:44:55.335Z",
+   "n": 48,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY MAX(price) >10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"MAX\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:45:04.497Z",
+   "n": 49,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY MAX(price) >10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"MAX\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:45:04.773Z",
+   "n": 50,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY MAX(price) >10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"MAX\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:45:04.996Z",
+   "n": 51,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY MAX(price) >10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"MAX\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:45:10.172Z",
+   "n": 52,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY MAX(price) > 10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"MAX\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:45:10.697Z",
+   "n": 53,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY MAX(price) > 10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"MAX\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:45:10.905Z",
+   "n": 54,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY MAX(price) > 10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"MAX\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:45:18.351Z",
+   "n": 55,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY price > 10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"price\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:45:19.177Z",
+   "n": 56,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY price > 10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"price\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:45:19.409Z",
+   "n": 57,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY price > 10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"price\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:45:19.625Z",
+   "n": 58,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY price > 10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"price\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:45:29.293Z",
+   "n": 59,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY Highest > 10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"Highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:45:29.509Z",
+   "n": 60,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY Highest > 10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"Highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:45:29.717Z",
+   "n": 61,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY Highest > 10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"Highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:45:29.926Z",
+   "n": 62,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY Highest > 10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"Highest\": syntax error"
+  },
+  {
+   "q": "M2",
+   "at": "2026-09-12T09:45:30.134Z",
+   "n": 63,
+   "sql": "Select category,MAX(price) AS Highest FROM products GROUPBY Highest > 10000 ORDERBY category ASC",
+   "outcome": "error",
+   "error": "near \"Highest\": syntax error"
+  },
+  {
+   "q": "M3",
+   "at": "2026-09-12T09:52:22.617Z",
+   "n": 1,
+   "sql": "SELECT status.equals('cancelled')",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "q": "M3",
+   "at": "2026-09-12T09:52:25.357Z",
+   "n": 1,
+   "outcome": "skipped"
+  }
+ ],
+ "finished": "2026-09-12T09:52:31.282Z",
+ "summary": {
+  "M1": {
+   "attempts": 16,
+   "solved": false,
+   "skipped": false
+  },
+  "M2": {
+   "attempts": 63,
+   "solved": false,
+   "skipped": false
+  },
+  "M3": {
+   "attempts": 1,
+   "solved": false,
+   "skipped": true
+  }
+ }
+}

@@ -1,0 +1,121 @@
+{
+  "version": "mini-2",
+  "started": "2026-09-12T11:32:34.813Z",
+  "events": [
+    {
+      "q": "M1",
+      "at": "2026-09-12T11:38:56.918Z",
+      "n": 1,
+      "sql": "SELECT category, COUNT() AS product_count\nFROM products\nGROUP BY category\nHAVING COUNT() >= 3\nORDER BY product_count DESC, category ASC;",
+      "rows": 3,
+      "cols": 2,
+      "outcome": "correct"
+    },
+    {
+      "q": "M1",
+      "at": "2026-09-12T11:39:17.277Z",
+      "n": 2,
+      "sql": "SELECT category, COUNT() \nFROM products\nGROUP BY category\nHAVING COUNT() >= 3\nORDER BY product_count DESC, category ASC;",
+      "outcome": "error",
+      "error": "no such column: product_count"
+    },
+    {
+      "q": "M1",
+      "at": "2026-09-12T11:39:38.300Z",
+      "n": 3,
+      "sql": "SELECT category, COUNT() \nFROM products\nGROUP BY category\nHAVING COUNT() >= 3\nORDER BY category ASC;",
+      "rows": 3,
+      "cols": 2,
+      "outcome": "correct"
+    },
+    {
+      "q": "M2",
+      "at": "2026-09-12T11:42:43.330Z",
+      "n": 1,
+      "sql": "SELECT MAX() FROM products GROUPBY category HAVING MAX()>10000 ORDERBY category ASC;",
+      "outcome": "error",
+      "error": "near \"category\": syntax error"
+    },
+    {
+      "q": "M2",
+      "at": "2026-09-12T11:42:59.620Z",
+      "n": 2,
+      "sql": "SELECT MAX() FROM products GROUP BY category HAVING MAX()>10000 ORDERBY category ASC;",
+      "outcome": "error",
+      "error": "near \"ORDERBY\": syntax error"
+    },
+    {
+      "q": "M2",
+      "at": "2026-09-12T11:43:00.828Z",
+      "n": 3,
+      "sql": "SELECT MAX() FROM products GROUP BY category HAVING MAX()>10000 ORDERBY category ASC;",
+      "outcome": "error",
+      "error": "near \"ORDERBY\": syntax error"
+    },
+    {
+      "q": "M2",
+      "at": "2026-09-12T11:44:01.756Z",
+      "n": 4,
+      "sql": "SELECT MAX() FROM products GROUP BY category HAVING MAX()>10000 ORDERBY category ASC;",
+      "outcome": "error",
+      "error": "near \"ORDERBY\": syntax error"
+    },
+    {
+      "q": "M2",
+      "at": "2026-09-12T11:44:02.762Z",
+      "n": 5,
+      "sql": "SELECT MAX() FROM products GROUP BY category HAVING MAX()>10000 ORDERBY category ASC;",
+      "outcome": "error",
+      "error": "near \"ORDERBY\": syntax error"
+    },
+    {
+      "q": "M2",
+      "at": "2026-09-12T11:44:17.683Z",
+      "n": 6,
+      "sql": "SELECT MAX() FROM products GROUP BY category HAVING MAX()>10000 ORDERBY category ASC;",
+      "outcome": "error",
+      "error": "near \"ORDERBY\": syntax error"
+    },
+    {
+      "q": "M2",
+      "at": "2026-09-12T11:44:30.674Z",
+      "n": 7,
+      "sql": "SELECT MAX() FROM products GROUP BY category HAVING MAX()>10000 ORDER BY category ASC;",
+      "outcome": "error",
+      "error": "wrong number of arguments to function MAX()"
+    },
+    {
+      "q": "M2",
+      "at": "2026-09-12T11:46:28.116Z",
+      "n": 8,
+      "sql": "SELECT category ,MAX(price) FROM products GROUP BY category HAVING MAX(price)>10000 ORDER BY category ASC;",
+      "rows": 3,
+      "cols": 2,
+      "outcome": "correct"
+    },
+    {
+      "q": "M3",
+      "at": "2026-09-12T11:47:11.440Z",
+      "n": 0,
+      "outcome": "skipped"
+    }
+  ],
+  "finished": "2026-09-12T11:47:23.499Z",
+  "summary": {
+    "M1": {
+      "attempts": 3,
+      "solved": true,
+      "skipped": false
+    },
+    "M2": {
+      "attempts": 8,
+      "solved": true,
+      "skipped": false
+    },
+    "M3": {
+      "attempts": 0,
+      "solved": false,
+      "skipped": true
+    }
+  }
+}

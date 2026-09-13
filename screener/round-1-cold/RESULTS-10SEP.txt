@@ -1,0 +1,110 @@
+[sqlite] answer key loaded, 10 questions
+
+=== anuj: 0/10, tops out at - -> FLOOR — exclude
+    Q1  T1  ERR  no such column: ASC
+    Q2  T1  ERR  no such column: DESC
+    Q3  T2  WRONG got 10 rows, expected 5
+    Q4  T2  ERR  near "GROUP": syntax error
+    Q5  T3  ERR  no such column: completed
+    Q6  T3  --   
+    Q7  T4  --   
+    Q8  T4  --   
+    Q9  T5  --   
+    Q10 T5  --   
+
+=== gaurav: 0/10, tops out at - -> FLOOR — exclude
+    Q1  T1  ERR  near ""ASC"": syntax error
+    Q2  T1  ERR  near ""DESC"": syntax error
+    Q3  T2  ERR  near ""DESC"": syntax error
+    Q4  T2  ERR  near ""ASC"": syntax error
+    Q5  T3  --   
+    Q6  T3  --   
+    Q7  T4  --   
+    Q8  T4  --   
+    Q9  T5  --   
+    Q10 T5  --   
+
+=== manish: 0/10, tops out at - -> FLOOR — exclude
+    Q1  T1  WRONG got 3 rows, expected 3
+    Q2  T1  WRONG got 6 rows, expected 6
+    Q3  T2  --   
+    Q4  T2  --   
+    Q5  T3  --   
+    Q6  T3  --   
+    Q7  T4  --   
+    Q8  T4  --   
+    Q9  T5  --   
+    Q10 T5  --   
+
+=== nabin: 3/10, tops out at T2 -> INCLUDE
+    Q1  T1  OK   
+    Q2  T1  OK   
+    Q3  T2  OK   
+    Q4  T2  ERR  near "GROUP": syntax error
+    Q5  T3  ERR  no such column: orders.order_id
+    Q6  T3  ERR  no such column: products.quantity
+    Q7  T4  --   
+    Q8  T4  --   
+    Q9  T5  --   
+    Q10 T5  --   
+
+=== rishabh: 0/10, tops out at - -> FLOOR — exclude
+    Q1  T1  ERR  near "name": syntax error
+    Q2  T1  ERR  near "orderby": syntax error
+    Q3  T2  --   
+    Q4  T2  ERR  near "category": syntax error
+    Q5  T3  ERR  near "(": syntax error
+    Q6  T3  --   
+    Q7  T4  --   
+    Q8  T4  ERR  near "SELECT": syntax error
+    Q9  T5  --   
+    Q10 T5  --   
+
+=== ritesh: 0/10, tops out at - -> FLOOR — exclude
+    Q1  T1  ERR  near "ORDERBY": syntax error
+    Q2  T1  ERR  near "ORDERBY": syntax error
+    Q3  T2  ERR  near "=": syntax error
+    Q4  T2  ERR  near "category": syntax error
+    Q5  T3  ERR  near "order": syntax error
+    Q6  T3  ERR  near "JOIN": syntax error
+    Q7  T4  --   
+    Q8  T4  --   
+    Q9  T5  --   
+    Q10 T5  --   
+
+=== vikash: 1/10, tops out at T3 -> FLOOR — exclude
+    Q1  T1  WRONG got 10 rows, expected 3
+    Q2  T1  WRONG got 12 rows, expected 6
+    Q3  T2  ERR  near "BY": syntax error
+    Q4  T2  ERR  near "WHERE": syntax error
+    Q5  T3  OK   
+    Q6  T3  ERR  near "oi": syntax error
+    Q7  T4  --   
+    Q8  T4  ERR  near "oi": syntax error
+    Q9  T5  --   
+    Q10 T5  --   
+
+========================================================================
+person               score   tops at  verdict
+------------------------------------------------------------------------
+nabin                    3        T2  INCLUDE
+vikash                   1        T3  FLOOR — exclude
+anuj                     0         -  FLOOR — exclude
+gaurav                   0         -  FLOOR — exclude
+manish                   0         -  FLOOR — exclude
+rishabh                  0         -  FLOOR — exclude
+ritesh                   0         -  FLOOR — exclude
+========================================================================
+
+Usable: 1 of 7
+
+Pass rate by tier (this is what sets your question difficulty):
+  T1 single table: filter + sort         14%  <- too hard, floor risk
+  T2 aggregate one table                  7%  <- too hard, floor risk
+  T3 join two tables                      7%  <- too hard, floor risk
+  T4 join + aggregate + negation          0%  <- too hard, floor risk
+  T5 window / correlated subquery         0%  <- too hard, floor risk
+
+Matched-pair split: sort by score, pair 1st+2nd, 3rd+4th, ...
+then coin-flip each pair into Arm A / Arm B.
+Keep your 4 ex-teammates split across both arms, not clumped.

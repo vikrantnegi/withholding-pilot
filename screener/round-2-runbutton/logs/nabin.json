@@ -1,0 +1,123 @@
+{
+  "version": "mini-2",
+  "started": "2026-09-13T04:47:59.235Z",
+  "events": [
+    {
+      "q": "M1",
+      "at": "2026-09-13T05:02:16.932Z",
+      "n": 1,
+      "sql": "SELECT",
+      "outcome": "error",
+      "error": "incomplete input"
+    },
+    {
+      "q": "M1",
+      "at": "2026-09-13T05:17:23.037Z",
+      "n": 2,
+      "sql": "SELECT category, COUNT(*) as catCount \nFROM products\nGROUP BY category\nHAVING catCount >= 4\nORDER BY catCount DESC, category ASC",
+      "rows": 1,
+      "cols": 2,
+      "outcome": "wrong"
+    },
+    {
+      "q": "M1",
+      "at": "2026-09-13T05:17:58.980Z",
+      "n": 3,
+      "sql": "SELECT category, COUNT(*) as catCount \nFROM products\nGROUP BY category\nHAVING catCount >= 3\nORDER BY catCount DESC, category ASC",
+      "rows": 3,
+      "cols": 2,
+      "outcome": "correct"
+    },
+    {
+      "q": "M2",
+      "at": "2026-09-13T05:25:37.945Z",
+      "n": 1,
+      "sql": "SELECT category, MAX(price) as highestPrice\nFROM products\nGROUP BY category\nHAVING highestPrice > 10000 \nORDER BY category ASC",
+      "rows": 3,
+      "cols": 2,
+      "outcome": "correct"
+    },
+    {
+      "q": "M2",
+      "at": "2026-09-13T05:25:47.105Z",
+      "n": 2,
+      "sql": "SELECT category, MAX(price) as highestPrice\nFROM products\nGROUP BY category\nHAVING highestPrice > 10000 \nORDER BY category ASC",
+      "rows": 3,
+      "cols": 2,
+      "outcome": "correct"
+    },
+    {
+      "q": "M2",
+      "at": "2026-09-13T05:25:47.712Z",
+      "n": 3,
+      "sql": "SELECT category, MAX(price) as highestPrice\nFROM products\nGROUP BY category\nHAVING highestPrice > 10000 \nORDER BY category ASC",
+      "rows": 3,
+      "cols": 2,
+      "outcome": "correct"
+    },
+    {
+      "q": "M3",
+      "at": "2026-09-13T05:29:58.097Z",
+      "n": 1,
+      "sql": "SELECT order_id, name, city, order_date\nFROM ORDER_ITEMS o,\nJOIN ORDERS or\nORDER BY order_date ASC, order_id ASC",
+      "outcome": "error",
+      "error": "near \"JOIN\": syntax error"
+    },
+    {
+      "q": "M3",
+      "at": "2026-09-13T05:32:18.609Z",
+      "n": 2,
+      "sql": "SELECT o.order_id, c.name, c.city, or.order_date\nFROM ORDER_ITEMS o,\nJOIN ORDERS or\nON or.id - o.order_id\nJOIN customers c\nON c.id = or.customer_id\nORDER BY order_date ASC, order_id ASC",
+      "outcome": "error",
+      "error": "near \"or\": syntax error"
+    },
+    {
+      "q": "M3",
+      "at": "2026-09-13T05:32:32.901Z",
+      "n": 3,
+      "sql": "SELECT o.order_id, c.name, c.city, or.order_date\nFROM ORDER_ITEMS o\nJOIN ORDERS or\nON or.id - o.order_id\nJOIN customers c\nON c.id = or.customer_id\nORDER BY order_date ASC, order_id ASC",
+      "outcome": "error",
+      "error": "near \"or\": syntax error"
+    },
+    {
+      "q": "M3",
+      "at": "2026-09-13T05:32:33.676Z",
+      "n": 4,
+      "sql": "SELECT o.order_id, c.name, c.city, or.order_date\nFROM ORDER_ITEMS o\nJOIN ORDERS or\nON or.id - o.order_id\nJOIN customers c\nON c.id = or.customer_id\nORDER BY order_date ASC, order_id ASC",
+      "outcome": "error",
+      "error": "near \"or\": syntax error"
+    },
+    {
+      "q": "M3",
+      "at": "2026-09-13T05:32:37.408Z",
+      "n": 5,
+      "sql": "SELECT o.order_id, c.name, c.city, or.order_date\nFROM ORDER_ITEMS o,\nJOIN ORDERS or,\nON or.id - o.order_id\nJOIN customers c\nON c.id = or.customer_id\nORDER BY order_date ASC, order_id ASC",
+      "outcome": "error",
+      "error": "near \"or\": syntax error"
+    },
+    {
+      "q": "M3",
+      "at": "2026-09-13T05:32:41.556Z",
+      "n": 5,
+      "outcome": "skipped"
+    }
+  ],
+  "finished": "2026-09-13T05:32:46.301Z",
+  "summary": {
+    "M1": {
+      "attempts": 3,
+      "solved": true,
+      "skipped": false
+    },
+    "M2": {
+      "attempts": 3,
+      "solved": true,
+      "skipped": false
+    },
+    "M3": {
+      "attempts": 5,
+      "solved": false,
+      "skipped": true
+    }
+  }
+}

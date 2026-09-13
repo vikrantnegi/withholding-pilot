@@ -1,0 +1,37 @@
+==========================================================================
+person                         M1                 M2                 M3
+--------------------------------------------------------------------------
+anuj                  solved in 1        solved in 1      stuck after 0
+gaurav                solved in 3        solved in 1      stuck after 0
+manish                solved in 1      not attempted      not attempted
+nabin                 solved in 3        solved in 1      stuck after 5
+rishabh              16 tries, no       63 tries, no      stuck after 1
+ritesh                solved in 1        solved in 8      stuck after 0
+vikash                solved in 4        solved in 1      stuck after 1
+==========================================================================
+
+Per question
+  M1  GROUP BY + HAVING (count)    attempted 7/7, solved 6/7, median 3 attempts
+                                    86% solved  <- TOO EASY, no headroom
+  M2  GROUP BY + HAVING (max)      attempted 6/7, solved 5/7, median 1 attempts
+                                    71% solved  <- USABLE: this is where the study concepts go
+  M3  join two tables + filter     attempted 3/7, solved 0/7
+
+Attempts overall: 122, of which 101 failed to parse (83%)
+
+==========================================================================
+GATE CHECK — the reason this round exists
+==========================================================================
+The gate serves no help until one attempt EXECUTES. Anyone who never produces
+an executing query never earns a hint, and Arm A stops differing from Arm B.
+
+  anuj           executed at least one query on 2/3 questions
+  gaurav         executed at least one query on 2/3 questions
+  manish         executed at least one query on 1/3 questions
+  nabin          executed at least one query on 2/3 questions
+  rishabh        executed at least one query on 0/3 questions
+  ritesh         executed at least one query on 2/3 questions
+  vikash         executed at least one query on 2/3 questions
+
+  1 of 7 would be LOCKED OUT by the gate: rishabh
+  -> let attempt_type:syntax_error satisfy the gate, or the study serves no help.
