@@ -1,6 +1,6 @@
 # Learning log — assumptions that broke
 
-**Twelve assumptions have broken so far.** Each entry says what was believed, what proved it wrong,
+**Thirteen assumptions have broken so far.** Each entry says what was believed, what proved it wrong,
 what changed, and the lesson.
 
 The lesson is the point. An entry without one is just a bug report.
@@ -337,6 +337,46 @@ checker only test the author's imagination of the failure.
 in the log. The dangerous direction is the other one, and there is still no measurement of
 it. An adversarial run — ask the model to leak on purpose, count what the guard catches —
 is the missing number.
+
+---
+
+## L13 — A hint containing the reference query's clause is a leak
+
+**Believed from 13 Sep 2026.** The guard's main rule: reject a hint containing any clause
+that distinguishes the reference query — `group by category`, `having max(price) > 10000`,
+`max(price)`.
+
+**What broke it.** The 104-case run rejected 9 generations. Seven were this, and all seven
+looked like:
+
+> "You placed MAX(price) > 10000 right after GROUPBY, which attempts to filter rows before
+> they are aggregated — you need a condition that evaluates after the grouping."
+
+The learner had written `GROUPBY MAX(price) >10000` themselves. The hint is quoting their
+own query back at them. They are looking at it in their own editor. Nothing was revealed.
+
+The remaining two were the L12 class and a semicolon rule of mine that fired on ordinary
+English — *"nothing is processed; you need to specify where the data comes from"*.
+
+Re-judged with the fixed guard: **8 of 8 were the guard's mistakes. Zero real leaks in
+about 110 generations.**
+
+**What changed.** "Distinguishing" now means what the word says: a clause only counts if
+the learner does **not** already have it. `inspect()` takes the learner's query and skips
+anything present in it. The semicolon rule was deleted rather than patched — the
+real-table rule already catches queries that would run. `evals/recheck.js` re-judges a
+finished sheet's rejected generations against the current guard for free, so a guard
+change no longer costs 100K tokens to evaluate.
+
+**The lesson.** Both guard bugs came from the same root: the prompt instructs the writer to
+quote what the learner wrote, and the guard treated quotation as disclosure. Two components
+were built from the same spec and given contradictory readings of it. Nothing in either
+file was wrong on its own terms.
+
+**Why it matters:** the guard has now been wrong twice and right zero times. Every leak it
+has ever caught was one written by hand in its own test file. The false-negative rate —
+does it catch a real leak? — is still entirely unmeasured, and an adversarial run is the
+only thing that would measure it.
 
 ---
 

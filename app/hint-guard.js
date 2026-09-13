@@ -79,7 +79,7 @@ function distinguishingClauses(referenceQuery) {
  * Does this hint give the game away?
  * Returns { ok: true } or { ok: false, reason, matched }.
  */
-function inspect(hint, { referenceQuery }) {
+function inspect(hint, { referenceQuery, learnerQuery }) {
   const h = norm(hint);
   if (!h) return { ok: false, reason: REJECT.EMPTY };
 
@@ -100,18 +100,31 @@ function inspect(hint, { referenceQuery }) {
       return { ok: false, reason: REJECT.RUNNABLE_QUERY, matched: 'select + a real table name' };
     }
   }
-  // A statement terminator after a select is a query however it is phrased.
-  if (/\bselect\b[\s\S]{0,200};/.test(h)) {
-    return { ok: false, reason: REJECT.RUNNABLE_QUERY, matched: 'a terminated statement' };
-  }
+  // NB: an earlier version also rejected "select ... ;" on the theory that a
+  // semicolon means a terminated statement. English prose uses semicolons —
+  // "nothing is processed; you need to specify where the data comes from" was
+  // rejected by it. The real-table rule above already catches queries that
+  // would run, so the semicolon rule was removed rather than patched.
 
-  // 2. any clause that distinguishes the reference query
+  // 2. any clause that DISTINGUISHES the reference query.
+  //
+  // "Distinguishing" means the learner does not already have it. If they wrote
+  // MAX(price) themselves, a hint quoting MAX(price) back at them reveals
+  // nothing — they are looking at it in their own editor. The prompt asks the
+  // writer to quote what they wrote, so this fired constantly: 7 of 8
+  // rejections in the 104-case run were exactly this. LEARNING-LOG L13.
+  const theirs = norm(learnerQuery);
   for (const c of distinguishingClauses(referenceQuery)) {
+    if (theirs && theirs.includes(c)) continue;          // they already wrote it
     if (h.includes(c)) return { ok: false, reason: REJECT.REFERENCE_CLAUSE, matched: c };
   }
 
   // 3. backstop — a paraphrase that still reproduces most of the query's tokens
-  const refTokens = new Set(norm(referenceQuery).split(/[^a-z0-9_().*>=<]+/).filter(t => t.length > 2));
+  const refTokens = new Set(
+    norm(referenceQuery).split(/[^a-z0-9_().*>=<]+/)
+      .filter(t => t.length > 2)
+      .filter(t => !(theirs && theirs.includes(t)))     // not new to the learner
+  );
   if (refTokens.size) {
     const hit = [...refTokens].filter(t => h.includes(t)).length / refTokens.size;
     if (hit > 0.8) return { ok: false, reason: REJECT.TOO_SIMILAR, matched: hit.toFixed(2) };

@@ -134,7 +134,8 @@ function spread(all, n) {
   for (const c of all) (byKey[`${c.who}/${c.q}`] ||= []).push(c);
   const keys = Object.keys(byKey).sort();
   const picked = [];
-  for (let round = 0; picked.length < n && round < 60; round++) {
+  const deepest = Math.max(0, ...Object.values(byKey).map(v => v.length));
+  for (let round = 0; picked.length < n && round < deepest; round++) {
     for (const k of keys) if (byKey[k][round] && picked.length < n) picked.push(byKey[k][round]);
   }
   return picked;

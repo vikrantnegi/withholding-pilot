@@ -1,6 +1,6 @@
 # Experiment log
 
-**Two rounds of screening, and one offline eval of the hint writer.** All three are recorded below, in order.
+**Two rounds of screening, and two offline evals of the hint writer.** All four are recorded below, in order.
 
 Each entry answers the same five things, in the same order. What it was for. What was predicted.
 What happened. What it changed. Where the raw data sits. Plus what it cost.
@@ -299,6 +299,69 @@ guard plus one retry is enough to absorb it.
 
 About 20 minutes of build and 40 model calls, roughly 19K of the 200K daily tokens.
 No participant contact. It is the 18 Sep checkpoint, five days early.
+
+---
+
+## Run 4 — the same eval across all 104 attempts
+
+**Run 13 Sep 2026.** `node evals/replay.js --all --out evals/all.md`, then
+`node evals/recheck.js evals/all.md`.
+
+### What it was for
+
+Run 3 sampled 20. This is the full set, and the question was whether the leak rate held.
+
+### What was predicted
+
+That the 20-case rate would roughly hold: a handful of leaks, caught, with the retry
+absorbing them.
+
+### What happened
+
+| | |
+|---|---|
+| cases | 101 of 104 (a sampling cap dropped 3; fixed, now 104) |
+| served from the model | **100** |
+| fell back to the hand-written hint | **1** |
+| generations rejected by the guard | **9** |
+| flagged generic | 2 |
+
+Then the rejections were re-judged against the fixed guard, at no token cost:
+
+**8 of 8 recorded rejections were the guard's own mistakes. Zero real leaks in roughly
+110 generations.**
+
+Seven were `LEARNING-LOG.md` L13 — the hint quoted a clause the learner had written
+themselves. One was L12. One rejection was not recorded with its text and could not be
+re-judged.
+
+### What it changed
+
+1. **The model has never leaked.** Not once, across 110 generations, with the reference
+   query in its prompt every time. The retry-then-fallback policy was built for a failure
+   that has not yet been observed.
+2. **The guard has been wrong twice and right zero times.** Every leak it has caught was
+   written by hand in its own test file. It cost one learner a fallback and eight hints for
+   nothing.
+3. **Neither of those justifies removing it.** A leak is the one failure that silently
+   converts Arm A into Arm B, and its absence in 110 samples is not proof of impossibility.
+   The guard stays; what is missing is evidence it works.
+4. **`evals/recheck.js` exists.** A finished sheet records every rejected generation, so it
+   is a regression corpus: guard changes can be evaluated against real model output for
+   free. That is how 8-of-8 was established without a second 100K-token run.
+
+### Where the raw data is
+
+- `evals/all.md` — 104 cases. Gitignored; regenerate with the command above
+- `evals/recheck.js` — re-judges it against whatever the guard is now
+
+### What it cost
+
+About 208 model calls, ~100K tokens — half a day's free budget. The recheck cost nothing.
+No participant contact.
+
+**Still unmeasured:** whether the guard catches a leak it did not author. An adversarial
+run is the next thing.
 
 ---
 

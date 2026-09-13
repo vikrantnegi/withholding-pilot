@@ -39,14 +39,18 @@ check('the whole answer',
   inspect(`Use this: ${REF}`, ctx).reason, REJECT.RUNNABLE_QUERY);
 check('a runnable fragment naming a real table',
   inspect('Try SELECT category FROM products instead.', ctx).reason, REJECT.RUNNABLE_QUERY);
-check('a terminated statement, however phrased',
-  inspect('Something like: select the category and the biggest price;', ctx).reason, REJECT.RUNNABLE_QUERY);
+check('a semicolon in ordinary prose is not a query',
+  inspect('You only wrote SELECT, so nothing is processed; you need to say where the data comes from.', ctx).ok, true);
 check('the distinguishing HAVING clause',
   inspect('Replace your WHERE with HAVING MAX(price) > 10000.', ctx).reason, REJECT.REFERENCE_CLAUSE);
-check('the GROUP BY with its column',
-  inspect('You need GROUP BY category here.', ctx).reason, REJECT.REFERENCE_CLAUSE);
-check('the aggregate expression',
-  inspect('The value you want is MAX(price).', ctx).reason, REJECT.REFERENCE_CLAUSE);
+// These are leaks only for a learner who has NOT written them. The shared ctx
+// learner already wrote GROUP BY category and MAX(price), so quoting those
+// back reveals nothing — see the block above.
+const naive = { referenceQuery: REF, learnerQuery: 'SELECT category, price FROM products' };
+check('the GROUP BY with its column, to someone who never wrote it',
+  inspect('You need GROUP BY category here.', naive).reason, REJECT.REFERENCE_CLAUSE);
+check('the aggregate expression, to someone who never wrote it',
+  inspect('The value you want is MAX(price).', naive).reason, REJECT.REFERENCE_CLAUSE);
 check('an empty hint',
   inspect('   ', ctx).reason, REJECT.EMPTY);
 
