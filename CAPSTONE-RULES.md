@@ -84,7 +84,7 @@ the system is for, so they cannot produce the misunderstandings that count as ev
 low-code classmate is worse. They have taken "Intro to Database" alongside you and have
 Supabase in their own stack. They are contaminated on the exact skill you are measuring.
 
-Fixed in `RECRUITMENT-2SEP.md`. New pool: workplace non-engineering colleagues, plus
+Fixed in `RECRUITMENT.md`. New pool: workplace non-engineering colleagues, plus
 referrals sourced *through* cohort members. The 2 Sep session stays on the calendar as a
 referral-gathering and mentor-question slot, not a recruiting slot.
 

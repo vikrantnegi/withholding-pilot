@@ -27,7 +27,7 @@ the product.
 | The policy, written out | `PRD-v1.md` §4 | Specified in pseudocode. **Not built** |
 | Browser SQL environment | `screener/round-2-runbutton/sql-mini-screen.html` | Working. Editor, Run, result comparison, error display, per-attempt logging |
 | Screening data, 2 rounds, 7 people | `screener/` | Done. See `EXPERIMENT-LOG.md` |
-| Participant pool | `RECRUITMENT-2SEP.md` | 8 named, 7 active. Need 6 alive on 27 Sep |
+| Participant pool | `RECRUITMENT.md` | 8 named, 7 active. Need 6 alive on 27 Sep |
 | Hypothesis log | `HYPOTHESIS-LOG.md` | **v0 only.** The v1 entry is owed and blocked. See decision 2 |
 
 The browser environment already covers most of the deterministic half of the architecture. What it

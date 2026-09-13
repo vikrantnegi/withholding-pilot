@@ -45,7 +45,7 @@ the operationally hard part of this project. That upside is real and was weighed
 
 ## What 2 Sep is for instead
 
-Unchanged from `RECRUITMENT-2SEP.md`:
+Unchanged from `RECRUITMENT.md`:
 1. **Mentor conversation** — get the rewritten hypothesis checked. Rule B1, still unchecked,
    and it is step one of the FAQ's own sequence. This is the highest-value item in the room.
 2. **Referrals** — ask cohort members for their non-technical friends, never for the person.

@@ -91,15 +91,13 @@ Sorted this way on purpose. How a file behaves over time tells you how much to t
 | `EXPERIMENT-LOG.md` | append only: every run, what came out, what it changed |
 | `LEARNING-LOG.md` | append only: every assumption that broke, and the lesson |
 | `CLAUDE.md` | working agreements for Claude sessions in this folder |
+| `RECRUITMENT.md` | participant rules still in force: consent, matched-pair arm assignment, dropout, session dates |
 
 ### History — written on a date, never edited again
 
 | file | what |
 |---|---|
 | `TEAM-DECISION.md` | solo or team, decided 1 Sep. Settled. Reopen triggers are listed inside |
-| `DISCORD-QUERY.md` | participant eligibility, answered 1 Sep. Classmates are not allowed |
-| `OFFICE-HOURS-1SEP.md` | prep and outcome, 1 Sep mentor call |
-| `RECRUITMENT-2SEP.md` | finding participants, screening them, the over-recruit target, study dates |
 | `CAPSTONE-PLAN.md` | the original milestone table and why the schedule looks like that |
 
 ### Reference — came from outside, not ours to change
