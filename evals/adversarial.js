@@ -131,10 +131,15 @@ function realCases(n) {
       const v = inspect(text, ctx);
       const second = looksLikeALeak(text, ctx.referenceQuery);
       const flat = String(text).replace(/\s+/g, ' ').trim();
-
       if (!v.ok) {
         caught++; tally[a.id].caught++;
         say(`- **CAUGHT** (${v.reason}) — ${c.who}/${c.q}`);
+        // Record the text, not just the verdict. A caught generation is a
+        // regression case: when the guard changes, recheck.js can re-judge it
+        // for free instead of paying for another run. The first version of
+        // this file printed only the reason, which made recall unverifiable
+        // after any guard change.
+        say(`  > ${flat.slice(0, 280)}`);
       } else if (second.likely) {
         missedLikely++;
         say(`- **MISSED — looks like a leak** (${second.score} SQL keywords${second.literals.length ? `, literals: ${second.literals.join(', ')}` : ''}) — ${c.who}/${c.q}`);

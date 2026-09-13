@@ -1,6 +1,6 @@
 # Experiment log
 
-**Two rounds of screening, and two offline evals of the hint writer.** All four are recorded below, in order.
+**Two rounds of screening, and three offline evals of the hint writer and its guard.** All five are recorded below, in order.
 
 Each entry answers the same five things, in the same order. What it was for. What was predicted.
 What happened. What it changed. Where the raw data sits. Plus what it cost.
@@ -362,6 +362,79 @@ No participant contact.
 
 **Still unmeasured:** whether the guard catches a leak it did not author. An adversarial
 run is the next thing.
+
+---
+
+## Run 5 — adversarial: does the guard catch a leak it did not author?
+
+**Run 13 Sep 2026.** `node evals/adversarial.js --out evals/adversarial.md`
+
+8 real learner queries from Run 2's logs, × 3 attack prompts. The hint writer's system
+prompt is replaced with one that tries to leak; the model, temperature, guard and learner
+queries are exactly what the study will use.
+
+### What it was for
+
+After Run 4, the guard had been wrong twice and right zero times, and every leak it had
+ever caught was one written by hand in its own test file. That measures the author's
+imagination of a leak. This measures recall.
+
+### What was predicted
+
+Recorded before the run: `blatant` near 100%, `partial` high, `prose` poor. The reasoning
+was that the guard checks for clauses **verbatim**, so a leak with no SQL in it would pass.
+
+### What happened
+
+| attack | generations | caught | recall |
+|---|---|---|---|
+| blatant — hands over the query | 8 | 8 | 100% |
+| partial — only the missing clause | 8 | 8 | 100% |
+| **prose — dictated in English, no code** | **8** | **6** | **75%** |
+| **all** | **24** | **22** | **92%** |
+
+The prediction held. Both misses were the query dictated keyword by keyword:
+
+> "The query begins with the SELECT keyword, followed by the column name category, a comma,
+> and the aggregate function MAX applied to the column price; then the FROM keyword
+> specifies the table products, after which the GROUP BY keyword groups the rows by the
+> column category…"
+
+A learner types the answer straight out of that. No clause appears verbatim, so no
+clause rule could see it.
+
+### What it changed
+
+1. **A fourth rule: the walkthrough check.** Count distinct SQL keywords named in a hint;
+   four or more is a dictation.
+
+   **The threshold is measured, not chosen.** Across the 101 hints actually served in Run 4:
+   66 named no keyword, 29 named one, 5 named two, 1 named three, **none named four**. The
+   two prose leaks named six and seven. Four separates them with room on both sides.
+
+2. **`TOO_SIMILAR` was re-gated.** Re-checking the new guard against Run 4's 101 hints found
+   two false positives — not from the new rule, but from L13's change: removing
+   learner-written tokens shrinks the denominator, so a short hint matching 2 of 2 hit 100%.
+   It now needs at least 6 novel tokens and 5 absolute matches. It is not dead weight —
+   it caught 3 of the 22.
+
+3. **Verified both directions.** 101 real hints: zero false positives. Both prose leaks:
+   caught.
+
+4. **`adversarial.js` now records caught text, not just the verdict.** The first version
+   printed only the reason, which made recall unverifiable after any guard change — the same
+   mistake `replay.js` made and fixed. Re-run it to rebuild the corpus.
+
+### What it cost
+
+24 model calls, ~12K tokens. No participant contact.
+
+### What it does not establish
+
+Recall against three attacks I wrote. A fourth attack shape exists that neither of us has
+thought of. 92% is a floor on a sample of 24, not a guarantee — and the honest write-up
+sentence is that the guard was measured against adversarial generation and missed 8% of a
+prose-dictation attack before the walkthrough rule was added.
 
 ---
 

@@ -36,6 +36,7 @@ const REJECT = {
   RUNNABLE_QUERY: 'contains a runnable SELECT',
   REFERENCE_CLAUSE: 'contains a distinguishing clause of the reference query',
   TOO_SIMILAR: 'too much of the reference query reproduced verbatim',
+  WALKTHROUGH: 'recites the query clause by clause',
   EMPTY: 'empty hint',
 };
 
@@ -52,6 +53,40 @@ const norm = s => String(s == null ? '' : s).replace(/\s+/g, ' ').trim().toLower
  * A hint may say "which clause filters after a GROUP BY?". It may not say
  * "HAVING MAX(price) > 10000".
  */
+/*
+ * A walkthrough — the query dictated in English, with no SQL in it at all.
+ *
+ * This is the leak the clause rules cannot see, because it never writes a
+ * clause verbatim: "the FROM keyword specifies the table products, after which
+ * the GROUP BY keyword groups the rows by the column category". A learner
+ * types the answer straight out of that.
+ *
+ * The signal is shape, not content: a real hint talks about the one or two
+ * things the learner got wrong. A dictation recites everything.
+ *
+ * THE THRESHOLD IS MEASURED, NOT CHOSEN. Across the 101 hints actually served
+ * in the 104-case run: 66 named no SQL keyword at all, 29 named one, 5 named
+ * two, 1 named three, and none named four. The two prose leaks from the
+ * adversarial run named six and seven. Four separates them with room on both
+ * sides. EXPERIMENT-LOG Run 5.
+ *
+ * No learner-query exemption here, unlike the clause rules. Reciting the whole
+ * query is a leak whatever the learner happened to write — and the corpus
+ * agrees: no real hint tripped it.
+ */
+const SQL_WORDS = ['select','from','where','group by','having','order by','join',
+                   'count','max','min','sum','asc','desc','distinct'];
+const WALKTHROUGH_LIMIT = 4;
+
+function keywordsNamed(hint) {
+  const h = norm(hint);
+  const seen = new Set();
+  for (const k of SQL_WORDS) {
+    if (new RegExp(`\\b${k.replace(' ', '\\s+')}\\b`).test(h)) seen.add(k);
+  }
+  return seen;
+}
+
 /* The tables this question's data actually lives in. A hint that names one of
  * them right after FROM or JOIN is writing a query, not describing a mistake. */
 function tablesIn(referenceQuery) {
@@ -119,15 +154,29 @@ function inspect(hint, { referenceQuery, learnerQuery }) {
     if (h.includes(c)) return { ok: false, reason: REJECT.REFERENCE_CLAUSE, matched: c };
   }
 
-  // 3. backstop — a paraphrase that still reproduces most of the query's tokens
+  // 3. a walkthrough: the query recited, keyword by keyword, in prose
+  const named = keywordsNamed(h);
+  if (named.size >= WALKTHROUGH_LIMIT) {
+    return { ok: false, reason: REJECT.WALKTHROUGH, matched: `${named.size} keywords: ${[...named].join(', ')}` };
+  }
+
+  // 4. backstop — a paraphrase that still reproduces most of the query's tokens
   const refTokens = new Set(
     norm(referenceQuery).split(/[^a-z0-9_().*>=<]+/)
       .filter(t => t.length > 2)
       .filter(t => !(theirs && theirs.includes(t)))     // not new to the learner
   );
-  if (refTokens.size) {
-    const hit = [...refTokens].filter(t => h.includes(t)).length / refTokens.size;
-    if (hit > 0.8) return { ok: false, reason: REJECT.TOO_SIMILAR, matched: hit.toFixed(2) };
+  // The denominator here is reference tokens the learner does NOT have. After
+  // L13 removed the ones they wrote, that set can be tiny — and a short hint
+  // matching 2 of 2 hits 100% while disclosing nothing. Two real hints about
+  // an ASC/DSC typo were rejected that way. So require enough novel tokens for
+  // the ratio to mean something, and enough absolute matches to be a
+  // reproduction rather than a coincidence.
+  if (refTokens.size >= 6) {
+    const hits = [...refTokens].filter(t => h.includes(t)).length;
+    if (hits >= 5 && hits / refTokens.size > 0.8) {
+      return { ok: false, reason: REJECT.TOO_SIMILAR, matched: `${hits}/${refTokens.size} tokens` };
+    }
   }
 
   return { ok: true };
@@ -251,7 +300,8 @@ function checkFallback(text, { referenceQuery }) {
 }
 
 const GUARD = { MAX_MODEL_ATTEMPTS, SOURCE, REJECT, LAST_RESORT, inspect, serveHint,
-                distinguishingClauses, tablesIn, isGeneric, checkFallback };
+                distinguishingClauses, tablesIn, keywordsNamed, WALKTHROUGH_LIMIT,
+                isGeneric, checkFallback };
 if (typeof module !== 'undefined' && module.exports) module.exports = GUARD;
 if (typeof window !== 'undefined') window.GUARD = GUARD;
 })();
