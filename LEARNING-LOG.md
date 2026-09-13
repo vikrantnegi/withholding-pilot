@@ -1,6 +1,6 @@
 # Learning log — assumptions that broke
 
-**Ten assumptions have broken so far.** Each entry says what was believed, what proved it wrong,
+**Eleven assumptions have broken so far.** Each entry says what was believed, what proved it wrong,
 what changed, and the lesson.
 
 The lesson is the point. An entry without one is just a bug report.
@@ -238,6 +238,34 @@ nobody has read yet. L8 found the mechanism and then left a second instance of i
 
 **Why it matters:** when a class of bug is found, fix every instance or delete them. Deferring one
 means the lesson was written down but not applied.
+
+---
+
+## L11 — Counting an attempt by its result set is enough
+
+**Believed from 10 Sep 2026.** `PRD-v1.md` §4 defined it: an attempt counts if it executes and
+its result set differs from the previous attempt's.
+
+**What broke it.** Rishabh. Eighty attempts, none of which executed. A query that does not run
+returns no result set, so the rule has nothing to compare and never fires. Under it he makes 80
+unaided attempts over 47 minutes and earns no help at all.
+
+The obvious fix — let a syntax error count — breaks it the other way. He pressed Run on
+byte-identical queries five times in a row. Counting those, he earns the hint on press two
+instead of press sixteen. That replaces a learner who gets no help with one never allowed to
+think.
+
+**What changed.** The rule now has two clauses, not one. The query text must have changed since
+the last counted attempt, **and** the attempt must either have errored or produced a new result
+set. `PRD-v1.md` §4 rewritten. Built in `app/policy.js`, covered by four cases in
+`app/policy.test.js`.
+
+**The lesson.** The rule was written from the learners who were succeeding. All of them produced
+result sets, so the result set looked like the thing to count. It measured the output of the
+attempt, and what the gate needs to know is whether effort happened.
+
+**Why it matters:** when a rule reads one field, ask what that field is when things go worst.
+Here it is absent, and absent is not a value the rule handled.
 
 ---
 

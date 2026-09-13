@@ -1,4 +1,4 @@
-# Status — as of 13 Sep 2026
+# Status — as of 13 Sep 2026 (evening)
 
 **The only source of truth for the present.** If another file disagrees with this one about today,
 this one wins. **Update the date above whenever you touch it.**
@@ -24,7 +24,8 @@ the product.
 |---|---|---|
 | Scope lock and spec | `PRD-v1.md` | Done 10 Sep, four days late |
 | Architecture diagram | `PRD-v1.md` §3 | Done. The LLM is not in the control path |
-| The policy, written out | `PRD-v1.md` §4 | Specified in pseudocode. **Not built** |
+| The policy, written out | `PRD-v1.md` §4 | Specified, and **built** in `app/policy.js` |
+| The level selector | `app/policy.js` + `app/policy.test.js` | Done 13 Sep. 20 tests green. Not yet wired to a UI |
 | Browser SQL environment | `screener/round-2-runbutton/sql-mini-screen.html` | Working. Editor, Run, result comparison, error display, per-attempt logging |
 | Screening data, 2 rounds, 7 people | `screener/` | Done. See `EXPERIMENT-LOG.md` |
 | Participant pool | `RECRUITMENT.md` | 8 named, 7 active. Need 6 alive on 27 Sep |
@@ -35,7 +36,8 @@ lacks is the help path.
 
 ### What is not built — `PRD-v1.md` §6
 
-1. **Help button and the policy.** About 40 lines of plain code. *This is the graded artefact.*
+1. ~~**The policy.**~~ Done 13 Sep, `app/policy.js`, 20 tests green. **The Help button that
+   calls it is still missing** — the policy is not yet reachable by a learner.
 2. **Hint writer.** One LLM call, grounded on the answer key, the learner's query and the result
    difference. Plus a guard that rejects any hint containing the answer. The guard is the 18 Sep
    deliverable.

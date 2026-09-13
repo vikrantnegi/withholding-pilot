@@ -96,10 +96,20 @@ on Help pressed for (learner, item):
 That is the whole intervention — see below on what the treatment is and is not. `N` is fixed, not adaptive — the study tests withholding, not
 adaptive withholding, and at 3 per arm a varying N would test two variables at once.
 
-**Attempt counting.** An attempt counts if it executes AND its result set differs from the
-previous attempt's. Syntax errors are logged as `attempt_type: syntax_error`, never blocked at
-the UI — blocking there destroys the data that is itself the measurement. Help requests are
-logged and never increment the counter.
+**Attempt counting.** Revised 13 Sep, after round 2. An attempt counts if:
+
+- its query text differs from the last counted attempt's, **and**
+- it errored, **or** it executed and its result set differs from the last counted attempt's.
+
+Syntax errors are logged as `attempt_type: syntax_error`, never blocked at the UI — blocking
+there destroys the data that is itself the measurement. Help requests are logged and never
+increment the counter.
+
+The text clause is new. The original rule counted only executing attempts with a new result
+set. A query that never executes has no result set, so that rule never fired for a learner who
+could not produce one — and it also let a learner earn help by pressing Run on the same query
+five times. Evidence: `LEARNING-LOG.md` L11. Implemented in `app/policy.js`, tested in
+`app/policy.test.js`.
 
 ### What the treatment actually is
 
@@ -172,12 +182,13 @@ with the build.
 
 ## 9. Still open — decisions I owe before data exists
 
-1. **N** — attempts with the hint before Arm A escalates to reveal. Recommend 2.
+1. ~~**N**~~ **Closed 13 Sep: N = 2.** It is a constant in `app/policy.js` and a one-line
+   change. Fixed, never adaptive.
 2. **The four §4 null-result thresholds** in `TODO-HYPOTHESIS-v1.md`. Overdue. Must be
    committed before Arm B runs, or any number chosen later is chosen knowing what it permits
-   me to conclude.
-3. **Does a syntax error satisfy the gate?** Pending the round-2 mini-screen. If more than one
-   person cannot produce an executing query even with a Run button, it must, or Arm A serves
+   me to conclude. **Still open.**
+3. ~~**Does a syntax error satisfy the gate?**~~ **Closed 13 Sep: yes, it must.** Round 2
+   produced no working query at all in 5 of 21 person-questions. Without this, Arm A serves
    almost no help and the arms do not differ.
 
 ## 10. Counter-metrics
