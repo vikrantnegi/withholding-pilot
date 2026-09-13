@@ -28,7 +28,13 @@
 // prove the writer did not move underneath the study.
 const MODEL = 'openai/gpt-oss-120b';
 const TEMPERATURE = 0.3;
-const MAX_TOKENS = 120;
+// gpt-oss reasons before it answers, and those reasoning tokens count against
+// max_tokens even when reasoning_format hides them from the reply. At 120 the
+// budget was spent thinking and the visible content came back empty
+// (finish_reason=length). The hint itself is ~50 tokens; the rest is headroom.
+const MAX_TOKENS = 900;
+// Keep the thinking short — this is one sentence about one mistake, not a proof.
+const REASONING_EFFORT = 'low';
 
 // ---------------------------------------------------------------------------
 // The prompt
@@ -105,12 +111,13 @@ function makeWriter(transport) {
       user: buildUser(ctx, rejections),
       temperature: TEMPERATURE,
       maxTokens: MAX_TOKENS,
+      reasoningEffort: REASONING_EFFORT,
     });
     return typeof text === 'string' ? text.trim() : null;
   };
 }
 
-const WRITER = { MODEL, TEMPERATURE, MAX_TOKENS, SYSTEM, buildUser, makeWriter };
+const WRITER = { MODEL, TEMPERATURE, MAX_TOKENS, REASONING_EFFORT, SYSTEM, buildUser, makeWriter };
 if (typeof module !== 'undefined' && module.exports) module.exports = WRITER;
 if (typeof window !== 'undefined') window.WRITER = WRITER;
 })();

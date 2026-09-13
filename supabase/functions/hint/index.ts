@@ -34,7 +34,7 @@ Deno.serve(async (req) => {
   let body: any;
   try { body = await req.json(); } catch { return json({ error: 'body must be JSON' }, 400); }
 
-  const { system, user, temperature, maxTokens } = body ?? {};
+  const { system, user, temperature, maxTokens, reasoningEffort } = body ?? {};
   if (typeof system !== 'string' || typeof user !== 'string') {
     return json({ error: 'system and user must be strings' }, 400);
   }
@@ -51,7 +51,11 @@ Deno.serve(async (req) => {
       body: JSON.stringify({
         model: MODEL,
         temperature: typeof temperature === 'number' ? temperature : 0.3,
-        max_tokens: typeof maxTokens === 'number' ? maxTokens : 120,
+        // Reasoning tokens count against this even when hidden. 120 was not
+        // enough for gpt-oss to reach a visible answer.
+        max_tokens: typeof maxTokens === 'number' ? maxTokens : 900,
+        reasoning_format: 'hidden',
+        reasoning_effort: reasoningEffort ?? 'low',
         messages: [{ role: 'system', content: system }, { role: 'user', content: user }],
       }),
     });
@@ -64,6 +68,8 @@ Deno.serve(async (req) => {
   if (!r.ok) return json({ error: `groq ${r.status}: ${(await r.text()).slice(0, 300)}` }, 502);
 
   const data = await r.json();
-  const text = data?.choices?.[0]?.message?.content ?? null;
-  return json({ text, model: data?.model ?? MODEL });
+  const m = data?.choices?.[0]?.message ?? {};
+  const raw = m.content || m.reasoning || m.reasoning_content || null;
+  const text = raw ? String(raw).replace(/<think>[\s\S]*?<\/think>/gi, '').trim() : null;
+  return json({ text, model: data?.model ?? MODEL, usage: data?.usage ?? null });
 });

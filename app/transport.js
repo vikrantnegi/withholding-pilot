@@ -12,12 +12,12 @@
 const DEFAULT_URL = '';   // e.g. https://<project-ref>.supabase.co/functions/v1/hint
 
 function edgeTransport(url) {
-  return async function ({ model, system, user, temperature, maxTokens }) {
+  return async function ({ model, system, user, temperature, maxTokens, reasoningEffort }) {
     if (!url) return null;                       // not configured -> fallback
     const r = await fetch(url, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ model, system, user, temperature, maxTokens }),
+      body: JSON.stringify({ model, system, user, temperature, maxTokens, reasoningEffort }),
     });
     if (!r.ok) throw new Error(`hint function ${r.status}`);
     const data = await r.json();

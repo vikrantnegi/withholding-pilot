@@ -67,9 +67,23 @@ production; its preview models are documented as evaluation-only, and your study
 is production — six people, one session, no re-runs.
 
 **Watch the token budget, not the request count.** Free tier is 8K tokens/minute
-and 200K/day. At ~500 tokens a call that is ~16 calls/minute and ~400/day — about
-two full runs. Iterate on the 20-case sample; save `--all` for when you think you
-are close. `--delay <ms>` overrides the throttle.
+and 200K/day.
+
+`gpt-oss` reasons before it answers and those tokens count, even with
+`reasoning_format: hidden`. So a call is not ~500 tokens — run `probe.js` and read
+the real number off `TOKENS USED` before planning a full run. At 800 tokens a call
+the daily cap is ~250 calls, which is barely one `--all` run (104 cases × up to 2
+attempts).
+
+Iterate on the 20-case sample. Save `--all` for when you think you are close.
+`--delay <ms>` overrides the throttle.
+
+If the reasoning overhead turns out large, `llama-3.3-70b-versatile` is the
+obvious swap — also production on Groq, no reasoning channel, and this task is one
+sentence about one mistake rather than anything that needs deliberation. Change
+`MODEL` in `app/hint-writer.js` and the same constant in
+`supabase/functions/hint/index.ts`, then re-run the eval. Do not change it after
+21 Sep.
 
 Without a key every case shows the fallback, which is still worth reading — it is
 what a learner sees when the model fails twice, and four of the current twenty are

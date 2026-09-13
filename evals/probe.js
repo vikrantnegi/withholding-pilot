@@ -32,7 +32,9 @@ const ctx = {
     process.exit(1);
   }
 
-  console.log('--- WHAT THE MODEL RETURNED ---');
+  console.log('--- TOKENS USED ---');
+  console.log(JSON.stringify(transport.lastUsage));
+  console.log('\n--- WHAT THE MODEL RETURNED ---');
   console.log(JSON.stringify(text));
   console.log('\n--- GUARD VERDICT ---');
   const v = inspect(text, ctx);

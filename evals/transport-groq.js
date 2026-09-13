@@ -13,7 +13,7 @@
  */
 const GROQ = 'https://api.groq.com/openai/v1/chat/completions';
 
-module.exports = async function ({ model, system, user, temperature, maxTokens }) {
+module.exports = async function ({ model, system, user, temperature, maxTokens, reasoningEffort }) {
   const key = process.env.GROQ_API_KEY;
   if (!key) return null;
   const r = await fetch(GROQ, {
@@ -24,16 +24,22 @@ module.exports = async function ({ model, system, user, temperature, maxTokens }
       // gpt-oss models emit a separate reasoning channel. Without this the
       // visible content can come back empty and the hint reads as "empty hint".
       reasoning_format: 'hidden',
+      reasoning_effort: reasoningEffort || 'low',
       messages: [{ role: 'system', content: system }, { role: 'user', content: user }],
     }),
   });
   if (!r.ok) throw new Error(`groq ${r.status}: ${(await r.text()).slice(0, 200)}`);
   const data = await r.json();
+  module.exports.lastUsage = data?.usage ?? null;   // so probe.js can print it
   const m = data?.choices?.[0]?.message ?? {};
   const raw = m.content || m.reasoning || m.reasoning_content || null;
   if (!raw) {
     // Say why, instead of letting it surface as a blank "empty hint".
-    throw new Error(`no text in reply (finish_reason=${data?.choices?.[0]?.finish_reason}, keys=${Object.keys(m)})`);
+    const fr = data?.choices?.[0]?.finish_reason;
+    const hint = fr === 'length'
+      ? ' — raise MAX_TOKENS in app/hint-writer.js; reasoning tokens count against it'
+      : '';
+    throw new Error(`no text in reply (finish_reason=${fr}, keys=${Object.keys(m)}, usage=${JSON.stringify(data?.usage)})${hint}`);
   }
   // strip any leaked chain-of-thought wrapper
   return String(raw).replace(/<think>[\s\S]*?<\/think>/gi, '').trim() || null;
