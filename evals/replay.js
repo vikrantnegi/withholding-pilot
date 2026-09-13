@@ -214,7 +214,10 @@ function spread(all, n) {
     if (gen) tags.push('flagged GENERIC');
     say(`**HINT SERVED** _(${tags.join(', ')})_\n`);
     say(`> ${r.text}\n`);
-    for (const rj of r.rejections) say(`- attempt ${rj.attempt} rejected: ${rj.reason}`);
+    for (const rj of r.rejections) {
+      say(`- attempt ${rj.attempt} rejected — ${rj.reason}${rj.matched ? ` (matched: \`${rj.matched}\`)` : ''}`);
+      if (rj.text) say(`  > ${String(rj.text).replace(/\n+/g, ' ').slice(0, 300)}`);
+    }
     if (r.rejections.length) say('');
     say(`1. points at the difference?  [ ] yes  [ ] no`);
     say(`2. stops short of the fix?    [ ] yes  [ ] no`);

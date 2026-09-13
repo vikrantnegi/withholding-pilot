@@ -21,10 +21,20 @@ module.exports = async function ({ model, system, user, temperature, maxTokens }
     headers: { 'content-type': 'application/json', authorization: `Bearer ${key}` },
     body: JSON.stringify({
       model, temperature, max_tokens: maxTokens,
+      // gpt-oss models emit a separate reasoning channel. Without this the
+      // visible content can come back empty and the hint reads as "empty hint".
+      reasoning_format: 'hidden',
       messages: [{ role: 'system', content: system }, { role: 'user', content: user }],
     }),
   });
   if (!r.ok) throw new Error(`groq ${r.status}: ${(await r.text()).slice(0, 200)}`);
   const data = await r.json();
-  return data?.choices?.[0]?.message?.content ?? null;
+  const m = data?.choices?.[0]?.message ?? {};
+  const raw = m.content || m.reasoning || m.reasoning_content || null;
+  if (!raw) {
+    // Say why, instead of letting it surface as a blank "empty hint".
+    throw new Error(`no text in reply (finish_reason=${data?.choices?.[0]?.finish_reason}, keys=${Object.keys(m)})`);
+  }
+  // strip any leaked chain-of-thought wrapper
+  return String(raw).replace(/<think>[\s\S]*?<\/think>/gi, '').trim() || null;
 };

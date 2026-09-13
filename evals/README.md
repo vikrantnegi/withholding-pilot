@@ -75,6 +75,21 @@ Without a key every case shows the fallback, which is still worth reading — it
 what a learner sees when the model fails twice, and four of the current twenty are
 flagged generic.
 
+## When every generation is rejected
+
+```
+node evals/probe.js
+```
+
+One call, and it prints the whole thing: the system prompt, the user prompt, the
+exact string the model returned, and the guard's verdict on it. Cheaper than
+re-running the sheet, and it shows you the generation rather than only the
+rejection reason.
+
+The sheet now prints rejected generations too, indented under each case. If a
+rejection reads `no text in reply`, the model returned nothing visible — usually
+a reasoning-channel problem, not a content problem.
+
 ## After the question set exists
 
 The sheet replays round-2 questions, which are burned. It tells you the writer can

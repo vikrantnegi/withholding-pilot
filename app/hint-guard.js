@@ -94,7 +94,9 @@ function inspect(hint, { referenceQuery }) {
  *                     this is testable with no network. The third argument lets
  *                     a retry be told why the last generation was thrown away.
  *
- * Returns { text, source, modelAttempts, rejections }. All four fields go in
+ * Returns { text, source, modelAttempts, rejections }. Each rejection carries
+ * the generation that was thrown away, so a bad prompt is debuggable from the
+ * log rather than by guesswork. All four fields go in
  * the log — `source` is what tells you on 28 Sep whether Arm A actually
  * received a hint about their own mistake, or boilerplate.
  */
@@ -108,14 +110,17 @@ async function serveHint(ctx, callModel) {
     try {
       text = await callModel(ctx, n, rejections);
     } catch (err) {
-      rejections.push({ attempt: n, reason: 'model call failed: ' + (err.message || err) });
+      rejections.push({ attempt: n, reason: 'model call failed: ' + (err.message || err), text: null });
       continue;
     }
     const verdict = inspect(text, ctx);
     if (verdict.ok) {
       return { text, source: SOURCE.MODEL, modelAttempts: n, rejections };
     }
-    rejections.push({ attempt: n, reason: verdict.reason, matched: verdict.matched });
+    rejections.push({
+      attempt: n, reason: verdict.reason, matched: verdict.matched,
+      text: typeof text === 'string' ? text.slice(0, 400) : String(text),
+    });
   }
   return {
     text: ctx.fallbackHint,
