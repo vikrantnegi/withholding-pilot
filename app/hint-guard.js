@@ -124,7 +124,30 @@ async function serveHint(ctx, callModel) {
   };
 }
 
-const GUARD = { MAX_MODEL_ATTEMPTS, SOURCE, REJECT, inspect, serveHint, distinguishingClauses };
+/*
+ * isGeneric — the other half of the problem the leak guard does not cover.
+ *
+ * The guard checks a hint does not say too much. Nothing checks it says
+ * enough. "Think carefully about your query structure" passes cleanly and
+ * helps nobody.
+ *
+ * A hint that mentions nothing from the learner's own query is almost
+ * certainly boilerplate. This is a weak signal, not a verdict — it is
+ * REPORTED by the replay harness and does NOT auto-reject. Decide whether to
+ * enforce it after reading real hints, not before.
+ */
+function isGeneric(hint, { learnerQuery }) {
+  const h = norm(hint);
+  const theirs = new Set(
+    norm(learnerQuery).split(/[^a-z0-9_]+/).filter(t => t.length > 2 && !STOP.has(t))
+  );
+  if (!theirs.size) return false;              // nothing to reference
+  for (const t of theirs) if (h.includes(t)) return false;
+  return true;
+}
+const STOP = new Set(['select','from','the','and','not','you','your']);
+
+const GUARD = { MAX_MODEL_ATTEMPTS, SOURCE, REJECT, inspect, serveHint, distinguishingClauses, isGeneric };
 if (typeof module !== 'undefined' && module.exports) module.exports = GUARD;
 if (typeof window !== 'undefined') window.GUARD = GUARD;
 })();

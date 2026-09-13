@@ -3,7 +3,7 @@
  *
  * The leaked examples below are the ones that would turn Arm A into Arm B.
  */
-const { inspect, serveHint, SOURCE, REJECT } = require('./hint-guard.js');
+const { inspect, serveHint, SOURCE, REJECT, isGeneric } = require('./hint-guard.js');
 
 let pass = 0, fail = 0;
 const check = (name, got, want) => {
@@ -63,6 +63,14 @@ console.log('\nSERVE — retry twice, then fall back');
   let threw = false;
   try { await serveHint({ ...ctx, fallbackHint: undefined }, async () => 'x'); } catch { threw = true; }
   check('a question with no fallback is a crash, not a silent gap', threw, true);
+
+  console.log('\nGENERIC-HINT SIGNAL — reported, never auto-rejected');
+  check('boilerplate mentions nothing of theirs',
+    isGeneric('Think carefully about your query structure.', ctx), true);
+  check('a hint naming their clause is not generic',
+    isGeneric('You used WHERE. That runs before the grouping.', ctx), false);
+  check('a hint naming their column is not generic',
+    isGeneric('Look at how price is being filtered.', ctx), false);
 
   console.log(`\n${pass} passed, ${fail} failed\n`);
   process.exit(fail ? 1 : 0);

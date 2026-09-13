@@ -123,6 +123,7 @@ Sorted this way on purpose. How a file behaves over time tells you how much to t
 |---|---|
 | `screener/` | both screening rounds. Start at `screener/README.md` |
 | `diagrams/` | `architecture-arm-a.png` — the Arm A control graph, three zones, drawn 13 Sep. Editable sources alongside it |
+| `evals/` | `replay.js` — hint quality, replayed from stored attempts. The 18 Sep checkpoint. Start at `evals/README.md` |
 
 **Why it matters:** a new reader can trust the Living files and skip the Superseded ones. That is
 the whole point of the grouping.
