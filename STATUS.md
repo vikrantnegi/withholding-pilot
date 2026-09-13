@@ -1,4 +1,4 @@
-# Status — as of 13 Sep 2026 (evening)
+# Status — as of 13 Sep 2026 (late evening)
 
 **The only source of truth for the present.** If another file disagrees with this one about today,
 this one wins. **Update the date above whenever you touch it.**
@@ -12,8 +12,13 @@ About half is reserved for testing, freeze and packaging by design.
 
 **Scope is locked. The design is sound. Nothing is built.**
 
-The 13 Sep checkpoint was a thin working slice end to end. It is **missed**. No Help button, no
-policy code, no hint writer. The repository now exists but holds no code.
+The 13 Sep checkpoint was a thin working slice end to end. **It runs**, one day late in effect
+and on the day in fact. Open `app/index.html`; `?arm=B` flips the arm. Verified in a headless
+browser — gate, hint, refusal, escalation, and Arm B's unconditional reveal. 59 unit tests plus
+the smoke run.
+
+Two caveats, both stated in `app/README.md`: the questions in it are the **burned** round-2
+screener questions, and `callModel` is a stub. It is a dev harness, not the study app.
 
 The last thing produced was the round-2 screener on 10 Sep. It was built to screen people, not to be
 the product.
@@ -38,8 +43,8 @@ lacks is the help path.
 
 ### What is not built — `PRD-v1.md` §6
 
-1. ~~**The policy.**~~ Done 13 Sep, `app/policy.js`, 20 tests green. **The Help button that
-   calls it is still missing** — the policy is not yet reachable by a learner.
+1. ~~**Help button and the policy.**~~ Done 13 Sep. `app/policy.js` + `app/help-session.js` +
+   `app/index.html`. A learner can reach it.
 2. **Hint writer.** One LLM call, grounded on the answer key, the learner's query and the result
    difference. Plus a guard that rejects any hint containing the answer. The guard is the 18 Sep
    deliverable.
@@ -150,8 +155,8 @@ writing item 1.
 | date | checkpoint | state |
 |---|---|---|
 | 6 Sep | Scope lock | Done 10 Sep, late |
-| 13 Sep | Thin working slice end to end | **MISSED** |
-| 18 Sep | Testing and guards | Blocked on the slice |
+| 13 Sep | Thin working slice end to end | **Done**, on the day |
+| 18 Sep | Testing and guards | `app/hint-guard.js` done 13 Sep, 5 days early |
 | 20 Sep | First version on real data | 7 days out, nothing built |
 | 21 Sep | Practice session | App frozen from here |
 | 27 Sep | **REMOVAL TEST** | The measurement. Cannot move |
@@ -167,8 +172,9 @@ Demo Day: 11 Oct 2026, 100x HQ.
 
 ## Next actions
 
-1. **Decide decision 1.** Nothing about the question set or the policy is safe to build until the
-   moments problem has an answer.
+1. **Decide decision 1**, and decision 3 with it — they are one decision. Dropping to one topic
+   halves the cells and roughly closes the moments arithmetic. Nothing about the question set is
+   safe to author until this is settled, and item 4 is now the only thing between here and 20 Sep.
 2. Fill the four numbers in `TODO-HYPOTHESIS-v1.md` §4. Append v1 to `HYPOTHESIS-LOG.md`. Delete the
    TODO file.
 3. ~~**`git init`.**~~ Done 13 Sep, commit `7439b80`. Commit small and often from here.
