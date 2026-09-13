@@ -90,8 +90,9 @@ function inspect(hint, { referenceQuery }) {
  * ctx.referenceQuery  the answer. Never leaves this module or the writer.
  * ctx.learnerQuery    what they actually wrote
  * ctx.fallbackHint    hand-written, authored with the question. Required.
- * callModel(ctx, attemptNumber) -> hint text. Injected, so this is testable
- *                     with no network.
+ * callModel(ctx, attemptNumber, rejectionsSoFar) -> hint text. Injected, so
+ *                     this is testable with no network. The third argument lets
+ *                     a retry be told why the last generation was thrown away.
  *
  * Returns { text, source, modelAttempts, rejections }. All four fields go in
  * the log — `source` is what tells you on 28 Sep whether Arm A actually
@@ -105,7 +106,7 @@ async function serveHint(ctx, callModel) {
   for (let n = 1; n <= MAX_MODEL_ATTEMPTS; n++) {
     let text;
     try {
-      text = await callModel(ctx, n);
+      text = await callModel(ctx, n, rejections);
     } catch (err) {
       rejections.push({ attempt: n, reason: 'model call failed: ' + (err.message || err) });
       continue;

@@ -5,6 +5,10 @@
  *   node evals/replay.js                        20 cases, to stdout
  *   node evals/replay.js --all                  every case
  *   node evals/replay.js --out evals/sheet.md   write it to a file
+ *   node evals/replay.js --delay 2000           throttle between model calls
+ *
+ * Needs GROQ_API_KEY in the environment to call the real writer; without it
+ * every case shows the hand-written fallback.
  *
  * WHY THIS EXISTS
  * The leak guard checks a hint does not give the answer away. Nothing checks
@@ -25,6 +29,7 @@
 const fs = require('fs');
 const path = require('path');
 const { serveHint, isGeneric, SOURCE } = require('../app/hint-guard.js');
+const { makeWriter, MODEL, TEMPERATURE } = require('../app/hint-writer.js');
 
 const LOGS = path.join(__dirname, '..', 'screener/round-2-runbutton/logs');
 
@@ -86,16 +91,25 @@ function difference(learnerSql, referenceSql, ev) {
 }
 
 // ---------------------------------------------------------------------------
-// The hint writer under test.
+// The hint writer under test — the SAME module the app uses.
 //
-// PRD-v1 §6 item 2 is not built. Drop a module at evals/model.js exporting
-//   module.exports = async (ctx, attempt) => "<hint text>"
-// and this harness uses it. Without one, every case shows the fallback.
+// If the eval had its own prompt you would evaluate one thing and ship
+// another. app/hint-writer.js owns the prompt, the model id and the
+// temperature; only the transport differs between here and the browser.
+//
+//   export GROQ_API_KEY=gsk_...      then re-run
 // ---------------------------------------------------------------------------
 
-let callModel, haveModel = false;
-try { callModel = require('./model.js'); haveModel = true; }
-catch { callModel = async () => null; }
+const haveModel = Boolean(process.env.GROQ_API_KEY);
+const callModel = haveModel
+  ? makeWriter(require('./transport-groq.js'))
+  : async () => null;
+
+/* Groq's free tier caps tokens per minute, not requests. At roughly 500
+ * tokens a call that is about 16 calls a minute, so a full run takes ~15
+ * minutes. Override with --delay <ms>. */
+const DEFAULT_DELAY_MS = 3800;
+const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 // ---------------------------------------------------------------------------
 
@@ -131,6 +145,8 @@ function spread(all, n) {
   const all = cases();
   const chosen = spread(all, argv.includes('--all') ? all.length : 20);
 
+  const delayIdx = argv.indexOf('--delay');
+  const delayMs = delayIdx !== -1 ? Number(argv[delayIdx + 1]) : DEFAULT_DELAY_MS;
   const outIdx = argv.indexOf('--out');
   const outFile = outIdx !== -1 ? argv[outIdx + 1] : null;
   if (outIdx !== -1 && (!outFile || outFile.startsWith('--'))) {
@@ -145,9 +161,12 @@ function spread(all, n) {
   say(`${all.length} wrong or errored attempts on disk; ${chosen.length} shown, spread across people and questions.\n`);
   say(`No participant was contacted to produce this. Replaying stored attempts costs nothing —`);
   say(`asking the seven to try again would burn them as study participants.\n`);
-  if (!haveModel) {
+  if (haveModel) {
+    say(`Hint writer: \`${MODEL}\` at temperature ${TEMPERATURE}, prompt from \`app/hint-writer.js\` —`);
+    say(`the same module and the same prompt the app serves on 21 Sep.\n`);
+  } else {
     say(`> **No hint writer configured.** Every case below shows the hand-written fallback.`);
-    say(`> Drop a module at \`evals/model.js\` exporting \`async (ctx, attempt) => text\` and re-run.\n`);
+    say(`> \`export GROQ_API_KEY=gsk_...\` and re-run to evaluate \`${MODEL}\`.\n`);
   }
   say(`## How to read it\n`);
   say(`You do not need to know SQL. **THE DIFFERENCE** is computed for you. Per case, ask:\n`);
@@ -159,7 +178,15 @@ function spread(all, n) {
   let served = 0, fallbacks = 0, generic = 0, rejected = 0;
 
   for (const [i, c] of chosen.entries()) {
-    const ctx = { referenceQuery: REFERENCE[c.q], learnerQuery: c.sql, fallbackHint: FALLBACK[c.q] };
+    const diff = difference(c.sql, REFERENCE[c.q], c);
+    const ctx = {
+      ask: ASK[c.q],
+      referenceQuery: REFERENCE[c.q],
+      learnerQuery: c.sql,
+      fallbackHint: FALLBACK[c.q],
+      difference: diff,          // the same plain-English diff the sheet prints
+    };
+    if (haveModel && i > 0) await sleep(delayMs);
     // With no model there is nothing to reject — don't report empty generations
     // as leak-guard rejections, that would overstate the guard's work.
     const r = haveModel
@@ -180,7 +207,7 @@ function spread(all, n) {
     say(flat(REFERENCE[c.q]));
     say('```\n');
     say(`**THE DIFFERENCE**\n`);
-    for (const d of difference(c.sql, REFERENCE[c.q], c)) say(`- ${d}`);
+    for (const d of diff) say(`- ${d}`);
     say('');
     const tags = [`source: ${r.source}`];
     if (r.rejections.length) tags.push(`${r.rejections.length} rejected by the guard`);
@@ -198,6 +225,7 @@ function spread(all, n) {
   say(`## Totals\n`);
   say(`| | |`);
   say(`|---|---|`);
+  if (haveModel) say(`| model | \`${MODEL}\` @ ${TEMPERATURE} |`);
   say(`| wrong/errored attempts on disk | ${all.length} |`);
   say(`| cases in this sheet | ${served} |`);
   if (haveModel) {

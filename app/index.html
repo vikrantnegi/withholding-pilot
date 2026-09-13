@@ -131,6 +131,8 @@
 <!-- The three tested modules. No logic below duplicates them. -->
 <script src="policy.js"></script>
 <script src="hint-guard.js"></script>
+<script src="hint-writer.js"></script>
+<script src="transport.js"></script>
 <script src="help-session.js"></script>
 
 <script>
@@ -282,14 +284,14 @@ const Q = Object.fromEntries(QUESTIONS.map(q => [q.id, q]));
 const LOG = { version:"slice-1", arm:ARM, started:new Date().toISOString(), events:[] };
 let db = null;
 
-/* The model call. NOT IMPLEMENTED — PRD-v1 §6 item 2.
- * Returns a deliberately leaky hint so the guard is visibly exercised on the
- * second attempt, and the fallback path is reachable in the UI today. */
-async function callModel(ctx, attempt) {
-  await new Promise(r => setTimeout(r, 250));
-  if (attempt === 1) return `Use this: ${ctx.referenceQuery}`;   // the guard must reject this
-  return "Look at where your filter is applied relative to the grouping.";
-}
+/* The hint writer. Same prompt and same pinned model as evals/replay.js —
+ * app/hint-writer.js is the single source of both.
+ *
+ * The key lives in the Supabase Edge Function, never in this page. With no
+ * function URL configured, every generation fails and the learner gets the
+ * question's hand-written fallback. Degraded, never broken.
+ * Open with ?hint=https://<ref>.supabase.co/functions/v1/hint to point at it. */
+const callModel = WRITER.makeWriter(TRANSPORT.edgeTransport(TRANSPORT.url));
 
 /* ---- result-set comparison: unchanged from the round-2 screener ---- */
 function norm(v){
@@ -417,6 +419,8 @@ async function helpQ(id){
     box.innerHTML = `<div class="verdict v-warn">${esc(r.text)}</div>`;
   } else if (r.action === A.HINT) {
     const tag = r.source === GUARD.SOURCE.FALLBACK ? ' <span class="hint">(fallback)</span>' : '';
+    const last = LOG.events[LOG.events.length - 1];
+    if (last && last.type === 'help_delivered') { last.model = WRITER.MODEL; last.temperature = WRITER.TEMPERATURE; }
     box.innerHTML = `<div class="verdict v-warn"><b>Hint.</b> ${esc(r.text)}${tag}</div>`;
   } else if (r.action === A.REVEAL) {
     box.innerHTML = `<div class="verdict v-err"><b>The answer.</b><br>

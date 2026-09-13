@@ -175,7 +175,19 @@ deterministic column.
 2. **Hint writer.** One LLM call, grounded on the reference query + the learner's query + the
    result diff. Plus the leak guard: reject any hint containing a runnable SELECT or the
    reference query's distinguishing clause. The leak guard is the 18 Sep evals deliverable.
-   Built 13 Sep in `app/hint-guard.js`, 19 tests in `app/hint-guard.test.js`.
+   Built 13 Sep: `app/hint-writer.js` (the prompt and the pinned model),
+   `app/hint-guard.js` (the guard), `app/transport.js` +
+   `supabase/functions/hint/` (the key never ships in the page). 36 tests.
+
+   **Model pinned: `openai/gpt-oss-120b` at temperature 0.3, on Groq.** A
+   production model, not a preview one — the study is six people and one
+   session. The Edge Function re-checks the model id server-side, so a tampered
+   page cannot silently swap it. Both values are written into `help_delivered`,
+   so 28 Sep can prove the writer did not move under the study.
+
+   **One writer, two callers.** `app/index.html` and `evals/replay.js` both
+   import `app/hint-writer.js`. A separate eval prompt would mean evaluating one
+   thing and shipping another, with the drift invisible.
 
    **On rejection — decided 13 Sep.** Up to 2 model attempts. If both are rejected, serve the
    question's own hand-written fallback hint. Every attempt and rejection is logged.

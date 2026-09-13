@@ -49,21 +49,31 @@ Three noes on the same question is the writer's fault, not the learner's.
 The third question is the one only you can answer, and you are the right person for
 it — a competent developer who does not write SQL daily is close to the participants.
 
-## Wiring up a hint writer
+## Running it against the real writer
 
-`PRD-v1.md` §6 item 2 is not built. When it is, drop a module here:
-
-```js
-// evals/model.js
-module.exports = async (ctx, attempt) => {
-  // ctx = { referenceQuery, learnerQuery, fallbackHint }
-  // return a string
-};
+```
+export GROQ_API_KEY=gsk_...
+node evals/replay.js --out evals/sheet.md          20 cases, ~1.5 min
+node evals/replay.js --all --out evals/all.md      104 cases, ~15 min
 ```
 
-`replay.js` picks it up automatically. Until then every case shows the fallback,
-which is still worth reading — it is what a learner sees when the model is
-unavailable, and four of the current twenty are flagged generic.
+The writer is `app/hint-writer.js` — **the same module, prompt and model the app
+serves on 21 Sep.** Only the transport differs: the eval calls Groq directly from
+your machine, the app goes through the Edge Function. If the eval had its own
+prompt you would evaluate one thing and ship another.
+
+Model pinned to `openai/gpt-oss-120b` at temperature 0.3. Groq marks it
+production; its preview models are documented as evaluation-only, and your study
+is production — six people, one session, no re-runs.
+
+**Watch the token budget, not the request count.** Free tier is 8K tokens/minute
+and 200K/day. At ~500 tokens a call that is ~16 calls/minute and ~400/day — about
+two full runs. Iterate on the 20-case sample; save `--all` for when you think you
+are close. `--delay <ms>` overrides the throttle.
+
+Without a key every case shows the fallback, which is still worth reading — it is
+what a learner sees when the model fails twice, and four of the current twenty are
+flagged generic.
 
 ## After the question set exists
 

@@ -31,7 +31,10 @@ behind decisions 1 and 3.
 | Architecture diagram | `PRD-v1.md` §3 | Done. The LLM is not in the control path |
 | The policy, written out | `PRD-v1.md` §4 | Specified, and **built** in `app/policy.js` |
 | The level selector | `app/policy.js` | Done 13 Sep. 20 tests green |
-| Leak guard + rejection policy | `app/hint-guard.js` | Done 13 Sep. 19 tests. **This is the 18 Sep deliverable, early** |
+| Leak guard + rejection policy | `app/hint-guard.js` | Done 13 Sep. 22 tests |
+| Hint writer, prompt + pinned model | `app/hint-writer.js` | Done 13 Sep. 14 tests. Needs a Groq key and the function deployed |
+| Key out of the page | `supabase/functions/hint/` | Written 13 Sep. **Not deployed** |
+| Hint-quality eval | `evals/replay.js` | Done 13 Sep. **The 18 Sep deliverable, 5 days early.** Runs against the same writer the app uses |
 | Help-press orchestration + log shape | `app/help-session.js` | Done 13 Sep. 20 tests. Not yet wired to a UI |
 | Browser SQL environment | `screener/round-2-runbutton/sql-mini-screen.html` | Working. Editor, Run, result comparison, error display, per-attempt logging |
 | Screening data, 2 rounds, 7 people | `screener/` | Done. See `EXPERIMENT-LOG.md` |
