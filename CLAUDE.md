@@ -51,17 +51,16 @@ Statement submitted 30 Aug 2026 and binding. Hard submission 7 Oct 2026.
 
 Applies to every response, artifact, file, and code comment.
 
-- One idea per sentence. Max ~20 words. No sentence with two
-  subordinate clauses.
-- Concrete example FIRST, then the general rule. Never the reverse.
-- Define any term the first time it appears, in the same sentence.
-- Lead with the answer. Reasoning after, not before.
-- Bullets max 2 lines each. If longer, it's a paragraph, write it as one.
-- Plain words over precise-but-rare ones. "Use" not "leverage",
-  "so" not "consequently".
-- No sentence that needs re-reading. Before sending, re-read your
-  own output and rewrite anything you'd have to read twice.
+- One idea per sentence. Over ~20 words is a smell, not a crime.
+- Concrete example first, then the general rule. Never the reverse.
+- Lead with the answer. Reasoning after.
+- **Self-containment.** Every "the X" and every bare number must resolve from inside this file.
+  Counts state their unit: "5 of 21 person-questions (7 people x 3 questions)", never "5 of 21".
 - End any section over 5 lines with a one-line "so what".
 
-Self-check before responding: count sentences over 20 words.
-If any exist, rewrite them.
+Self-check before sending: re-read your own output cold. Rewrite anything you would have to read
+twice, and name anything you could only resolve by opening another file.
+
+**Why it matters:** the 13 Sep version of this contract priced sentences only. Shortening drops a
+sentence's antecedent, not its claim, so `LEARNING-LOG.md` became unreadable within five days.
+Self-containment is the rule that was missing.

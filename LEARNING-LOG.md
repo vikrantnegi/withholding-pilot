@@ -17,6 +17,37 @@ and point back to the old number.
 
 **Why it matters:** three files, three jobs. Do not merge them.
 
+## Terms used in the entries below
+
+Defined once here. The entries get read weeks after they were written, without the context that
+produced them.
+
+- **Person-question.** One learner on one question. Round 2 was 7 people x 3 questions = 21.
+- **Moment to act on.** A person-question where the first working attempt is wrong, so the app
+  must choose what help to give.
+- **The gate.** Arm A's rule: no help until a counted attempt is logged on that question.
+  `PRD-v1.md` §4.
+- **Locked out.** A person-question that never produces a counted attempt. The gate can never
+  release help there.
+- **Arm A.** The treatment: the gate, then a hint. **Arm B.** The baseline: the answer on demand,
+  a bare error message otherwise.
+- **Cell.** One arm on one topic. The plan had four: two arms x two topics.
+- **Usable.** A tester the round-1 grader marked fit for the study.
+- **The study.** The removal test on 27 Sep. Six learners, three per arm.
+
+Round 1's ten questions sat in five difficulty tiers. Round 2 had three questions, M1 to M3.
+
+| tier | skill | round-2 question |
+|---|---|---|
+| T1 | single table: filter + sort | — |
+| T2 | aggregate on one table | M1, M2 |
+| T3 | join two tables | M3 |
+| T4 | join + aggregate + negation | — |
+| T5 | window or correlated subquery | — |
+
+**Why it matters:** most entries below turn on a grain or a rule defined in another file. This
+block is so you never have to open one.
+
 ---
 
 ## L1 — A written SQL test with no database measures SQL ability
@@ -66,7 +97,7 @@ at. Suspect that before the data.
 
 ---
 
-## L3 — The gate survives this pool, because only 1 of 7 was locked out
+## L3 — The gate survives this pool, because only 1 of 7 people was locked out
 
 **Believed for about ten minutes on 13 Sep.** The round-2 grader prints it plainly:
 `1 of 7 would be LOCKED OUT by the gate: rishabh`.
@@ -78,19 +109,21 @@ needed.
 Counted that way, the numbers are worse. Five of 21 locked out. Seven of 21 solved on the first
 try, so no help was ever needed. Only 3 of 21 produced a moment where the app would have to choose.
 
-**What changed.** The top risk moved. It is no longer "the gate locks people out". It is "the design
-produces almost no moments to act on". The planned fix covers 5 of the 18 missing moments, and 3 of
-those 5 are one person.
+**What changed.** The top of the open-decision list in `STATUS.md` moved. It is no longer "the gate
+locks people out". It is "the design produces almost no moments to act on". The planned fix is
+decision 4 there: let a syntax error satisfy the gate. It recovers 5 of the 18 missing moments, and
+3 of those 5 are one person.
 
-**The lesson.** A summary number can be counted at the wrong level and still look meaningful. The
-level must match whatever produces the data. Here that is one person on one question.
+**The lesson.** The grader printed `1 of 7 would be LOCKED OUT`. It counts people. The study's data
+is produced per person-question. A number counted at the wrong level still looks meaningful. Match
+the level to whatever produces the data.
 
 **Why it matters:** every rate in the 28 Sep analysis has this risk. Audit them before you collect
 data.
 
 ---
 
-## L4 — Round 1's pass rates can pick the study's two topics
+## L4 — Round 1's pass rates can pick the two topics the study teaches
 
 **Believed from 7 Sep.** It was the screener's stated second job. Its pass-rate table would name
 the two topics the study teaches. It named T2 and T3.

@@ -60,7 +60,7 @@ are out. And the baseline runs before the build, not after.
 
 ## Reference
 
-- `c7-capstone-decoded.md`: plain-language walkthrough of all five C7 problem statements.
+- `c7-capstone-decoded.md`: plain-language walkthrough of the Learning OS brief. The other four tracks were cut on 13 Sep 2026.
   It decodes the jargon, the loop each one asks you to run, what you have to prove, what they'll
   press you on, and a comparison table. Sections 1 (Genome Intelligence) and 4 (Learning OS)
   are your shortlist.

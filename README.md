@@ -105,7 +105,7 @@ Sorted this way on purpose. How a file behaves over time tells you how much to t
 | file | what |
 |---|---|
 | `CAPSTONE-RULES.md` | **the rules, from the C7 FAQ, plus §E the marking rubric. Check before every checkpoint. If a plan conflicts with a rule here, the rule wins** |
-| `c7-capstone-decoded.md` | plain-language decode of all five C7 problem statements |
+| `c7-capstone-decoded.md` | plain-language decode of the Learning OS brief (other four tracks cut 13 Sep) |
 | `100x-CURRICULUM.md` | the cohort's two paths and their tool stacks |
 | `research-papers/` | the four papers the design rests on, plus `research-papers/RESEARCH-READING.md` |
 
@@ -121,6 +121,7 @@ Sorted this way on purpose. How a file behaves over time tells you how much to t
 | folder | what |
 |---|---|
 | `screener/` | both screening rounds. Start at `screener/README.md` |
+| `diagrams/` | `architecture-arm-a.excalidraw` — PRD-v1 §3 as an editable Excalidraw file |
 
 **Why it matters:** a new reader can trust the Living files and skip the Superseded ones. That is
 the whole point of the grouping.

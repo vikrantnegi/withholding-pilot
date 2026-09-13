@@ -178,7 +178,7 @@ question-set spec) plus suggested floor/ceiling thresholds for `../TODO-HYPOTHES
 intrinsic motivation." Four experiments, 3,562 participants, two consecutive text tasks.
 Conditions include **Collab -> Solo** (AI on task 1, alone on task 2) vs **Solo -> Solo**.
 
-You cite it in `../HYPOTHESIS-LOG.md` v0 and paraphrase it in `c7-capstone-decoded.md:333` as
+You cite it in `../HYPOTHESIS-LOG.md` v0 and paraphrase it in `c7-capstone-decoded.md:110` as
 *"learners sent back to work things out alone report lower motivation."* **Check the direction
 before you rely on it.** The motivation drop and boredom increase land on the group that *had*
 the AI and then lost it. That is a **withdrawal** cost, not a **withholding** cost. Wu also
