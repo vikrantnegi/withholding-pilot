@@ -3,7 +3,7 @@
  *
  * The leaked examples below are the ones that would turn Arm A into Arm B.
  */
-const { inspect, serveHint, SOURCE, REJECT, isGeneric } = require('./hint-guard.js');
+const { inspect, serveHint, SOURCE, REJECT, isGeneric, checkFallback, LAST_RESORT } = require('./hint-guard.js');
 
 let pass = 0, fail = 0;
 const check = (name, got, want) => {
@@ -71,6 +71,23 @@ console.log('\nSERVE — retry twice, then fall back');
     isGeneric('You used WHERE. That runs before the grouping.', ctx), false);
   check('a hint naming their column is not generic',
     isGeneric('Look at how price is being filtered.', ctx), false);
+
+  console.log('\nFALLBACKS ARE VERIFIED LIKE GENERATIONS');
+  check('a good fallback passes',
+    checkFallback('Your filter runs on single rows, before they are collected into categories.', ctx).ok, true);
+  check('a leaking fallback is caught while authoring',
+    checkFallback('Use HAVING MAX(price) > 10000.', ctx).ok, false);
+  check('a fallback naming nothing concrete is caught',
+    checkFallback('Think carefully about how you built the query.', ctx).ok, false);
+  check('an over-long fallback is caught',
+    checkFallback(('word '.repeat(60) + 'price'), ctx).ok, false);
+
+  const leakyFb = { ...ctx, fallbackHint: `Use this: ${REF}` };
+  const r3 = await serveHint(leakyFb, async () => null);
+  check('a leaking fallback is never served to a learner', r3.source, SOURCE.FALLBACK_BLOCKED);
+  check('  they get the neutral line instead', r3.text, LAST_RESORT);
+  check('  and the blocked fallback is on the record',
+    r3.rejections.some(x => x.attempt === 'fallback'), true);
 
   console.log(`\n${pass} passed, ${fail} failed\n`);
   process.exit(fail ? 1 : 0);

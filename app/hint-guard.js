@@ -20,7 +20,18 @@
 // hand-written fallback. Every attempt and every rejection is logged.
 const MAX_MODEL_ATTEMPTS = 2;
 
-const SOURCE = { MODEL: 'model', FALLBACK: 'fallback' };
+const SOURCE = {
+  MODEL: 'model',
+  FALLBACK: 'fallback',
+  // The fallback itself failed inspection and was withheld. Should never
+  // happen — checkFallback() is meant to catch it while authoring — but if it
+  // does, a learner gets a neutral line rather than the answer.
+  FALLBACK_BLOCKED: 'fallback_blocked',
+};
+
+/* Served only if a question's own fallback fails the guard. Says nothing that
+ * could leak, because it knows nothing. */
+const LAST_RESORT = 'Compare the rows you got against what the question asked for, one column at a time.';
 const REJECT = {
   RUNNABLE_QUERY: 'contains a runnable SELECT',
   REFERENCE_CLAUSE: 'contains a distinguishing clause of the reference query',
@@ -122,6 +133,19 @@ async function serveHint(ctx, callModel) {
       text: typeof text === 'string' ? text.slice(0, 400) : String(text),
     });
   }
+  // The fallback gets the same inspection a generation gets. Authoring is
+  // supposed to have caught this (checkFallback), but a leak reaching a
+  // learner is the one failure that silently converts Arm A into Arm B.
+  const fb = inspect(ctx.fallbackHint, ctx);
+  if (!fb.ok) {
+    return {
+      text: LAST_RESORT,
+      source: SOURCE.FALLBACK_BLOCKED,
+      modelAttempts: MAX_MODEL_ATTEMPTS,
+      rejections: rejections.concat([{ attempt: 'fallback', reason: fb.reason, matched: fb.matched,
+                                       text: String(ctx.fallbackHint).slice(0, 400) }]),
+    };
+  }
   return {
     text: ctx.fallbackHint,
     source: SOURCE.FALLBACK,
@@ -148,12 +172,47 @@ function isGeneric(hint, { learnerQuery }) {
     norm(learnerQuery).split(/[^a-z0-9_]+/).filter(t => t.length > 2 && !STOP.has(t))
   );
   if (!theirs.size) return false;              // nothing to reference
-  for (const t of theirs) if (h.includes(t)) return false;
+  for (const t of theirs) {
+    if (h.includes(t)) return false;
+    // Match on a stem, so "categories" counts as naming "category" and
+    // "prices" counts as naming "price". Never shorter than 4 characters.
+    const stem = t.slice(0, Math.max(4, t.length - 2));
+    if (stem.length >= 4 && h.includes(stem)) return false;
+  }
   return true;
 }
 const STOP = new Set(['select','from','the','and','not','you','your']);
 
-const GUARD = { MAX_MODEL_ATTEMPTS, SOURCE, REJECT, inspect, serveHint, distinguishingClauses, isGeneric };
+/*
+ * checkFallback — verify a hand-written fallback the same way a generation is
+ * verified. Run this while authoring, not in front of a learner.
+ *
+ * A fallback is the one hint you KNOW someone may see, and nothing was
+ * checking it. A fallback that leaks turns every model failure into a reveal.
+ *
+ * It cannot be checked for referencing the learner's own query — it is written
+ * before any learner exists. So the generic test is applied against the
+ * REFERENCE query instead: the fallback must at least name something concrete
+ * from the question, rather than being advice about queries in general.
+ *
+ * Returns { ok, problems: [...] }.
+ */
+function checkFallback(text, { referenceQuery }) {
+  const problems = [];
+  const t = String(text || '').trim();
+  if (!t) problems.push('empty');
+  const verdict = inspect(t, { referenceQuery });
+  if (!verdict.ok) problems.push(verdict.reason + (verdict.matched ? ` (matched: ${verdict.matched})` : ''));
+  if (t && isGeneric(t, { learnerQuery: referenceQuery })) {
+    problems.push('names nothing concrete from the question — it is advice about queries in general');
+  }
+  const words = t.split(/\s+/).filter(Boolean).length;
+  if (words > 45) problems.push(`${words} words — a hint the learner will not read`);
+  return { ok: problems.length === 0, problems };
+}
+
+const GUARD = { MAX_MODEL_ATTEMPTS, SOURCE, REJECT, LAST_RESORT, inspect, serveHint,
+                distinguishingClauses, isGeneric, checkFallback };
 if (typeof module !== 'undefined' && module.exports) module.exports = GUARD;
 if (typeof window !== 'undefined') window.GUARD = GUARD;
 })();

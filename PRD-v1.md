@@ -201,6 +201,20 @@ deterministic column.
    - **Every question needs a hand-written fallback hint**, authored with its reference query.
      One global string is either useless or, on a short query, is itself the answer. This is
      part of item 4, and `serveHint` throws without it rather than degrading quietly.
+
+   **The fallback is verified the same way a generation is.** It is the one hint you *know*
+   a learner may see, and nothing was checking it. `checkFallback()` runs while authoring —
+   must not leak, must name something concrete from the question rather than being advice
+   about queries in general, must be short enough to read — and `evals/replay.js` reports
+   every question's verdict before the cases. As a last line, `serveHint` inspects the
+   fallback too: one that leaks is withheld and the learner gets a neutral line, logged as
+   `source: fallback_blocked`. A leaking fallback would convert every model failure into a
+   reveal, which is Arm A silently becoming Arm B.
+
+   The gap between a fallback and a generated hint is partly irreducible, and that gap is
+   what the LLM is in the system for: the generated hint sees *this* learner's query, the
+   fallback can only address the modal mistake. Write fallbacks from the attempt data, not
+   from imagination.
 3. **Log persistence.** Supabase table. If it threatens 20 Sep, fall back to the copy-log
    button already working in the mini-screen — 6 people pasting a blob is not the bottleneck.
 4. **The question set.** Two concepts (GROUP BY/HAVING; two-table joins), practice items plus a

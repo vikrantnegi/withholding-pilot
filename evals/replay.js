@@ -28,7 +28,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { serveHint, isGeneric, SOURCE } = require('../app/hint-guard.js');
+const { serveHint, isGeneric, checkFallback, SOURCE } = require('../app/hint-guard.js');
 const { makeWriter, MODEL, TEMPERATURE } = require('../app/hint-writer.js');
 
 const LOGS = path.join(__dirname, '..', 'screener/round-2-runbutton/logs');
@@ -156,6 +156,20 @@ function spread(all, n) {
   const lines = [];
   const say = s => lines.push(s);
 
+  /* Check the hand-written fallbacks BEFORE anything else. They are the one
+   * hint you know a learner may see, and until now nothing inspected them.
+   * A fallback that leaks turns every model failure into a reveal. */
+  const fbProblems = [];
+  for (const q of Object.keys(REFERENCE)) {
+    const v = checkFallback(FALLBACK[q], { referenceQuery: REFERENCE[q] });
+    if (!v.ok) fbProblems.push([q, v.problems]);
+  }
+  if (fbProblems.length) {
+    console.error('FALLBACK PROBLEMS — fix these before the study:');
+    for (const [q, ps] of fbProblems) for (const p of ps) console.error(`  ${q}: ${p}`);
+    console.error('');
+  }
+
   say(`# Hint review sheet\n`);
   say(`Generated ${new Date().toISOString().slice(0,10)} from \`screener/round-2-runbutton/logs/\`.`);
   say(`${all.length} wrong or errored attempts on disk; ${chosen.length} shown, spread across people and questions.\n`);
@@ -168,6 +182,17 @@ function spread(all, n) {
     say(`> **No hint writer configured.** Every case below shows the hand-written fallback.`);
     say(`> \`export GROQ_API_KEY=gsk_...\` and re-run to evaluate \`${MODEL}\`.\n`);
   }
+  say(`## The hand-written fallbacks\n`);
+  say(`Checked the same way a generation is: must not leak, must name something concrete`);
+  say(`from the question, must be short enough to read. This is the one hint you KNOW a`);
+  say(`learner may see.\n`);
+  for (const q of Object.keys(REFERENCE)) {
+    const v = checkFallback(FALLBACK[q], { referenceQuery: REFERENCE[q] });
+    say(`- **${q}** — ${v.ok ? 'ok' : '**' + v.problems.join('; ') + '**'}`);
+    say(`  > ${FALLBACK[q]}`);
+  }
+  say('');
+  say(`---\n`);
   say(`## How to read it\n`);
   say(`You do not need to know SQL. **THE DIFFERENCE** is computed for you. Per case, ask:\n`);
   say(`1. Does the hint point at that difference?`);
@@ -175,7 +200,7 @@ function spread(all, n) {
   say(`3. Would you know what to try next after reading it?\n`);
   say(`Three noes on the same question is the writer's fault, not the learner's.\n---\n`);
 
-  let served = 0, fallbacks = 0, generic = 0, rejected = 0;
+  let served = 0, fallbacks = 0, generic = 0, rejected = 0, blocked = 0;
 
   for (const [i, c] of chosen.entries()) {
     const diff = difference(c.sql, REFERENCE[c.q], c);
@@ -194,6 +219,7 @@ function spread(all, n) {
       : { text: ctx.fallbackHint, source: SOURCE.FALLBACK, modelAttempts: 0, rejections: [] };
     served++;
     if (r.source === SOURCE.FALLBACK) fallbacks++;
+    if (r.source === SOURCE.FALLBACK_BLOCKED) blocked++;
     rejected += r.rejections.length;
     const gen = isGeneric(r.text, ctx);
     if (gen) generic++;
@@ -236,6 +262,7 @@ function spread(all, n) {
     say(`| fell back to the hand-written hint | ${fallbacks} |`);
     say(`| generations rejected by the leak guard | ${rejected} |`);
     say(`| hints flagged generic (reported, not rejected) | ${generic} |`);
+    if (blocked) say(`| **fallbacks withheld because they failed the guard** | ${blocked} |`);
   } else {
     say(`| served from the model | none — no hint writer configured |`);
     say(`| showing the hand-written fallback | ${fallbacks} |`);
