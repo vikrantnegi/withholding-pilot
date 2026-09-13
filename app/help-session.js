@@ -1,3 +1,4 @@
+(function(){
 /*
  * help-session.js — what happens when a learner presses Help.
  *
@@ -17,8 +18,11 @@
  * and on 28 Sep you cannot say how much of Arm A's help was real.
  */
 
-const { decide, ACTION } = require('./policy.js');
-const { serveHint, SOURCE } = require('./hint-guard.js');
+// Loads in node (require) and in the browser (globals set by the two <script> tags).
+const _POLICY = (typeof require === 'function') ? require('./policy.js')     : window.POLICY;
+const _GUARD  = (typeof require === 'function') ? require('./hint-guard.js') : window.GUARD;
+const { decide, ACTION } = _POLICY;
+const { serveHint, SOURCE } = _GUARD;
 
 /*
  * Rebuild what the policy needs to see, from the log alone.
@@ -96,3 +100,4 @@ function summarise(log) {
 const SESSION = { pressHelp, itemView, summarise };
 if (typeof module !== 'undefined' && module.exports) module.exports = SESSION;
 if (typeof window !== 'undefined') window.SESSION = SESSION;
+})();

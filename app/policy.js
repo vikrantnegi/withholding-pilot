@@ -1,3 +1,4 @@
+(function(){
 /*
  * policy.js — the level selector. PRD-v1.md §4.
  *
@@ -173,3 +174,4 @@ const POLICY = { ACTION, DEFAULT_N, decide, countableAttempts, attemptCounts, no
 
 if (typeof module !== 'undefined' && module.exports) module.exports = POLICY;
 if (typeof window !== 'undefined') window.POLICY = POLICY;
+})();

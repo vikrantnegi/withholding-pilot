@@ -1,3 +1,4 @@
+(function(){
 /*
  * hint-guard.js — the leak guard. PRD-v1.md §6 item 2. The 18 Sep deliverable.
  *
@@ -126,3 +127,4 @@ async function serveHint(ctx, callModel) {
 const GUARD = { MAX_MODEL_ATTEMPTS, SOURCE, REJECT, inspect, serveHint, distinguishingClauses };
 if (typeof module !== 'undefined' && module.exports) module.exports = GUARD;
 if (typeof window !== 'undefined') window.GUARD = GUARD;
+})();
