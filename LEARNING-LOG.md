@@ -1,6 +1,6 @@
 # Learning log — assumptions that broke
 
-**Thirteen assumptions have broken so far.** Each entry says what was believed, what proved it wrong,
+**Fourteen assumptions have broken so far.** Each entry says what was believed, what proved it wrong,
 what changed, and the lesson.
 
 The lesson is the point. An entry without one is just a bug report.
@@ -377,6 +377,37 @@ file was wrong on its own terms.
 has ever caught was one written by hand in its own test file. The false-negative rate —
 does it catch a real leak? — is still entirely unmeasured, and an adversarial run is the
 only thing that would measure it.
+
+---
+
+## L14 — The hypothesis log is current because the rule says to append to it
+
+**Believed until 14 Sep 2026.** `CLAUDE.md` carries it as a non-negotiable: append to
+`HYPOTHESIS-LOG.md` whenever evidence changes the design. The rule was written, understood,
+and agreed.
+
+**What broke it.** Vikrant read v0 against the built system and asked why the four-level cut
+and the gate were not in it.
+
+Three changes had gone unlogged for a week: four help levels down to two, the competence
+estimator cut, and the gate added. The gate is the most load-bearing rule in `app/policy.js`
+and by `PRD-v1.md` §4 it is half the treatment — and it appeared nowhere in the hypothesis it
+exists to test.
+
+Worse, cutting the estimator moved the independent variable. v0 tested *adaptive* withholding;
+the built system tests *withholding*. The file that exists to show that diff did not show it.
+
+**What changed.** `HYPOTHESIS-LOG.md` v0.2 records it, dated as written on 14 Sep and openly
+late. Every future `EXPERIMENT-LOG.md` entry ends by asking whether the hypothesis moved.
+
+**The lesson.** A rule with no trigger is a hope. This one had no moment that forced the
+check — no checkpoint, no template field, nothing that fails when it is skipped. The three
+other append-only rules in this project all fire on an event: a run finishes, an assumption
+breaks. "Whenever the design changes" is not an event anyone notices from inside the change.
+
+**Why it matters:** rubric E5 grades exactly this file, and the largest change to the
+hypothesis was the one missing from it. Found by a reader, not by the process — which is
+the part to fix.
 
 ---
 

@@ -100,4 +100,67 @@ before any Arm B data exists.
 
 ---
 
+## v0.2: written 14 Sep 2026, recording a change made 7–10 Sep that was never logged
+
+**This entry is late.** The change it describes was decided around 7 Sep while reading the
+research papers, and built into `PRD-v1.md` on 10 Sep. It should have been written then.
+Caught on 14 Sep by Vikrant, reading v0 against the code and noticing the hypothesis no
+longer described the system. It is appended here rather than slotted in, because this file
+is append-only and a late entry that pretends to be on time is worse than one that admits
+the delay.
+
+**What evidence arrived.** Koedinger & Aleven on the assistance dilemma; Bastani et al.'s
+GPT Tutor system prompt in the SI appendix; the arithmetic in `TODO-HYPOTHESIS-v1.md` §3.
+
+**What changed — the independent variable itself.**
+
+v0 said: *"If the assistant sets how much it gives from what the learner can already do
+without it…"* That sentence is about **adaptivity**. The competence estimator was the thing
+being tested.
+
+The competence estimator is cut (`PRD-v1.md` §7). It needs many observations per skill to
+converge, and at n=6 over a short question set it is noise dressed as a model. With it goes
+every per-learner adaptation: N is fixed, the ladder is identical for everyone.
+
+**So the independent variable moved from *adaptive* withholding to *withholding*.** That is
+not a refinement of v0. It is a different claim, and v0's sentence no longer describes the
+system that was built.
+
+**Three specific changes:**
+
+1. **Four levels → two.** Nudge and partial scaffold cut. With a gate in front, the nudge is
+   redundant — the gate already forces the unaided attempt. Partial scaffold gives away too
+   much for the storage strength it buys.
+2. **The gate was added. It is not in v0 at all.** No help of any kind until one countable
+   attempt exists for that item. Taken from Bastani's GPT Tutor prompt: *"Do not provide them
+   with help until they have provided this."* It is the rule that actually implements
+   retrieval, and by `PRD-v1.md` §4 it is half the treatment.
+3. **N is fixed, not adaptive.** At three per arm, a varying N tests two variables at once
+   and neither can be attributed.
+
+**Hypothesis after this change.** If the assistant requires an attempt before giving anything,
+and gives a hint before the answer, then unaided performance 5–7 days after removal improves
+against an answer-giving baseline.
+
+**The treatment is a package, not a variable.** Arm A differs from Arm B in two ways at once:
+the gate, and the content of first help. Three per arm cannot separate them; a third arm
+(gate + full answers) would be needed and is not affordable. Both changes serve one mechanism
+— forcing generation rather than reading — so this is one construct implemented two ways, not
+two variables carelessly mixed. A positive result supports the policy as a whole and does not
+establish that the gate specifically, or the hint specifically, is what worked.
+
+**Which v0 assumptions this settles:**
+- Assumption 1 (a competence estimate can be inferred fast enough to be useful) — **abandoned,
+  not tested.** The estimator was cut before it could be. It stays as a roadmap claim.
+- Assumption 2 (four levels is the right granularity; two might do) — **resolved: two.**
+
+**The process failure worth naming.** Three design changes of this size went into `PRD-v1.md`
+and none reached this file for a week. A hypothesis log that is updated only when someone
+happens to re-read it is not a log. The rule in `CLAUDE.md` — append whenever evidence changes
+the design — was in place and was not followed; what was missing is that nothing forces the
+check. Every future entry in `EXPERIMENT-LOG.md` should end by asking whether the hypothesis
+moved.
+
+---
+
 ## Append below: date, what evidence arrived, what it changed

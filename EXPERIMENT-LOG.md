@@ -439,3 +439,7 @@ prose-dictation attack before the walkthrough rule was added.
 ---
 
 ## Append below: date, what was run, what came out, what it changed
+
+**And then ask: did the hypothesis move?** If the run changed the design, `HYPOTHESIS-LOG.md`
+needs an entry too. That check is here because it was skipped for a week — `LEARNING-LOG.md`
+L14.
