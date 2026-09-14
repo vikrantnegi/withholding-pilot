@@ -249,7 +249,7 @@ GPT Tutor:
 - By sessions 2 and 3, asking for help became the dominant pattern.
 - Non-superficial interactions were **above 40% from session 2 onward** and stayed there.
 
-**Steal this as your manipulation check.** Your null-result triage in `../TODO-HYPOTHESIS-v1.md`
+**Steal this as your manipulation check.** Your null-result triage in `../ANALYSIS-PLAN.md`
 section 4 currently checks whether the arms differed by counting what level Arm A served. That is
 a check on your system. This is a check on the learner's behaviour, which is the thing that
 actually has to differ for the mechanism to run.
@@ -337,7 +337,7 @@ It is a useful calibration for what six people can tell you.
 ## 11. What came out of the appendix on 2 Sep
 
 The earlier close read of the supplementary appendix produced four decisions, which are written
-up in `../TODO-HYPOTHESIS-v1.md` and still stand:
+up in `../ANALYSIS-PLAN.md` and still stand:
 
 1. **Analyse per question, not per learner.** Their student-level regression has 2,848
    observations; the problem-level one on the same data has 11,392. At three people per arm, a gap

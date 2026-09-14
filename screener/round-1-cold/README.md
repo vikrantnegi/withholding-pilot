@@ -12,7 +12,7 @@ It does two jobs, and the second one is the important one.
 
 1. **Filter.** Drop anyone who can't clear the basics (they'd score ~0 in both
    arms) and anyone already fluent (they'd score high in both arms). Either way
-   you measure nothing. This is triage checks 2 and 3 in `../../TODO-HYPOTHESIS-v1.md`,
+   you measure nothing. This is triage checks 2 and 3 in `../../ANALYSIS-PLAN.md`,
    done up front instead of discovered on 28 Sep.
 2. **Set the question difficulty.** You said your people "know SQL concepts but
    don't use it." That's a ceiling risk. The tier where they pass about half the

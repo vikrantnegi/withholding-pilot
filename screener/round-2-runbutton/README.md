@@ -75,7 +75,7 @@ Two things to look at, in this order:
 
 Attempts-to-first-correct is the number worth keeping — it's the closest thing you have
 to a pre-study estimate of how many ladder decisions each learner will generate, which
-feeds the "48 policy decisions" arithmetic in `../../TODO-HYPOTHESIS-v1.md`.
+feeds the "48 policy decisions" arithmetic in `../../ANALYSIS-PLAN.md`.
 
 ## The questions and why these three
 

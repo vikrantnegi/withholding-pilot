@@ -171,7 +171,7 @@ in the PRD. It is the cleanest one-sentence answer to "why does this project nee
 understates it: Kestin's design *cannot* measure unaided-after-removal, and the paper admits a
 ceiling effect. Four build decisions come out of it (reference-solution grounding, level
 selection in code not prompt, freeze the test set before the policy, Bloom's mix as the
-question-set spec) plus suggested floor/ceiling thresholds for `../TODO-HYPOTHESIS-v1.md` §4.
+question-set spec) plus suggested floor/ceiling thresholds for `../ANALYSIS-PLAN.md` §4.
 
 **Wu et al. (2025), Sci Rep** — https://www.nature.com/articles/s41598-025-98385-2
 "Human-generative AI collaboration enhances task performance but undermines human's

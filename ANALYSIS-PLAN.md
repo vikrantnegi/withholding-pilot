@@ -1,0 +1,282 @@
+# Analysis plan
+
+**What this is.** The measurement decisions that must be fixed before any study data exists.
+Four came from the Bastani appendix, read 2 Sep 2026. The rest were added 14 Sep 2026.
+
+**Status: LIVE.** This is not a task. The 28 Sep write-up reads this file and follows it.
+
+**Renamed 14 Sep.** It was TODO-HYPOTHESIS-v1.md, now deleted. That name said "task" when the content is a
+plan. The "v1" suggested a hypothesis version. It is neither.
+
+**The rule this file exists to enforce.** Pick every number below now. Pick it while you still do
+not know which way it will fall. On 28 Sep any threshold you invent is contaminated, because by
+then you know what each one lets you conclude.
+
+**Why it matters:** without these numbers fixed in advance, a null result on 28 Sep cannot be
+read. You will not be able to tell "my policy is wrong" from "my logger was broken". You will be
+blamed for the second.
+
+---
+
+## Glossary
+
+Every term and number used below.
+
+| term | what it means |
+|---|---|
+| Arm A | The withholding arm. 3 learners. Must attempt before any help. Gets a hint before an answer. |
+| Arm B | The answer-giving baseline. 3 learners. Same app, one config flag. Help returns the full answer, no attempt needed. |
+| the gate | The rule that refuses all help until one attempt is logged for that item. Arm A only. |
+| HINT, REVEAL | The two help levels. HINT is served first. REVEAL follows after N more attempts. |
+| N | Attempts required after a hint before REVEAL. Fixed at 2. Identical for every learner. |
+| person-question | One learner working on one question. Arm A's practice budget is 48 person-questions (3 learners x 16 practice items). |
+| moment to act on | A person-question where the learner tried, the query ran or errored, and the result was wrong. Only these produce a policy decision. |
+| S1-S4 | The four sub-skills of GROUP BY/HAVING. S1, S2 and S3 are practised. S4 is held back as the control. See `PRD-v1.md` section 6 item 4. |
+| held-out item | A question never shown during practice. Each is hand-paired to the practice item teaching its sub-skill. |
+| removal test | 27 Sep. No assistant of any kind, for either arm. |
+| unaided | First executing attempt correct, with no help served on that item. |
+| `help_decided` | The log entry written the instant the policy decides. Carries `action`, `counted`, `sinceHelp`. |
+
+**Two numbers to hold on to.** The measured rate of moments to act on is 0.14 per
+person-question. It rises to about 0.48 once a syntax error satisfies the gate, which was
+decided on 13 Sep. Across Arm A's 48 person-questions that is about 23 moments.
+
+**Why it matters:** the whole study runs on about 23 events. Every threshold below is sized
+against that number, not against 48.
+
+---
+
+## 1. Count questions, not people
+
+Bastani analysed one dataset two ways. One row per student gave 2,848 rows. One row per
+student-per-question gave 11,392 rows. Four times the data, from the same study.
+
+Each of your arms holds 3 learners. An average over 3 people is mostly a fact about who you
+recruited, not about the policy.
+
+**Decided.** The primary analysis is item-level, with standard errors clustered by learner. The
+arm-average gap is secondary. Report its direction only. Never report a p-value at 3 per arm.
+
+"Clustered by learner" means the maths knows that 16 rows from one person are not 16 independent
+facts.
+
+**Why it matters:** at 3 per arm, an arm-average comparison would report "no effect" about a
+third of the time. That holds even for a policy that works perfectly. It is a coin flip about who
+you recruited, dressed up as a finding.
+
+---
+
+## 2. Pair every held-out item to the practice item that taught it
+
+Bastani hand-wrote this map for every exam question in his study.
+
+Without the map, a failure has three possible causes. The learner never practised it. The
+question was harder. The assistant gave bad help. You cannot tell them apart.
+
+**Decided, and already built into the design.** See `PRD-v1.md` section 6 item 4. The pairing is
+at sub-skill grain, not concept grain. Each held-out item names the sub-skill it tests and the
+practice item that taught that sub-skill.
+
+**Why it matters:** this is what lets the write-up say the gain was skill-specific. Without it,
+"Arm A scored higher" cannot be told apart from "Arm A got comfortable with the editor".
+
+---
+
+## 3. Levels and concepts multiply, they do not add
+
+Every extra help level and every extra concept splits the same fixed budget of moments.
+
+| design | cells | moments per cell, against 23 |
+|---|---|---|
+| 4 levels x 8 concepts | 32 | under 1 |
+| 4 levels x 2 concepts | 8 | about 3 |
+| 2 levels x 1 concept | 2 | about 11 |
+
+Cutting levels alone buys nothing if the concept count stays high. They multiply.
+
+**Decided.** One concept, two levels. This drove both scope cuts. See `HYPOTHESIS-LOG.md` v0.2
+and v0.1.
+
+**Correction to the 2 Sep version of this section.** It budgeted 48, not 23. It counted questions
+asked rather than moments to act on. A question solved first try produces nothing. So does one
+never run. See `LEARNING-LOG.md` L5.
+
+**Why it matters:** the original arithmetic was optimistic by about seven times. It is also the
+arithmetic that justified both scope cuts. The cuts were still right. The number behind them was
+not.
+
+---
+
+## 4. The checklist for a null result
+
+On 28 Sep you will have one number. Suppose it says the two arms did not differ. That has two
+meanings, and they look identical:
+
+- **The policy does not work.** A real finding. Publishable.
+- **The study did not run properly.** Not a finding at all. Broken machinery.
+
+**Think of a red CI build.** Red does not mean the feature is broken. First you check whether it
+compiled. Then whether the test suite loaded. Then whether the right tests were selected. Only
+when all that is clean do you blame the code.
+
+This is that checklist, for the experiment. Run the checks in order. Stop at the first failure.
+
+Checks 0a through 4 are **measurement** failures. Only check 5 is a **hypothesis** failure. They
+produce the same final number and they mean opposite things.
+
+**Why it matters:** a measurement failure reported as a hypothesis failure is a false finding
+published under your name. The order of these checks is what stops that.
+
+### 0a. Attrition — is the surviving sample still comparable?
+
+Report `completed_removal_test` per person, by arm, next to every score. Always.
+
+| what happened | verdict |
+|---|---|
+| Both arms complete 3 of 3 | Pass |
+| One arm loses 1 person | Pass **only** with a published worst-case bound |
+| Any arm loses 2 or more | **Fail.** That arm is now 1 person. No comparison exists |
+
+The worst-case bound: put every no-show back in, scored at zero, and recompute. If the direction
+flips under the bound, the bound is the result you report.
+
+**Why it matters:** attrition is caused by the treatment, and it removes the frustrated and the
+weak. Those are exactly the people who would have lowered Arm A's average. The bias always points
+toward the hypothesis, so it is the one error a reader will assume you made.
+
+### 0b. Elapsed gap — was the delay long enough for the effect to exist?
+
+Log the actual practice-to-test gap per participant, in days. Not the planned gap.
+
+- Any participant under 5 days: that person's data is a measurement failure. Exclude it and
+  report the exclusion.
+- If exclusions leave either arm below 2 people: **fail**, same as 0a.
+
+**Why it matters:** under about 5 days you are in the region where the *wrong* arm can win. Shea
+& Morgan still had the wrong condition ahead at 10 minutes. Thompson et al. had barely crossed
+over at 2 days. A short gap does not weaken the result. It can reverse it.
+
+### 1. Manipulation — did the arms actually differ?
+
+**This check replaces the 2 Sep version**, which asked what percentage of interactions Arm A
+served at level 4. That percentage has a denominator of about 23 events across the whole arm. It
+cannot be computed.
+
+**1a. Volume.** Arm A must log at least **8** `help_decided` events with action HINT or REVEAL,
+across the arm.
+
+Below 8 is under 3 per person. That means most items produced no policy decision at all, and Arm
+A's session was close to having no assistant. **Fail below 8.**
+
+**1b. Ladder.** REVEAL must follow HINT in no more than **70%** of Arm A help sequences.
+
+Above 70%, Arm A got the full answer nearly every time. The only difference from Arm B was a few
+minutes of delay. **Fail above 70%.**
+
+**1c. Behaviour.** Measure mean attempts before the first help request, per item, by arm. Arm B's
+figure must be below **0.5**.
+
+If Arm B also attempts before asking, they were generating anyway and the gate changed nothing.
+**Fail if Arm B is 0.5 or above.**
+
+This is Bastani's superficial-versus-non-superficial check, adapted. Both arms run the same app,
+so there is no free-text chat to classify. Attempts-before-help is the equivalent signal, and it
+comes free from the existing log.
+
+**Why it matters:** 1a and 1b check the system. 1c checks the learner. A policy that fired
+correctly and changed nobody's behaviour has still not run the experiment.
+
+### 2. Floor — did anyone learn anything?
+
+Arm B's removal-test mean below **15%** is a failure.
+
+**Why it matters:** you cannot detect a gap between two numbers that are both near zero. If the
+baseline arm learned nothing, the comparison has no room to show anything either way.
+
+### 3. Ceiling — was there room for a gap to appear?
+
+Either arm's mean above **80%** is a failure.
+
+The screening band was a 20% to 85% solve rate. Above 80% on the removal test, the top arm is
+saturated. The gap is then squeezed by the scale, not by the policy.
+
+**Why it matters:** `LEARNING-LOG.md` L6 found a question inside the solve-rate band that was
+still useless. It was solved on the first attempt. Solve rate describes where people ended up.
+Consider checking attempts-to-first-correct here as well.
+
+### 4. Mapping — did the held-out items test what was practised?
+
+**4a.** Take each of S1, S2 and S3 in turn. The held-out pass rate must sit no more than
+**30 percentage points** below that sub-skill's practice pass rate.
+
+A larger drop means the paired item tests something the practice item did not teach. **Fail.**
+
+**4b. The S4 precondition.** At least **2 of 6** learners must solve the S4 held-out item.
+
+If nobody solves it, "flat on S4" proves nothing. The within-person control is lost. Assumption 5
+in `HYPOTHESIS-LOG.md` v0.1 was wrong. The attribution clause in the hypothesis is dead. **Fail.**
+
+**Why it matters:** S4 is the whole attribution argument. Improvement on S1 to S3 with S4 flat is
+what rules out "they just got comfortable with the editor". That only works if S4 was reachable
+in the first place.
+
+### 5. Only if every check above passes
+
+The hypothesis is falsified. Withholding does not produce retrieval.
+
+A null that survives checks 0a to 4 is the deliverable, not the failure. Bastani's own GPT Tutor
+arm produced a null and was published in PNAS.
+
+---
+
+## 5. Secondary measures, predicted now so they are predictions
+
+Both are recorded here before any data exists. That is the only thing that separates a prediction
+from a rationalisation written on 28 Sep.
+
+**Attempt rate.** Predicted direction: Arm A attempts more of the held-out items than Arm B.
+
+Report it next to the score, never instead of it. It is **not** evidence for the main hypothesis.
+That hypothesis claims nothing about willingness to try.
+
+**Scoring denominator.** Every removal-test score uses the full held-out set as its denominator,
+fixed at question-set freeze. Blanks score zero. Never use "questions attempted". The gate trains
+Arm A to always type something. That denominator would shrink less for Arm A than for Arm B.
+
+**Satisfaction.** Predicted direction: Arm A reports lower satisfaction and lower perceived
+learning than Arm B.
+
+A satisfaction gap favouring Arm B alongside a retention gap favouring Arm A is the mechanism
+working. It is not evidence against the hypothesis. Sources: Baddeley & Longman 1978, Kornell &
+Bjork 2008.
+
+**Why it matters:** on 28 Sep you will be tempted to reach for whichever secondary number happens
+to support you. Writing both directions down today is what makes that reach legitimate.
+
+---
+
+## Still open
+
+- **The held-out set size is not fixed.** Every threshold above is a percentage, so they survive
+  whatever the count turns out to be. Fix the count at question-set freeze and record it here.
+- **Check 3 may be measuring the wrong thing.** Solve rate sits on where learners ended up.
+  `LEARNING-LOG.md` L6 argues the mechanism lives on the path they took.
+
+---
+
+## What changed from the 2 Sep draft
+
+| change | why |
+|---|---|
+| Renamed from TODO-HYPOTHESIS-v1.md | The name said task; the content is a plan |
+| Status changed from DRAFT to LIVE | It is read on 28 Sep, not deleted after use |
+| Check 1 replaced entirely | The old percentage could not be computed at this volume |
+| Checks 0a and 0b added | Attrition and elapsed gap were threats with no gate |
+| Check 4b added | Assumption 5 had no test |
+| Section 5 added | Attempt rate and satisfaction had no pre-committed direction |
+| Old "new untested assumptions" 5 and 6 deleted | Both stale. One assumed 2 concepts, the other assumed the competence estimator, and both are cut |
+| Section 3 budget corrected, 48 to about 23 | `LEARNING-LOG.md` L5 |
+
+**Why it matters:** the four blanks sat unfilled for twelve days. Three of the things they
+depended on changed underneath them. The numbers above are sized against the design as it stands
+on 14 Sep. They are not sized against 2 Sep.

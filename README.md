@@ -115,7 +115,7 @@ Sorted this way on purpose. How a file behaves over time tells you how much to t
 | file | what |
 |---|---|
 | `PRD-SEED.md` | first-pass spec. Had a four-level ladder and a skill estimator. Both cut. Replaced by `PRD-v1.md` |
-| `TODO-HYPOTHESIS-v1.md` | not a document. An unfinished task. Fill four numbers, append to `HYPOTHESIS-LOG.md`, delete this file. Overdue |
+| `ANALYSIS-PLAN.md` | the measurement decisions fixed before data exists: unit of analysis, question pairing, budget arithmetic, and the null-result checklist read on 28 Sep. Was TODO-HYPOTHESIS-v1.md |
 
 ### Working folders
 

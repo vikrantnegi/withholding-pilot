@@ -151,8 +151,8 @@ some they pass, otherwise the test cannot show a difference either way.
 
 ## 5. Numbers that help fill your null-result checklist
 
-`../TODO-HYPOTHESIS-v1.md` section 4 has four blanks. This paper does not fill them but it anchors
-two.
+`../ANALYSIS-PLAN.md` section 4 holds the null-result checklist. Its numbers were filled on
+14 Sep. This paper did not set them, but it anchors two.
 
 **Ceiling.** Kestin hit the ceiling. Their own words: the real gains are expected to be larger
 than the numbers reported, because of a ceiling effect. They had to use a different statistical

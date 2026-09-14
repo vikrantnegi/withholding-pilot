@@ -235,7 +235,7 @@ deterministic column.
    S3 is the modal failure across the 104 logged attempts, so it carries the most weight.
 
    **Every held-out item is hand-paired to the practice item teaching its sub-skill.** That is
-   the σ(p) mapping (`TODO-HYPOTHESIS-v1.md` §3 item 2), at sub-skill grain rather than
+   the σ(p) mapping (`ANALYSIS-PLAN.md` section 2), at sub-skill grain rather than
    concept grain. It is what lets the 28 Sep write-up say the improvement was skill-specific
    rather than "they got comfortable with the editor".
 
@@ -281,9 +281,10 @@ with the build.
 
 1. ~~**N**~~ **Closed 13 Sep: N = 2.** It is a constant in `app/policy.js` and a one-line
    change. Fixed, never adaptive.
-2. **The four §4 null-result thresholds** in `TODO-HYPOTHESIS-v1.md`. Overdue. Must be
-   committed before Arm B runs, or any number chosen later is chosen knowing what it permits
-   me to conclude. **Still open.**
+2. ~~**The four §4 null-result thresholds**~~ **Closed 14 Sep.** Filled in
+   `ANALYSIS-PLAN.md` section 4, with two new checks in front of them — attrition (0a) and
+   actual elapsed gap (0b). The old check 1 was replaced: its denominator was about 23 events
+   across Arm A, so a percentage could not be computed. Committed before any Arm B data exists.
 3. ~~**Does a syntax error satisfy the gate?**~~ **Closed 13 Sep: yes, it must.** Round 2
    produced no working query at all in 5 of 21 person-questions. Without this, Arm A serves
    almost no help and the arms do not differ.

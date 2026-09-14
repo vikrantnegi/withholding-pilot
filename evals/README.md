@@ -16,7 +16,7 @@ nobody.
 If Arm A's hints are useless, Arm A's treatment is really just *gate and nothing*.
 A null on 28 Sep would then look exactly like "withholding does not work" when the
 truth is "the hint writer was bad". That is a measurement failure, and it belongs in
-the triage checks in `TODO-HYPOTHESIS-v1.md` §4 — not in the conclusion.
+the triage checks in `ANALYSIS-PLAN.md` §4 — not in the conclusion.
 
 ## Why it contacts nobody
 

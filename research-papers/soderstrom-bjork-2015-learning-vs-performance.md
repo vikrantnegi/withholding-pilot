@@ -295,6 +295,6 @@ afterthought.
    5, and it is the highest-value change in this note.
 4. Add the satisfaction-gap prediction from section 7 to your pre-commitments before 27 Sep.
 5. Add "actual elapsed gap per participant" to the null-result checklist in
-   `../TODO-HYPOTHESIS-v1.md`.
+   `../ANALYSIS-PLAN.md`.
 6. Cite Baker (1968) next to Bastani. One is 2025 LLM evidence, the other is 1968 motor-skill
    evidence, and they say the same thing.

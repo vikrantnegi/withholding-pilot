@@ -92,16 +92,19 @@ a budget of 12). It was always the same decision as 3.
 
 Numbers in `EXPERIMENT-LOG.md` Run 2. The reasoning error that hid it is `LEARNING-LOG.md` L5.
 
-### 2. The four cut-off numbers — overdue since 6 Sep
+### 2. ~~The four cut-off numbers~~ — CLOSED 14 Sep
 
-`TODO-HYPOTHESIS-v1.md` §4 has four blanks. They set, in advance, the numbers at which you conclude
-the study did not run properly. As opposed to concluding the idea was wrong.
+Filled. TODO-HYPOTHESIS-v1.md was rewritten and renamed `ANALYSIS-PLAN.md`. It is now a live
+document, read on 28 Sep, not a task to delete.
 
-They must be filled before Arm B runs. A number chosen afterwards is chosen knowing what it lets you
-claim.
+Section 4 holds the checklist. Two checks were added in front of the original four: attrition
+(0a) and actual elapsed gap per participant (0b). The original check 1 was replaced — it asked
+for a percentage of about 23 events across Arm A, which cannot be computed.
 
-This also unblocks the v1 entry in `HYPOTHESIS-LOG.md`. After that, delete
-`TODO-HYPOTHESIS-v1.md` as its own header instructs.
+Section 5 is new. It pre-commits the direction of two secondary measures, attempt rate and
+satisfaction, so neither can be reached for on 28 Sep after the fact.
+
+Still owed: the v1 entry in `HYPOTHESIS-LOG.md`, which this unblocks.
 
 ### 3. ~~The second topic~~ — CLOSED 14 Sep
 
@@ -175,8 +178,8 @@ Demo Day: 11 Oct 2026, 100x HQ.
 1. **Author the question set** — `PRD-v1.md` §6 item 4. One concept, ~16 practice items over
    S1/S2/S3, a held-out set covering all four sub-skills, the pairing table, and a fallback hint
    per question. This is now the only thing between here and 20 Sep.
-2. Fill the four numbers in `TODO-HYPOTHESIS-v1.md` §4. Append v1 to `HYPOTHESIS-LOG.md`. Delete the
-   TODO file.
+2. ~~Fill the four numbers~~ Done 14 Sep; see section 2 above. Still owed: append v1 to
+   `HYPOTHESIS-LOG.md`.
 3. ~~**`git init`.**~~ Done 13 Sep, commit `7439b80`. Commit small and often from here.
 4. Build items 1 to 3 from `PRD-v1.md` §6 against a 20 Sep wall.
 
