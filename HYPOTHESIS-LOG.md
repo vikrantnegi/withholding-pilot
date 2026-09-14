@@ -2,6 +2,50 @@
 Per FAQ rule B4: "Keep the before and after; the diff is the deliverable."
 You are expected to change the hypothesis. Append new entries. Never edit history.
 
+**The entries below are append-only. This index is not** — it is navigation, kept current so a
+reader does not have to reconstruct the story from three entries written out of order.
+
+---
+
+## Where the hypothesis stands today
+
+> If the assistant **requires an attempt** before giving anything, and gives a **hint before the
+> answer**, then unaided performance 5–7 days after removal improves against an answer-giving
+> baseline — **on the sub-skills that were practised, and not on the one that was not.**
+
+Two things to notice against the 30 Aug statement. The independent variable is **withholding**,
+not *adaptive* withholding: the competence estimator is cut, so nothing adapts per learner. And
+the final clause is new — it is what makes a positive result attributable rather than merely
+positive.
+
+## The versions
+
+Ordered by **when the change was decided**, which is not the order the entries were written.
+v0.2 describes an earlier change than v0.1 because it was logged a week late.
+
+| version | decided | logged | what changed | why | evidence |
+|---|---|---|---|---|---|
+| **v0** | 30 Aug | 30 Aug | the submitted statement: adaptive help, four levels chosen by a competence estimate | — | Bastani et al. (PNAS 2025), Kestin et al., Wu et al. |
+| **v0.2** | 7–10 Sep | **14 Sep, late** | four levels → two (hint, reveal); competence estimator cut; **the gate added**. The independent variable moves from adaptive withholding to withholding | an estimator cannot converge at n=6 over a short set; with a gate in front, the nudge is redundant; the gate is what actually implements retrieval | Koedinger & Aleven on the assistance dilemma; Bastani's GPT Tutor prompt in the SI appendix |
+| **v0.1** | 13–14 Sep | 13–14 Sep | two concepts → **one** (GROUP BY/HAVING), with four sub-skills: three practised, one held back as a within-person control. Held-out items hand-paired to practice items by sub-skill | T3 is dead (3 of 7 tried with an editor, 0 solved); the moments arithmetic does not close at four cells; questions cannot be screened without burning participants | `EXPERIMENT-LOG.md` Run 2; `LEARNING-LOG.md` L3, L4, L5 |
+
+**Why v0.2 is late and says so:** three design changes went into `PRD-v1.md` and none reached
+this file for a week. Caught by a reader, not by the process. `LEARNING-LOG.md` L14 has the
+lesson and the fix — a rule with no trigger is a hope, so `EXPERIMENT-LOG.md`'s append template
+now ends by asking whether the hypothesis moved.
+
+## The untested assumptions, and where each stands
+
+| # | from | assumption | state |
+|---|---|---|---|
+| 1 | v0 | a competence estimate can be inferred fast enough from a few queries to be useful | **abandoned, not tested** — the estimator was cut before it could be (v0.2). Stays as a roadmap claim |
+| 2 | v0 | four levels is the right granularity; two might do | **resolved: two** (v0.2) |
+| 3 | v0 | withholding does not cost so much motivation that learners quit mid-study | **open.** Counter-metrics on 27 Sep, `PRD-v1.md` §10. Wu's motivation cost lands on Arm B at removal, not Arm A |
+| 4 | v0 | the question set sits at a difficulty where a floor and a ceiling both exist | **open, and now the top risk.** Round 2 found a ceiling — M2 was solved by 5 of 6 at a median of one attempt (`LEARNING-LOG.md` L6) |
+| 5 | v0.1 | S4 is not at the floor for everyone | **open.** If nobody can do it before or after, "flat on S4" proves nothing and the control is lost |
+| 6 | v0.1 | ~5 practice items per sub-skill is enough repetition to move anything | **open** |
+| 7 | v0.1 | sub-skills within one concept are separable enough to improve on S3 and not S4 | **open.** If they rise together, the design measures nothing new |
+
 ---
 
 ## v0: 30 Aug 2026 (statement submitted)
