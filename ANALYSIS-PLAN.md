@@ -199,10 +199,24 @@ across the arm.
 Below 8 is under 3 per person. That means most items produced no policy decision at all, and Arm
 A's session was close to having no assistant. **Fail below 8.**
 
-**1b. Ladder.** REVEAL must follow HINT in no more than **70%** of Arm A help sequences.
+**1b. Ladder. This one does not stop the study.** REVEAL should follow HINT in no more than
+**70%** of Arm A help sequences.
 
-Above 70%, Arm A got the full answer nearly every time. The only difference from Arm B was a few
-minutes of delay. **Fail above 70%.**
+Above 70%, Arm A got the full answer nearly every time, and the only difference from Arm B was a
+few minutes of delay. But that is the **hint** half of the treatment failing. The **gate** half
+still ran.
+
+So above 70%, report the result as **gate-only**. Arm A's treatment reduces to "an attempt was
+required, then the answer came two attempts later". The comparison against Arm B stays valid. It
+tests a smaller claim than the hypothesis makes, and the write-up must say which claim.
+
+**Round 2 cannot validate this number, and the best proxy fails it.** Round 2 had no help path, so
+no learner ever saw a hint. Replaying it with N=2, only 2 of 9 moment-bearing person-questions
+were solved by attempt 3. The other 7 would have escalated. That is 78%.
+
+That 78% assumes the hint does nothing, so it is an upper bound. 70% asks the hint to move
+escalation by at least 8 points. That is a fair thing to ask and a real risk, which is why 1b
+reports rather than fails.
 
 **1c. Behaviour.** Measure mean attempts before the first help request, per item, by arm. Arm B's
 figure must be below **0.5**.

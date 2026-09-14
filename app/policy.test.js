@@ -22,10 +22,15 @@ function throws(name, fn) {
   catch { pass++; console.log(`  ok    ${name}`); }
 }
 
-// shorthand attempt builders
-const err   = (sql, msg) => ({ sql, outcome: 'error', error: msg || 'near "x": syntax error' });
-const wrong = (sql, rows) => ({ sql, outcome: 'wrong', rows: rows || [[1]] });
-const right = (sql) => ({ sql, outcome: 'correct', rows: [[1]] });
+// shorthand attempt builders.
+// The label is expanded into a plausible query, because an attempt must now
+// clear the substance bar before it counts at all. Distinct labels still
+// produce distinct query text, which is what the repeat-press rule reads.
+const q = label => `SELECT ${label} FROM orders GROUP BY category`;
+const err   = (sql, msg) => ({ sql: q(sql), outcome: 'error', error: msg || 'near "x": syntax error' });
+const wrong = (sql, rows) => ({ sql: q(sql), outcome: 'wrong', rows: rows || [[1]] });
+const right = (sql) => ({ sql: q(sql), outcome: 'correct', rows: [[1]] });
+const raw   = (sql) => ({ sql, outcome: 'error', error: 'near "x": syntax error' });
 const hintAt = n => ({ action: ACTION.HINT, afterCountedAttempts: n });
 const revealAt = n => ({ action: ACTION.REVEAL, afterCountedAttempts: n });
 
@@ -84,6 +89,52 @@ check('arm A',
   decide({ arm: 'A', attempts: [wrong('a'), right('b')] }).action, ACTION.NONE);
 check('arm B',
   decide({ arm: 'B', attempts: [right('b')] }).action, ACTION.NONE);
+
+console.log('\nTHE SUBSTANCE BAR — added 14 Sep, validated on all 128 round-2 attempts');
+const { isSubstantive, setSchemaIdentifiers } = require('./policy.js');
+const IDS = ['customers', 'products', 'orders', 'order_items', 'category', 'customer_id', 'id'];
+
+check('rishabh: mangled spelling carrying a real mental model still counts',
+  isSubstantive('Select category,count As prodcutcount from products GroupBy category havingcount>=3', IDS), true);
+check('a syntax error that is a real S3 mistake counts',
+  isSubstantive('SELECT customer_id, COUNT(*) FROM orders WHERE COUNT(*) > 3', IDS), true);
+check('keystroke mashing does not count',
+  isSubstantive('asdf', IDS), false);
+check('a bare keyword does not count',
+  isSubstantive('SELECT', IDS), false);
+check('an empty submission does not count',
+  isSubstantive('', IDS), false);
+check('SQL against some other schema does not count',
+  isSubstantive('SELECT * FROM employees', IDS), false);
+check('a short identifier needs a word boundary, so video does not match id',
+  isSubstantive('SELECT video FROM somewhere', ['id']), false);
+check('no configured schema falls open to the keyword half',
+  isSubstantive('SELECT * FROM anything', []), true);
+
+check('three different pieces of junk never open the gate',
+  decide({ arm: 'A', identifiers: IDS,
+           attempts: [raw('asdf'), raw('qwer'), raw('zxcv')] }).action,
+  ACTION.REFUSE_GATE);
+check('and the learner is told to write a query, not to change one',
+  decide({ arm: 'A', identifiers: IDS,
+           attempts: [raw('asdf'), raw('qwer')] }).reason,
+  'write a query against the tables above and run it');
+check('one real attempt after the junk opens the gate',
+  decide({ arm: 'A', identifiers: IDS,
+           attempts: [raw('asdf'), raw('SELECT category FROM products GROUP BY category')] }).action,
+  ACTION.HINT);
+check('junk is not counted toward escalation either',
+  decide({ arm: 'A', identifiers: IDS,
+           attempts: [wrong('a', [[1]]), raw('asdf'), raw('qwer')],
+           helpServed: [hintAt(1)] }).action,
+  ACTION.REFUSE_RETRY);
+check('arm B is untouched by the bar',
+  decide({ arm: 'B', identifiers: IDS, attempts: [raw('asdf')] }).action, ACTION.REVEAL);
+
+setSchemaIdentifiers(IDS);
+check('setSchemaIdentifiers applies when the item does not carry its own',
+  decide({ arm: 'A', attempts: [raw('asdf')] }).action, ACTION.REFUSE_GATE);
+setSchemaIdentifiers([]);
 
 console.log('\nGUARDS');
 throws('an unknown arm is a crash, not a default', () => decide({ arm: 'C', attempts: [] }));

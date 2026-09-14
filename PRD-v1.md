@@ -98,10 +98,29 @@ on Help pressed for (learner, item):
 That is the whole intervention — see below on what the treatment is and is not. `N` is fixed, not adaptive — the study tests withholding, not
 adaptive withholding, and at 3 per arm a varying N would test two variables at once.
 
-**Attempt counting.** Revised 13 Sep, after round 2. An attempt counts if:
+**Attempt counting.** Revised 13 Sep after round 2, and again 14 Sep. An attempt counts if:
 
+- it clears the **substance bar** — it contains at least one SQL keyword **and** at least one
+  table or column name from the study schema, **and**
 - its query text differs from the last counted attempt's, **and**
 - it errored, **or** it executed and its result set differs from the last counted attempt's.
+
+**The substance bar, added 14 Sep.** The text clause stops a learner *repeating* junk. It does not
+stop three *different* pieces of junk earning a hint while retrieving nothing — Koedinger's
+gaming, which his logs say learners find reliably. The bar is deterministic and no model is
+involved. Matching is by substring on purpose: round 2 produced `GroupBy` and `havingcount>=3`,
+mangled spelling carrying a real mental model, and a token match would discard them. Identifiers
+under 4 characters use a word boundary so `id` does not match inside `video`. The schema names are
+derived from `SCHEMA` in `app/index.html` at start-up, so a schema change cannot leave the bar
+pointing at old tables.
+
+**Validated against all 128 logged round-2 attempts: 121 pass.** The 7 rejected are 6 empty
+submissions and one bare `SELECT`. No genuine attempt is lost. Implemented as `isSubstantive()` in
+`app/policy.js`; 14 tests in `app/policy.test.js`.
+
+A learner who has typed only junk is told *"write a query against the tables above and run it"*,
+which is a different line from *"change something in the query and run it once more"*. The two are
+logged distinctly.
 
 Syntax errors are logged as `attempt_type: syntax_error`, never blocked at the UI — blocking
 there destroys the data that is itself the measurement. Help requests are logged and never
@@ -285,9 +304,27 @@ with the build.
    `ANALYSIS-PLAN.md` section 4, with two new checks in front of them — attrition (0a) and
    actual elapsed gap (0b). The old check 1 was replaced: its denominator was about 23 events
    across Arm A, so a percentage could not be computed. Committed before any Arm B data exists.
-3. ~~**Does a syntax error satisfy the gate?**~~ **Closed 13 Sep: yes, it must.** Round 2
-   produced no working query at all in 5 of 21 person-questions. Without this, Arm A serves
-   almost no help and the arms do not differ.
+3. ~~**Does a syntax error satisfy the gate?**~~ **Closed 13 Sep: yes. Mechanism added 14 Sep.**
+
+   The 13 Sep reason was volume: round 2 produced no working query in 5 of 21 person-questions,
+   and 101 of 122 attempts failed to parse. Without this the study runs on 21 attempts and the
+   arms do not differ. True, but a volume argument alone is choosing the rule that yields more
+   data, which is the thing §9 item 2 exists to prevent.
+
+   **The mechanism.** Kornell, Hays & Bjork: a *failed* generation attempt still teaches. Their
+   participants guessed wrong on nearly every weakly-related word pair and still learned more
+   than people who studied the pair intact. The value is in the reach, not the landing. A query
+   that will not parse can carry a complete, wrong mental model — `SELECT customer_id, COUNT(*)
+   FROM orders WHERE COUNT(*) > 3` does not run and is a textbook S3 error. **Parsing is a
+   property of the SQL grammar. Retrieval is a property of the learner.** The gate must test the
+   second.
+
+   There is a fairness argument too. Requiring an executing query locks out the weakest learners
+   — rishabh executed nothing on 3 of 3 round-2 questions and would never have received help.
+   The gate would fail the person it exists to serve.
+
+   **What this leaves open, and how §4 closes it.** `asdf` does not parse either. The substance
+   bar in §4 is what separates a wrong query from a non-query.
 
 ## 10. Counter-metrics
 

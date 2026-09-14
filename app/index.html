@@ -246,6 +246,27 @@ INSERT INTO order_items (id, order_id, product_id, quantity, unit_price) VALUES
  (23,17,7,2,6800.00),
  (24,18,2,1,4500.00),(25,18,11,5,799.00);
 `;
+
+/*
+ * Derive the schema's table and column names from SCHEMA, once, and hand them
+ * to the policy. They are the second half of the substance bar: an attempt must
+ * contain a SQL keyword AND a name from this schema before it counts toward the
+ * gate. See policy.js. Deriving them here rather than hard-coding a list means
+ * a schema change cannot leave the bar pointing at the old tables.
+ */
+const SCHEMA_IDENTIFIERS = (() => {
+  const names = new Set();
+  const RESERVED = new Set(['primary','foreign','unique','check','constraint','references','not','null','default','create','table','drop','if','exists','insert','into','values']);
+  for (const [, table, body] of SCHEMA.matchAll(/CREATE TABLE\s+(\w+)\s*\(([\s\S]*?)\)\s*;/gi)) {
+    names.add(table.toLowerCase());
+    for (const line of body.split('\n')) {
+      const col = line.match(/^\s*([a-z_][a-z0-9_]*)\s+/i);
+      if (col && !RESERVED.has(col[1].toLowerCase())) names.add(col[1].toLowerCase());
+    }
+  }
+  return [...names];
+})();
+POLICY.setSchemaIdentifiers(SCHEMA_IDENTIFIERS);
 const EXPECTED = JSON.parse(atob("eyJNMSI6IFtbIkVsZWN0cm9uaWNzIiwgIjQiXSwgWyJGdXJuaXR1cmUiLCAiMyJdLCBbIktpdGNoZW4iLCAiMyJdXSwgIk0yIjogW1siRWxlY3Ryb25pY3MiLCAiMTg5OTkiXSwgWyJGdXJuaXR1cmUiLCAiMjQ5OTkiXSwgWyJLaXRjaGVuIiwgIjE1OTk5Il1dLCAiTTMiOiBbWyI0IiwgIk5laGEgR3VwdGEiLCAiQmVuZ2FsdXJ1IiwgIjIwMjQtMDQtMDEiXSwgWyI5IiwgIlByaXlhIERhcyIsICJDaGVubmFpIiwgIjIwMjQtMDYtMDEiXSwgWyIxMSIsICJBYXJ0aSBNZW5vbiIsICJCZW5nYWx1cnUiLCAiMjAyNC0wNi0yMCJdLCBbIjE2IiwgIlByaXlhIERhcyIsICJDaGVubmFpIiwgIjIwMjQtMDgtMDUiXV19"));
 /* =======================================================================
  * DEV HARNESS. Not the study app.

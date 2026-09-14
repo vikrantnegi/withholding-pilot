@@ -36,6 +36,62 @@ const DEFAULT_N = 2;
 // ---------------------------------------------------------------------------
 
 /*
+ * THE SUBSTANCE BAR — added 14 Sep 2026.
+ *
+ * A syntax error satisfies the gate (PRD-v1 §9 decision 3). That is right:
+ * 101 of 122 round-2 attempts failed to parse, and a query that will not parse
+ * can still carry a complete, wrong mental model. `SELECT customer, COUNT(*)
+ * FROM orders WHERE COUNT(*) > 3` does not run, and it is a perfect S3 error.
+ * Parsing is a property of the SQL grammar. Retrieval is a property of the
+ * learner. The gate tests the second one.
+ *
+ * But `asdf` does not parse either, and the text-changed rule below only stops
+ * a learner REPEATING junk. Three different pieces of junk would earn a hint
+ * while retrieving nothing. That is Koedinger's gaming, and his logs say
+ * learners find that shortcut reliably.
+ *
+ * So an attempt must look like an attempt at THIS schema: one SQL keyword and
+ * one name from the schema. Deterministic, no model involved.
+ *
+ * Matching is by substring on purpose. Round 2 produced `GroupBy` and
+ * `havingcount>=3` — mangled spelling carrying a real mental model. A token
+ * match would throw those away. Identifiers shorter than 4 characters use a
+ * word boundary instead, so `id` does not match inside `video`.
+ *
+ * Validated against all 128 round-2 logged attempts: 121 pass. The 7 rejected
+ * are 6 empty submissions and one bare `SELECT`. No genuine attempt is lost.
+ */
+
+const SQL_KEYWORDS = [
+  'select','from','where','group','having','order','by',
+  'count','max','min','sum','avg','distinct','join','as',
+];
+
+// Set once at start-up from the study schema. See app/index.html.
+// Left empty, the schema half of the bar is skipped and only the keyword half
+// applies — fail-open, because a misconfigured page must not silently refuse
+// every learner and collapse Arm A into a no-assistant arm.
+let SCHEMA_IDENTIFIERS = [];
+
+function setSchemaIdentifiers(names) {
+  SCHEMA_IDENTIFIERS = (names || []).map(n => String(n).toLowerCase().trim()).filter(Boolean);
+  return SCHEMA_IDENTIFIERS.slice();
+}
+
+function isSubstantive(sql, identifiers) {
+  const low = String(sql == null ? '' : sql).toLowerCase();
+  if (!low.trim()) return false;
+  if (!SQL_KEYWORDS.some(k => low.includes(k))) return false;
+  const ids = identifiers == null ? SCHEMA_IDENTIFIERS : identifiers;
+  if (!ids.length) return true;
+  return ids.some(i => {
+    const id = String(i).toLowerCase();
+    if (id.length >= 4) return low.includes(id);
+    return new RegExp('\\b' + id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b').test(low);
+  });
+}
+
+/*
  * Normalise SQL for the repeat-press check.
  * Case and whitespace only. We are asking "did the learner change anything",
  * not "are these queries equivalent".
@@ -70,7 +126,8 @@ function resultKey(a) {
  * set, so that rule never fired for a learner who could not produce one.
  * Evidence: LEARNING-LOG.md L11.
  */
-function attemptCounts(attempt, previousCounted) {
+function attemptCounts(attempt, previousCounted, identifiers) {
+  if (!isSubstantive(attempt.sql, identifiers)) return false;
   if (!previousCounted) return true;
   if (normSql(attempt.sql) === normSql(previousCounted.sql)) return false;
   if (attempt.outcome === 'error') return true;
@@ -82,10 +139,10 @@ function attemptCounts(attempt, previousCounted) {
  * Each attempt is compared against the last attempt that counted, not against
  * its immediate predecessor — otherwise a repeat press resets the comparison.
  */
-function countableAttempts(attempts) {
+function countableAttempts(attempts, identifiers) {
   const kept = [];
   for (const a of attempts || []) {
-    if (attemptCounts(a, kept[kept.length - 1])) kept.push(a);
+    if (attemptCounts(a, kept[kept.length - 1], identifiers)) kept.push(a);
   }
   return kept;
 }
@@ -116,7 +173,7 @@ function decide(item) {
   const attempts = item.attempts || [];
   const helpServed = item.helpServed || [];
 
-  const counted = countableAttempts(attempts);
+  const counted = countableAttempts(attempts, item.identifiers);
   const solved = attempts.some(a => a.outcome === 'correct');
 
   const out = (action, reason, sinceHelp) => ({
@@ -141,12 +198,12 @@ function decide(item) {
   // THE GATE. No help of any kind until one attempt has counted.
   if (counted.length === 0) {
     const pressedSomething = attempts.length > 0;
-    return out(
-      ACTION.REFUSE_GATE,
-      pressedSomething
-        ? 'change something in the query and run it once more'
-        : 'give it one run first'
-    );
+    const anySubstantive = attempts.some(a => isSubstantive(a.sql, item.identifiers));
+    let reason;
+    if (!pressedSomething) reason = 'give it one run first';
+    else if (!anySubstantive) reason = 'write a query against the tables above and run it';
+    else reason = 'change something in the query and run it once more';
+    return out(ACTION.REFUSE_GATE, reason);
   }
 
   // Once REVEAL has been served it stays served. Pressing Help again re-shows it.
@@ -170,7 +227,8 @@ function decide(item) {
 
 // ---------------------------------------------------------------------------
 
-const POLICY = { ACTION, DEFAULT_N, decide, countableAttempts, attemptCounts, normSql, resultKey };
+const POLICY = { ACTION, DEFAULT_N, decide, countableAttempts, attemptCounts, normSql, resultKey,
+                 isSubstantive, setSchemaIdentifiers, SQL_KEYWORDS };
 
 if (typeof module !== 'undefined' && module.exports) module.exports = POLICY;
 if (typeof window !== 'undefined') window.POLICY = POLICY;
