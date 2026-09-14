@@ -217,8 +217,43 @@ deterministic column.
    from imagination.
 3. **Log persistence.** Supabase table. If it threatens 20 Sep, fall back to the copy-log
    button already working in the mini-screen — 6 people pasting a blob is not the bottleneck.
-4. **The question set.** Two concepts (GROUP BY/HAVING; two-table joins), practice items plus a
-   concept-paired held-out set, frozen before the policy is written so I cannot tune to it.
+4. **The question set.** Revised 14 Sep — see `HYPOTHESIS-LOG.md` v0.1.
+
+   **One concept: GROUP BY/HAVING.** Two-table joins are dead (round 2: 3 of 7 tried, 0
+   solved, with an editor). T1 was already out. There is no second concept, and inventing one
+   blind is how T3 died.
+
+   **Four sub-skills, three practised, one held back.**
+
+   | | sub-skill | practised? |
+   |---|---|---|
+   | S1 | group by the right column | yes |
+   | S2 | choose the right aggregate | yes |
+   | S3 | filter groups, not rows (`WHERE` vs `HAVING`) | yes |
+   | S4 | order by an aggregate | **no — the control** |
+
+   S3 is the modal failure across the 104 logged attempts, so it carries the most weight.
+
+   **Every held-out item is hand-paired to the practice item teaching its sub-skill.** That is
+   the σ(p) mapping (`TODO-HYPOTHESIS-v1.md` §3 item 2), at sub-skill grain rather than
+   concept grain. It is what lets the 28 Sep write-up say the improvement was skill-specific
+   rather than "they got comfortable with the editor".
+
+   **The held-out set tests all four, including the unpractised S4.** Improvement on S1–S3
+   with S4 flat is the result that rules out familiarity. S4 flat *and* S1–S3 flat is a null.
+   S4 rising with the rest means the sub-skills were not separable — assumption 7 in v0.1.
+
+   **Authoring notes.**
+   - Budget ~16 practice items: about 5 each on S1, S2, S3. Yield is 1 usable in 3 written,
+     and they cannot be screened on the pool without burning participants — so write from the
+     104 logged attempts, which say exactly how these seven fail.
+   - Frozen before the policy is tuned, so it cannot be tuned to.
+   - **Both screening rounds' questions are burned**, and the study needs a different schema
+     as well.
+   - Each question needs its own hand-written fallback hint, verified with `checkFallback()`
+     — see item 2.
+   - Pick S4 so it is not at the floor for everyone. If nobody can do it before or after,
+     the contrast proves nothing (v0.1 assumption 5).
 
 ## 7. Cut list — deliberately not built, and why
 

@@ -1,4 +1,4 @@
-# Status — as of 13 Sep 2026 (late evening)
+# Status — as of 14 Sep 2026
 
 **The only source of truth for the present.** If another file disagrees with this one about today,
 this one wins. **Update the date above whenever you touch it.**
@@ -10,7 +10,7 @@ About half is reserved for testing, freeze and packaging by design.
 
 ## Where the project is
 
-**Scope is locked. The design is sound. The slice runs. The question set does not exist.**
+**The slice runs, the guard is measured, the scope is settled. The question set does not exist.**
 
 The 13 Sep checkpoint was a thin working slice end to end. **It runs**, one day late in effect
 and on the day in fact. Open `app/index.html`; `?arm=B` flips the arm. Verified in a headless
@@ -81,7 +81,7 @@ an unresolved decision.
 
 Ordered by what blocks the most. Decisions 1 and 2 block the build.
 
-### 1. Not enough moments to act on — the one that decides whether 28 Sep produces anything
+### 1. ~~Not enough moments to act on~~ — CLOSED 14 Sep, with decision 3. See below
 
 Round 2 measured 3 usable moments out of 21 tries. Scaled to the plan of 3 learners and 16
 questions, that is about 7 moments against a budgeted 48.
@@ -107,13 +107,16 @@ claim.
 This also unblocks the v1 entry in `HYPOTHESIS-LOG.md`. After that, delete
 `TODO-HYPOTHESIS-v1.md` as its own header instructs.
 
-### 3. The second topic
+### 3. ~~The second topic~~ — CLOSED 14 Sep
 
-T3, joining two tables, is dead. Round 2: three of seven tried it, none solved it. T1 was already
-out, because on a one-line query a hint and the answer are the same string.
+**One concept: GROUP BY/HAVING. Four sub-skills, three practised, S4 held back as the control.**
 
-So T2 is the only topic left, and the locked scope calls for two. Either write a second topic close
-to T2, or drop to one topic and redo the cell arithmetic. Blocks `PRD-v1.md` §6 item 4.
+Held-out items are hand-paired to practice items by sub-skill, which keeps the attribution
+argument without a second concept. Cells drop from 4 to 2, so ~23 moments become ~11 per cell
+against a budget of 12.
+
+`HYPOTHESIS-LOG.md` v0.1 records the evidence and what it changed. `PRD-v1.md` §6 item 4 has the
+authoring spec. **Decision 1 closes with it** — the moments arithmetic was the same problem.
 
 ### 4. Does a syntax error satisfy the gate?
 
@@ -175,9 +178,9 @@ Demo Day: 11 Oct 2026, 100x HQ.
 
 ## Next actions
 
-1. **Decide decision 1**, and decision 3 with it — they are one decision. Dropping to one topic
-   halves the cells and roughly closes the moments arithmetic. Nothing about the question set is
-   safe to author until this is settled, and item 4 is now the only thing between here and 20 Sep.
+1. **Author the question set** — `PRD-v1.md` §6 item 4. One concept, ~16 practice items over
+   S1/S2/S3, a held-out set covering all four sub-skills, the pairing table, and a fallback hint
+   per question. This is now the only thing between here and 20 Sep.
 2. Fill the four numbers in `TODO-HYPOTHESIS-v1.md` §4. Append v1 to `HYPOTHESIS-LOG.md`. Delete the
    TODO file.
 3. ~~**`git init`.**~~ Done 13 Sep, commit `7439b80`. Commit small and often from here.
