@@ -79,22 +79,18 @@ an unresolved decision.
 
 ## Open decisions
 
-Ordered by what blocks the most. Decisions 1 and 2 block the build.
+Only decision 2 is still open. It blocks nothing today, and everything on 27 Sep.
 
-### 1. ~~Not enough moments to act on~~ — CLOSED 14 Sep, with decision 3. See below
+### 1. ~~Not enough moments to act on~~ — CLOSED 14 Sep
 
-Round 2 measured 3 usable moments out of 21 tries. Scaled to the plan of 3 learners and 16
-questions, that is about 7 moments against a budgeted 48.
+Round 2 measured 0.14 moments per person-question, which over 48 person-questions is ~7 against
+a budgeted 48. Two fixes were available and only one of them left the treatment intact.
 
-Two directions, and they are not equivalent.
+Closed by the combination: a syntax error satisfies the gate (§9.3, raising the rate to ~0.48,
+so ~23 moments), and the scope drops to one concept (halving the cells to 2, so ~11 each against
+a budget of 12). It was always the same decision as 3.
 
-- Write questions that fail more often on the first working attempt. This raises the count without
-  touching what is being tested.
-- Drop the rule that the first attempt must run. That rule is half the treatment. So this raises the
-  count by changing what is being tested.
-
-**Undecided.** Numbers in `EXPERIMENT-LOG.md` Run 2. The reasoning error that hid this is
-`LEARNING-LOG.md` L5.
+Numbers in `EXPERIMENT-LOG.md` Run 2. The reasoning error that hid it is `LEARNING-LOG.md` L5.
 
 ### 2. The four cut-off numbers — overdue since 6 Sep
 
@@ -118,12 +114,11 @@ against a budget of 12.
 `HYPOTHESIS-LOG.md` v0.1 records the evidence and what it changed. `PRD-v1.md` §6 item 4 has the
 authoring spec. **Decision 1 closes with it** — the moments arithmetic was the same problem.
 
-### 4. Does a syntax error satisfy the gate?
+### 4. ~~Does a syntax error satisfy the gate?~~ — CLOSED 13 Sep
 
-Round 2 answers this: **yes, it must.** Five of 21 tries produced no working query at all.
-
-Note this recovers 5 of the 18 missing moments, and 3 of those 5 are one person. It does not solve
-decision 1.
+**Yes.** Five of 21 tries produced no working query at all. Built in `app/policy.js`, with a
+text-changed clause so identical re-presses do not count (`LEARNING-LOG.md` L11). `PRD-v1.md`
+§9.3.
 
 ### 5. Error message quality
 
@@ -133,10 +128,9 @@ sustain 63 useless attempts.
 Two options. Give both groups error messages of matched quality. Or write this up as a stated limit
 before Arm B runs. Evidence: `LEARNING-LOG.md` L7.
 
-### 6. How many tries with the hint before showing the answer
+### 6. ~~How many tries with the hint before showing the answer~~ — CLOSED 13 Sep
 
-`PRD-v1.md` §9 recommends 2. Low stakes, but it sits inside the policy code, so fix it before
-writing item 1.
+**N = 2.** Fixed, never adaptive. A constant in `app/policy.js`; `PRD-v1.md` §9.1.
 
 ---
 
