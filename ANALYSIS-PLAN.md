@@ -12,6 +12,10 @@ plan. The "v1" suggested a hypothesis version. It is neither.
 not know which way it will fall. On 28 Sep any threshold you invent is contaminated, because by
 then you know what each one lets you conclude.
 
+**FINAL as of 14 Sep 2026.** Vikrant reviewed every threshold against the arithmetic below and
+accepted all of them. No study data exists yet. Any change made after data exists goes in as a
+dated entry below, with its reason. Never edit one in silently.
+
 **Why it matters:** without these numbers fixed in advance, a null result on 28 Sep cannot be
 read. You will not be able to tell "my policy is wrong" from "my logger was broken". You will be
 blamed for the second.
@@ -43,6 +47,33 @@ decided on 13 Sep. Across Arm A's 48 person-questions that is about 23 moments.
 
 **Why it matters:** the whole study runs on about 23 events. Every threshold below is sized
 against that number, not against 48.
+
+---
+
+## The arithmetic every threshold is sized against
+
+The held-out set is planned at **12 questions** — four sub-skills, three items each. Three
+learners per arm. So each arm produces **36 person-questions** on the removal test.
+
+That gives one conversion. Every threshold below is that conversion in disguise.
+
+```
+1 question  =  1/36  =  2.8 percentage points of arm average
+```
+
+**The effect being looked for is under two questions.** Bastani's guardrailed tutor beat his
+answer-giving arm by about 0.05 on a 0 to 1 scale. That is 5 percentage points. On 36
+person-questions that is **1.8 questions**. He needed 839 students to see it.
+
+**Convert any threshold into questions before arguing with it.** A percentage hides how small
+these counts are.
+
+**If the held-out set is not 12**, re-derive check 3 and the gap clause in check 2. Both are
+sized against headroom, and headroom depends on the count. Record the final count here at
+question-set freeze.
+
+**Why it matters:** every threshold below exists to protect 1.8 questions of signal. A floor, a
+ceiling, or a single dropout each cost more than that.
 
 ---
 
@@ -188,21 +219,64 @@ correctly and changed nobody's behaviour has still not run the experiment.
 
 ### 2. Floor — did anyone learn anything?
 
-Arm B's removal-test mean below **15%** is a failure.
+**Fails if two things are both true.** Arm B's removal-test mean is below **15%**, and the gap
+between the arms is under **15 points**.
 
-**Why it matters:** you cannot detect a gap between two numbers that are both near zero. If the
-baseline arm learned nothing, the comparison has no room to show anything either way.
+In questions, on a 12-item set:
+
+- 15% of 36 person-questions = 5.4 questions. That is **under 2 correct out of 12 per person**.
+- A 15-point gap = 5.4 questions across the arm.
+
+| Arm B | Arm A | gap | verdict |
+|---|---|---|---|
+| 2, 2, 1 = 13.9% | 3, 2, 2 = 19.4% | 5.5 points, 2 questions | **Fail** |
+| 2, 2, 2 = 16.7% | anything | any | Pass, the floor is cleared |
+| 1, 1, 0 = 5.6% | 9, 8, 8 = 69.4% | 63.8 points, 23 questions | Pass, a real effect |
+
+**Why the gap clause is there.** Without it, a crushed baseline beside a strong Arm A would fail
+on the floor. That combination is the finding, not a broken instrument.
+
+**Why 15% and not 10%.** At 2 of 12 per person the arm total is 6 questions. One lucky guess
+moves that total by 17%. At 1 of 12 the total is 3, and one guess moves it by 33%. Below 15% a
+single guess starts to outweigh the policy.
+
+**Why the risk is real here.** The testers were screened *for* a floor. They were chosen because
+they cannot write SQL. Everyone scoring near zero is this group's natural failure mode.
+
+**Why it matters:** below the floor you cannot tell a real effect from one person having a good
+morning. Two questions, across three people, over a week, is not a result.
 
 ### 3. Ceiling — was there room for a gap to appear?
 
-Either arm's mean above **80%** is a failure.
+**Fails if either arm's mean is above 80%.**
 
-The screening band was a 20% to 85% solve rate. Above 80% on the removal test, the top arm is
-saturated. The gap is then squeezed by the scale, not by the policy.
+80% of 36 person-questions = 28.8 questions. That is **9.6 correct out of 12 per person**.
 
-**Why it matters:** `LEARNING-LOG.md` L6 found a question inside the solve-rate band that was
-still useless. It was solved on the first attempt. Solve rate describes where people ended up.
-Consider checking attempts-to-first-correct here as well.
+Either arm, not only the higher one. The gap needs room above whichever arm is on top.
+
+**The derivation.** The maximum is 12. What matters is what is left above the leading arm.
+
+| leading arm at | per person | headroom | fits a 1.8-question effect? |
+|---|---|---|---|
+| 80% | 9.6 of 12 | 2.4 questions | yes, just |
+| 90% | 10.8 of 12 | 1.2 questions | no |
+| 95% | 11.4 of 12 | 0.6 questions | no |
+
+80% is the point where the headroom left is still larger than the effect being looked for.
+
+**The same learners show a bigger gap on harder questions.** Hold the skill difference fixed:
+
+| question set | Arm A | Arm B | visible gap |
+|---|---|---|---|
+| too easy | 9.7 of 12 | 8.0 of 12 | 1.7 questions |
+| well pitched | 6.0 of 12 | 3.0 of 12 | 3.0 questions |
+
+Same people, same policy. The gap nearly doubles because the second set left room for it.
+
+**Why it matters:** `LEARNING-LOG.md` L6 found a question inside the 20 to 85% solve-rate band
+that was still useless. It was solved on the first attempt. Solve rate says where people ended
+up. The mechanism lives on the path they took. Consider checking attempts-to-first-correct here
+as well.
 
 ### 4. Mapping — did the held-out items test what was practised?
 
@@ -257,8 +331,10 @@ to support you. Writing both directions down today is what makes that reach legi
 
 ## Still open
 
-- **The held-out set size is not fixed.** Every threshold above is a percentage, so they survive
-  whatever the count turns out to be. Fix the count at question-set freeze and record it here.
+- **The held-out set size is planned at 12, not yet frozen.** Every threshold is a percentage and
+  survives a change. The *derivations* do not — check 3 and check 2's gap clause are sized
+  against headroom on a 12-item set. Confirm the count at question-set freeze and record it here.
+  If it moves, re-derive both.
 - **Check 3 may be measuring the wrong thing.** Solve rate sits on where learners ended up.
   `LEARNING-LOG.md` L6 argues the mechanism lives on the path they took.
 
@@ -274,6 +350,8 @@ to support you. Writing both directions down today is what makes that reach legi
 | Checks 0a and 0b added | Attrition and elapsed gap were threats with no gate |
 | Check 4b added | Assumption 5 had no test |
 | Section 5 added | Attempt rate and satisfaction had no pre-committed direction |
+| Sizing arithmetic added; all numbers marked FINAL 14 Sep | The thresholds were percentages with no stated basis. They are now derived from 36 person-questions and a 1.8-question expected effect |
+| Check 2 gained an AND clause | The floor alone would have failed a crushed baseline next to a strong Arm A, which is the finding |
 | Old "new untested assumptions" 5 and 6 deleted | Both stale. One assumed 2 concepts, the other assumed the competence estimator, and both are cut |
 | Section 3 budget corrected, 48 to about 23 | `LEARNING-LOG.md` L5 |
 
