@@ -26,7 +26,7 @@ function throws(name, fn) {
 // The label is expanded into a plausible query, because an attempt must now
 // clear the substance bar before it counts at all. Distinct labels still
 // produce distinct query text, which is what the repeat-press rule reads.
-const q = label => `SELECT ${label} FROM orders GROUP BY category`;
+const q = label => `SELECT ${label} FROM deploys GROUP BY service`;
 const err   = (sql, msg) => ({ sql: q(sql), outcome: 'error', error: msg || 'near "x": syntax error' });
 const wrong = (sql, rows) => ({ sql: q(sql), outcome: 'wrong', rows: rows || [[1]] });
 const right = (sql) => ({ sql: q(sql), outcome: 'correct', rows: [[1]] });
@@ -44,12 +44,12 @@ console.log('\nARM A — the gate');
 check('no attempts at all is refused',
   decide({ arm: 'A', attempts: [] }).action, ACTION.REFUSE_GATE);
 check('a syntax error satisfies the gate (open decision 3, answered by round 2)',
-  decide({ arm: 'A', attempts: [err('GROUPBY category')] }).action, ACTION.HINT);
+  decide({ arm: 'A', attempts: [err('GROUPBY service')] }).action, ACTION.HINT);
 check('one wrong but executing attempt satisfies the gate',
-  decide({ arm: 'A', attempts: [wrong('select * from products')] }).action, ACTION.HINT);
+  decide({ arm: 'A', attempts: [wrong('select * from deploys')] }).action, ACTION.HINT);
 
 console.log('\nARM A — the text-changed clause (rishabh)');
-const samePress = [err('GroupBy category'), err('GroupBy category'), err('groupby  CATEGORY ')];
+const samePress = [err('GroupBy service'), err('GroupBy service'), err('groupby  SERVICE ')];
 check('five identical presses are one attempt, not five',
   countableAttempts(samePress).length, 1);
 check('identical re-presses alone do not open the gate... ',
@@ -92,12 +92,14 @@ check('arm B',
 
 console.log('\nTHE SUBSTANCE BAR — added 14 Sep, validated on all 128 round-2 attempts');
 const { isSubstantive, setSchemaIdentifiers } = require('./policy.js');
-const IDS = ['customers', 'products', 'orders', 'order_items', 'category', 'customer_id', 'id'];
+const IDS = ['deploys', 'tickets', 'rides', 'deploy_id', 'service', 'env', 'status',
+             'duration_sec', 'ticket_id', 'team', 'priority', 'hours_to_close',
+             'ride_id', 'city', 'driver', 'fare', 'distance_km', 'rating'];
 
 check('rishabh: mangled spelling carrying a real mental model still counts',
-  isSubstantive('Select category,count As prodcutcount from products GroupBy category havingcount>=3', IDS), true);
+  isSubstantive('Select service,count As deploycount from deploys GroupBy service havingcount>=6', IDS), true);
 check('a syntax error that is a real S3 mistake counts',
-  isSubstantive('SELECT customer_id, COUNT(*) FROM orders WHERE COUNT(*) > 3', IDS), true);
+  isSubstantive('SELECT service, COUNT(*) FROM deploys WHERE COUNT(*) > 6', IDS), true);
 check('keystroke mashing does not count',
   isSubstantive('asdf', IDS), false);
 check('a bare keyword does not count',
@@ -121,7 +123,7 @@ check('and the learner is told to write a query, not to change one',
   'write a query against the tables above and run it');
 check('one real attempt after the junk opens the gate',
   decide({ arm: 'A', identifiers: IDS,
-           attempts: [raw('asdf'), raw('SELECT category FROM products GROUP BY category')] }).action,
+           attempts: [raw('asdf'), raw('SELECT service FROM deploys GROUP BY service')] }).action,
   ACTION.HINT);
 check('junk is not counted toward escalation either',
   decide({ arm: 'A', identifiers: IDS,

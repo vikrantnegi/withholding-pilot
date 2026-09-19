@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Learning OS — working slice (dev harness)</title>
+<title>SQL practice — GROUP BY and HAVING</title>
 <style>
   :root{
     --bg:#faf9f7; --panel:#fff; --ink:#1c1c1a; --muted:#6b6b66; --line:#e3e1dc;
@@ -72,8 +72,8 @@
 <body>
 <div class="wrap">
 
-  <h1>Three SQL questions</h1>
-  <p class="sub">Round 2. Should take 15–20 minutes.</p>
+  <h1>SQL practice — grouping and filtering groups</h1>
+  <p class="sub">Practice session. 16 questions — get through what you can.</p>
 
   <div class="card intro">
     <p><b>What changed from last time:</b> there's a real database in this page and a Run
@@ -88,23 +88,29 @@
   </div>
 
   <details open>
-    <summary>The database — same four tables as last time</summary>
+    <summary>The database — three tables, new since last time</summary>
     <div class="schema">
-      <div class="tbl"><h4>customers</h4><ul>
-        <li><code>id</code> integer</li><li><code>name</code> text</li>
-        <li><code>city</code> text</li><li><code>signup_date</code> date</li></ul></div>
-      <div class="tbl"><h4>products</h4><ul>
-        <li><code>id</code> integer</li><li><code>name</code> text</li>
-        <li><code>category</code> text</li><li><code>price</code> number</li></ul></div>
-      <div class="tbl"><h4>orders</h4><ul>
-        <li><code>id</code> integer</li><li><code>customer_id</code> → customers.id</li>
-        <li><code>order_date</code> date</li>
-        <li><code>status</code> text — <code>completed</code> or <code>cancelled</code></li></ul></div>
-      <div class="tbl"><h4>order_items</h4><ul>
-        <li><code>id</code> integer</li><li><code>order_id</code> → orders.id</li>
-        <li><code>product_id</code> → products.id</li>
-        <li><code>quantity</code> integer</li><li><code>unit_price</code> number</li></ul></div>
+      <div class="tbl"><h4>deploys</h4><ul>
+        <li><code>deploy_id</code> integer</li>
+        <li><code>service</code> text — <code>auth</code>, <code>billing</code>, <code>notify</code>, <code>payments</code>, <code>search</code></li>
+        <li><code>env</code> text — <code>prod</code> or <code>staging</code></li>
+        <li><code>status</code> text — <code>success</code> or <code>failed</code></li>
+        <li><code>duration_sec</code> integer</li></ul></div>
+      <div class="tbl"><h4>tickets</h4><ul>
+        <li><code>ticket_id</code> integer</li>
+        <li><code>team</code> text — <code>data</code>, <code>mobile</code>, <code>platform</code>, <code>web</code></li>
+        <li><code>priority</code> text — <code>P1</code>, <code>P2</code>, <code>P3</code></li>
+        <li><code>status</code> text — <code>open</code> or <code>closed</code></li>
+        <li><code>hours_to_close</code> integer</li></ul></div>
+      <div class="tbl"><h4>rides</h4><ul>
+        <li><code>ride_id</code> integer</li>
+        <li><code>city</code> text — Delhi, Indore, Jaipur, Kochi, Pune</li>
+        <li><code>driver</code> text</li>
+        <li><code>fare</code> integer</li>
+        <li><code>distance_km</code> number</li>
+        <li><code>rating</code> integer — 3 to 5</li></ul></div>
     </div>
+    <p class="tiny">Nothing here joins to anything. Every question is answerable from one table.</p>
   </details>
 
   <div id="boot" class="boot">Loading the database…</div>
@@ -134,118 +140,135 @@
 <script src="hint-writer.js"></script>
 <script src="transport.js"></script>
 <script src="help-session.js"></script>
+<script src="grade-rule.js"></script>
 
 <script>
-const SCHEMA = `-- Screener schema: small e-commerce store.
--- Portable subset: runs on Supabase/Postgres AND on SQLite (so you can grade with zero setup).
-
-DROP TABLE IF EXISTS order_items;
-DROP TABLE IF EXISTS orders;
-DROP TABLE IF EXISTS products;
-DROP TABLE IF EXISTS customers;
-
-CREATE TABLE customers (
-  id          INTEGER PRIMARY KEY,
-  name        TEXT NOT NULL,
-  city        TEXT NOT NULL,
-  signup_date DATE NOT NULL
-);
-
-CREATE TABLE products (
-  id       INTEGER PRIMARY KEY,
-  name     TEXT NOT NULL,
-  category TEXT NOT NULL,
-  price    NUMERIC(10,2) NOT NULL
-);
-
-CREATE TABLE orders (
-  id          INTEGER PRIMARY KEY,
-  customer_id INTEGER NOT NULL REFERENCES customers(id),
-  order_date  DATE NOT NULL,
-  status      TEXT NOT NULL          -- 'completed' or 'cancelled'
-);
-
-CREATE TABLE order_items (
-  id         INTEGER PRIMARY KEY,
-  order_id   INTEGER NOT NULL REFERENCES orders(id),
-  product_id INTEGER NOT NULL REFERENCES products(id),
-  quantity   INTEGER NOT NULL,
-  unit_price NUMERIC(10,2) NOT NULL
-);
-
--- Deliberate traps in the data:
---   customers 9 and 10 have no orders at all
---   customer 7 (Priya Das) has orders, but both are cancelled  <- separates
---     "no rows in orders" from "no completed orders" in Q8
---   product 12 (Rain Jacket) was never ordered
---   Bengaluru has 3 customers; Delhi/Mumbai/Pune have 2 each   <- forces a tiebreak in Q3
-
-INSERT INTO customers (id, name, city, signup_date) VALUES
- (1,'Aarti Menon','Bengaluru','2024-01-15'),
- (2,'Rohit Sharma','Delhi','2024-02-03'),
- (3,'Neha Gupta','Bengaluru','2024-02-20'),
- (4,'Imran Qureshi','Mumbai','2024-03-11'),
- (5,'Sneha Rao','Pune','2024-04-02'),
- (6,'Vikas Nair','Bengaluru','2024-04-18'),
- (7,'Priya Das','Chennai','2024-05-05'),
- (8,'Karan Mehta','Delhi','2024-05-22'),
- (9,'Divya Iyer','Mumbai','2024-06-09'),
- (10,'Sameer Joshi','Pune','2024-06-25');
-
-INSERT INTO products (id, name, category, price) VALUES
- (1,'Wireless Mouse','Electronics',899.00),
- (2,'Mechanical Keyboard','Electronics',4500.00),
- (3,'27-inch Monitor','Electronics',18999.00),
- (4,'USB-C Hub','Electronics',2499.00),
- (5,'Office Chair','Furniture',12500.00),
- (6,'Standing Desk','Furniture',24999.00),
- (7,'Bookshelf','Furniture',6800.00),
- (8,'Espresso Machine','Kitchen',15999.00),
- (9,'Steel Cookware Set','Kitchen',3200.00),
- (10,'Air Fryer','Kitchen',7499.00),
- (11,'Cotton T-Shirt','Apparel',799.00),
- (12,'Rain Jacket','Apparel',3499.00);
-
-INSERT INTO orders (id, customer_id, order_date, status) VALUES
- (1,1,'2024-03-01','completed'),
- (2,1,'2024-04-12','completed'),
- (3,2,'2024-03-15','completed'),
- (4,3,'2024-04-01','cancelled'),
- (5,3,'2024-05-10','completed'),
- (6,4,'2024-04-20','completed'),
- (7,5,'2024-05-01','completed'),
- (8,6,'2024-05-15','completed'),
- (9,7,'2024-06-01','cancelled'),
- (10,8,'2024-06-10','completed'),
- (11,1,'2024-06-20','cancelled'),
- (12,2,'2024-07-02','completed'),
- (13,4,'2024-07-15','completed'),
- (14,6,'2024-07-20','completed'),
- (15,5,'2024-08-01','completed'),
- (16,7,'2024-08-05','cancelled'),
- (17,8,'2024-08-12','completed'),
- (18,3,'2024-08-20','completed');
-
-INSERT INTO order_items (id, order_id, product_id, quantity, unit_price) VALUES
- (1,1,1,2,899.00),(2,1,4,1,2499.00),
- (3,2,5,1,12500.00),
- (4,3,3,1,18999.00),(5,3,2,1,4500.00),
- (6,4,11,3,799.00),
- (7,5,10,1,7499.00),
- (8,6,8,1,15999.00),(9,6,9,2,3200.00),
- (10,7,7,1,6800.00),
- (11,8,6,1,24999.00),
- (12,9,1,1,899.00),(13,9,11,2,799.00),
- (14,10,2,1,4500.00),(15,10,4,2,2499.00),
- (16,11,3,1,18999.00),
- (17,12,5,2,12500.00),
- (18,13,10,1,7499.00),(19,13,9,1,3200.00),
- (20,14,1,3,899.00),
- (21,15,8,1,15999.00),
- (22,16,6,1,24999.00),
- (23,17,7,2,6800.00),
- (24,18,2,1,4500.00),(25,18,11,5,799.00);
+/* The study schema. Generated from study-questions/schema.sql — keep the two identical,
+ * then re-run node study-questions/validate-substance-bar.js. */
+const SCHEMA = `
+CREATE TABLE deploys (deploy_id INTEGER PRIMARY KEY, service TEXT, env TEXT, status TEXT, duration_sec INTEGER);
+CREATE TABLE tickets (ticket_id INTEGER PRIMARY KEY, team TEXT, priority TEXT, status TEXT, hours_to_close INTEGER);
+CREATE TABLE rides (ride_id INTEGER PRIMARY KEY, city TEXT, driver TEXT, fare INTEGER, distance_km REAL, rating INTEGER);
+INSERT INTO deploys VALUES (1, 'search', 'staging', 'success', 64);
+INSERT INTO deploys VALUES (2, 'auth', 'staging', 'success', 69);
+INSERT INTO deploys VALUES (3, 'payments', 'staging', 'failed', 262);
+INSERT INTO deploys VALUES (4, 'notify', 'staging', 'failed', 322);
+INSERT INTO deploys VALUES (5, 'notify', 'staging', 'success', 103);
+INSERT INTO deploys VALUES (6, 'billing', 'staging', 'success', 243);
+INSERT INTO deploys VALUES (7, 'auth', 'staging', 'failed', 108);
+INSERT INTO deploys VALUES (8, 'search', 'prod', 'failed', 100);
+INSERT INTO deploys VALUES (9, 'payments', 'prod', 'success', 389);
+INSERT INTO deploys VALUES (10, 'billing', 'staging', 'success', 367);
+INSERT INTO deploys VALUES (11, 'billing', 'prod', 'failed', 72);
+INSERT INTO deploys VALUES (12, 'payments', 'staging', 'success', 294);
+INSERT INTO deploys VALUES (13, 'payments', 'prod', 'success', 278);
+INSERT INTO deploys VALUES (14, 'payments', 'prod', 'success', 167);
+INSERT INTO deploys VALUES (15, 'billing', 'staging', 'failed', 193);
+INSERT INTO deploys VALUES (16, 'payments', 'prod', 'success', 269);
+INSERT INTO deploys VALUES (17, 'auth', 'staging', 'failed', 254);
+INSERT INTO deploys VALUES (18, 'billing', 'prod', 'failed', 290);
+INSERT INTO deploys VALUES (19, 'notify', 'staging', 'success', 79);
+INSERT INTO deploys VALUES (20, 'payments', 'prod', 'success', 219);
+INSERT INTO deploys VALUES (21, 'payments', 'prod', 'success', 273);
+INSERT INTO deploys VALUES (22, 'auth', 'staging', 'success', 282);
+INSERT INTO deploys VALUES (23, 'auth', 'staging', 'success', 198);
+INSERT INTO deploys VALUES (24, 'payments', 'prod', 'failed', 237);
+INSERT INTO deploys VALUES (25, 'search', 'staging', 'success', 221);
+INSERT INTO deploys VALUES (26, 'billing', 'staging', 'success', 151);
+INSERT INTO deploys VALUES (27, 'search', 'staging', 'success', 243);
+INSERT INTO deploys VALUES (28, 'notify', 'prod', 'failed', 269);
+INSERT INTO deploys VALUES (29, 'notify', 'prod', 'success', 260);
+INSERT INTO deploys VALUES (30, 'payments', 'prod', 'success', 223);
+INSERT INTO deploys VALUES (31, 'notify', 'staging', 'failed', 130);
+INSERT INTO deploys VALUES (32, 'billing', 'staging', 'success', 46);
+INSERT INTO deploys VALUES (33, 'notify', 'staging', 'failed', 42);
+INSERT INTO deploys VALUES (34, 'billing', 'prod', 'success', 352);
+INSERT INTO deploys VALUES (35, 'payments', 'prod', 'success', 393);
+INSERT INTO deploys VALUES (36, 'payments', 'staging', 'success', 388);
+INSERT INTO deploys VALUES (37, 'payments', 'prod', 'success', 241);
+INSERT INTO deploys VALUES (38, 'auth', 'prod', 'success', 71);
+INSERT INTO deploys VALUES (39, 'billing', 'staging', 'success', 265);
+INSERT INTO deploys VALUES (40, 'billing', 'staging', 'success', 66);
+INSERT INTO tickets VALUES (1, 'mobile', 'P1', 'closed', 69);
+INSERT INTO tickets VALUES (2, 'mobile', 'P2', 'open', 10);
+INSERT INTO tickets VALUES (3, 'web', 'P3', 'closed', 82);
+INSERT INTO tickets VALUES (4, 'platform', 'P2', 'open', 61);
+INSERT INTO tickets VALUES (5, 'mobile', 'P1', 'open', 60);
+INSERT INTO tickets VALUES (6, 'data', 'P2', 'closed', 19);
+INSERT INTO tickets VALUES (7, 'mobile', 'P3', 'closed', 34);
+INSERT INTO tickets VALUES (8, 'data', 'P3', 'closed', 3);
+INSERT INTO tickets VALUES (9, 'web', 'P3', 'closed', 89);
+INSERT INTO tickets VALUES (10, 'mobile', 'P3', 'closed', 83);
+INSERT INTO tickets VALUES (11, 'mobile', 'P3', 'open', 67);
+INSERT INTO tickets VALUES (12, 'platform', 'P1', 'closed', 29);
+INSERT INTO tickets VALUES (13, 'platform', 'P3', 'closed', 25);
+INSERT INTO tickets VALUES (14, 'web', 'P2', 'open', 30);
+INSERT INTO tickets VALUES (15, 'web', 'P3', 'closed', 4);
+INSERT INTO tickets VALUES (16, 'mobile', 'P2', 'closed', 25);
+INSERT INTO tickets VALUES (17, 'platform', 'P2', 'open', 45);
+INSERT INTO tickets VALUES (18, 'platform', 'P1', 'closed', 30);
+INSERT INTO tickets VALUES (19, 'data', 'P1', 'closed', 62);
+INSERT INTO tickets VALUES (20, 'mobile', 'P2', 'open', 45);
+INSERT INTO tickets VALUES (21, 'mobile', 'P3', 'closed', 50);
+INSERT INTO tickets VALUES (22, 'web', 'P2', 'open', 56);
+INSERT INTO tickets VALUES (23, 'platform', 'P1', 'open', 51);
+INSERT INTO tickets VALUES (24, 'data', 'P2', 'open', 11);
+INSERT INTO tickets VALUES (25, 'web', 'P1', 'open', 4);
+INSERT INTO tickets VALUES (26, 'web', 'P3', 'open', 84);
+INSERT INTO tickets VALUES (27, 'web', 'P3', 'open', 61);
+INSERT INTO tickets VALUES (28, 'platform', 'P1', 'closed', 17);
+INSERT INTO tickets VALUES (29, 'mobile', 'P1', 'open', 84);
+INSERT INTO tickets VALUES (30, 'mobile', 'P3', 'open', 18);
+INSERT INTO tickets VALUES (31, 'data', 'P1', 'open', 28);
+INSERT INTO tickets VALUES (32, 'mobile', 'P2', 'closed', 65);
+INSERT INTO tickets VALUES (33, 'web', 'P3', 'closed', 70);
+INSERT INTO tickets VALUES (34, 'data', 'P1', 'closed', 46);
+INSERT INTO tickets VALUES (35, 'data', 'P3', 'closed', 67);
+INSERT INTO tickets VALUES (36, 'data', 'P3', 'closed', 20);
+INSERT INTO rides VALUES (1, 'Delhi', 'Divya', 219, 13.3, 5);
+INSERT INTO rides VALUES (2, 'Indore', 'Bela', 50, 1.6, 5);
+INSERT INTO rides VALUES (3, 'Delhi', 'Farhan', 232, 15.4, 4);
+INSERT INTO rides VALUES (4, 'Indore', 'Farhan', 307, 16.9, 3);
+INSERT INTO rides VALUES (5, 'Delhi', 'Bela', 333, 21.4, 4);
+INSERT INTO rides VALUES (6, 'Delhi', 'Farhan', 100, 2.4, 5);
+INSERT INTO rides VALUES (7, 'Delhi', 'Divya', 80, 2.1, 5);
+INSERT INTO rides VALUES (8, 'Indore', 'Farhan', 362, 23.4, 4);
+INSERT INTO rides VALUES (9, 'Indore', 'Divya', 237, 11.7, 4);
+INSERT INTO rides VALUES (10, 'Jaipur', 'Farhan', 275, 17.2, 5);
+INSERT INTO rides VALUES (11, 'Delhi', 'Divya', 130, 4.6, 4);
+INSERT INTO rides VALUES (12, 'Pune', 'Divya', 62, 3.1, 4);
+INSERT INTO rides VALUES (13, 'Delhi', 'Bela', 324, 16.6, 4);
+INSERT INTO rides VALUES (14, 'Pune', 'Divya', 103, 4.7, 3);
+INSERT INTO rides VALUES (15, 'Kochi', 'Bela', 242, 10.5, 4);
+INSERT INTO rides VALUES (16, 'Kochi', 'Farhan', 132, 5.1, 4);
+INSERT INTO rides VALUES (17, 'Jaipur', 'Chetan', 175, 11.0, 4);
+INSERT INTO rides VALUES (18, 'Indore', 'Divya', 92, 1.9, 3);
+INSERT INTO rides VALUES (19, 'Indore', 'Farhan', 188, 10.1, 5);
+INSERT INTO rides VALUES (20, 'Delhi', 'Bela', 346, 23.1, 3);
+INSERT INTO rides VALUES (21, 'Delhi', 'Bela', 149, 7.5, 4);
+INSERT INTO rides VALUES (22, 'Jaipur', 'Divya', 307, 19.9, 5);
+INSERT INTO rides VALUES (23, 'Indore', 'Divya', 409, 22.2, 4);
+INSERT INTO rides VALUES (24, 'Delhi', 'Gita', 82, 3.5, 5);
+INSERT INTO rides VALUES (25, 'Jaipur', 'Amit', 393, 21.6, 3);
+INSERT INTO rides VALUES (26, 'Delhi', 'Farhan', 311, 19.5, 3);
+INSERT INTO rides VALUES (27, 'Delhi', 'Divya', 116, 7.5, 4);
+INSERT INTO rides VALUES (28, 'Jaipur', 'Chetan', 423, 23.9, 4);
+INSERT INTO rides VALUES (29, 'Pune', 'Amit', 65, 2.5, 4);
+INSERT INTO rides VALUES (30, 'Pune', 'Chetan', 126, 2.6, 4);
+INSERT INTO rides VALUES (31, 'Pune', 'Chetan', 254, 13.4, 5);
+INSERT INTO rides VALUES (32, 'Jaipur', 'Chetan', 244, 16.6, 4);
+INSERT INTO rides VALUES (33, 'Delhi', 'Gita', 106, 2.3, 5);
+INSERT INTO rides VALUES (34, 'Indore', 'Divya', 370, 23.5, 5);
+INSERT INTO rides VALUES (35, 'Kochi', 'Gita', 127, 3.9, 5);
+INSERT INTO rides VALUES (36, 'Kochi', 'Farhan', 333, 20.3, 4);
+INSERT INTO rides VALUES (37, 'Jaipur', 'Bela', 430, 23.6, 4);
+INSERT INTO rides VALUES (38, 'Jaipur', 'Amit', 174, 10.6, 3);
+INSERT INTO rides VALUES (39, 'Jaipur', 'Divya', 73, 3.1, 3);
+INSERT INTO rides VALUES (40, 'Kochi', 'Farhan', 142, 3.4, 4);
+INSERT INTO rides VALUES (41, 'Jaipur', 'Amit', 278, 15.0, 4);
+INSERT INTO rides VALUES (42, 'Kochi', 'Amit', 113, 5.0, 4);
 `;
+
 
 /*
  * Derive the schema's table and column names from SCHEMA, once, and hand them
@@ -267,38 +290,90 @@ const SCHEMA_IDENTIFIERS = (() => {
   return [...names];
 })();
 POLICY.setSchemaIdentifiers(SCHEMA_IDENTIFIERS);
-const EXPECTED = JSON.parse(atob("eyJNMSI6IFtbIkVsZWN0cm9uaWNzIiwgIjQiXSwgWyJGdXJuaXR1cmUiLCAiMyJdLCBbIktpdGNoZW4iLCAiMyJdXSwgIk0yIjogW1siRWxlY3Ryb25pY3MiLCAiMTg5OTkiXSwgWyJGdXJuaXR1cmUiLCAiMjQ5OTkiXSwgWyJLaXRjaGVuIiwgIjE1OTk5Il1dLCAiTTMiOiBbWyI0IiwgIk5laGEgR3VwdGEiLCAiQmVuZ2FsdXJ1IiwgIjIwMjQtMDQtMDEiXSwgWyI5IiwgIlByaXlhIERhcyIsICJDaGVubmFpIiwgIjIwMjQtMDYtMDEiXSwgWyIxMSIsICJBYXJ0aSBNZW5vbiIsICJCZW5nYWx1cnUiLCAiMjAyNC0wNi0yMCJdLCBbIjE2IiwgIlByaXlhIERhcyIsICJDaGVubmFpIiwgIjIwMjQtMDgtMDUiXV19"));
 /* =======================================================================
- * DEV HARNESS. Not the study app.
+ * THE STUDY QUESTION SET. Generated — do not hand-edit.
  *
- * The three questions below are from the round-2 screener and are BURNED —
- * the study must not reuse them (CLAUDE.md, and README "Both screening
- * rounds' questions are burned"). They are here so the Help path can be
- * exercised end to end today. Swap in the real question set from
- * PRD-v1 §6 item 4 before anyone in the study touches this.
+ * Source: study-questions/items.py (prompts, references) and hints.py
+ * (fallback hints). Regenerate with:
+ *     python3 study-questions/mkappquestions.py --splice
  *
- * Everything that decides anything lives in policy.js / hint-guard.js /
- * help-session.js and is covered by 59 tests. This file is UI only.
+ * 16 practice items. The 12 held-out items are deliberately absent:
+ * anything in this page's source is burned for the removal test.
+ *
+ * EXPECTED is base64 so the answers are not plain text in the source.
  * ======================================================================= */
 
 // The whole difference between the two groups. PRD-v1 §1.
 const ARM = new URLSearchParams(location.search).get('arm') === 'B' ? 'B' : 'A';
 
 const QUESTIONS = [
-  { id:"M1",
-    ask:'For each product <b>category</b>, how many products are in it. Only include categories with <b>at least 3</b> products. Return the category and the count, sorted by count highest first; where two categories tie, sort those by category name A–Z.',
-    reference:"SELECT category, COUNT(*) FROM products GROUP BY category HAVING COUNT(*) >= 3 ORDER BY COUNT(*) DESC, category ASC",
-    fallbackHint:"You are counting rows inside each group, then keeping only some groups. Two different clauses do those two jobs — find the one that filters groups." },
-  { id:"M2",
-    ask:'For each product <b>category</b>, the <b>highest</b> price in that category. Only include categories where that highest price is <b>above 10000</b>. Return the category and that price, sorted by category name A–Z.',
-    reference:"SELECT category, MAX(price) FROM products GROUP BY category HAVING MAX(price) > 10000 ORDER BY category ASC",
-    fallbackHint:"Your filter is running on single rows, before they are collected into groups. Which clause filters after the grouping has happened?" },
-  { id:"M3",
-    ask:'Every <b>cancelled</b> order, with the name and city of the customer who placed it. Return the order id, the customer name, the customer city, and the order date — in that order. Sort by order date oldest first; where two share a date, sort those by order id.',
-    reference:"SELECT o.id, c.name, c.city, o.order_date FROM orders o JOIN customers c ON c.id = o.customer_id WHERE o.status='cancelled' ORDER BY o.order_date ASC, o.id ASC",
-    fallbackHint:"The order id and date live in one table; the name and city live in another. You need to say which column connects them." },
+  { id:"P02",
+    ask:"What is the average fare in each city? Show city and avg_fare rounded to 1 decimal, sorted by city name, A to Z.",
+    reference:"SELECT city, ROUND(AVG(fare),1) AS avg_fare FROM rides GROUP BY city ORDER BY city",
+    fallbackHint:"An average only exists once rides are bundled per city. Bundle first, then average inside each bundle." },
+  { id:"P04",
+    ask:"How far has each driver driven in total? Show driver and total_km rounded to 1 decimal, highest total first.",
+    reference:"SELECT driver, ROUND(SUM(distance_km),1) AS total_km FROM rides GROUP BY driver ORDER BY total_km DESC",
+    fallbackHint:"Adding up distance for every driver means one total per driver. Something has to tell the database where one driver's rows end and the next begin." },
+  { id:"P05",
+    ask:"How many deploys went to each environment of each service? Show service, env and deploy_count, sorted by service name then env name.",
+    reference:"SELECT service, env, COUNT(*) AS deploy_count FROM deploys GROUP BY service, env ORDER BY service, env",
+    fallbackHint:"Here a row of output is one service-and-environment combination, not one service. You can bundle by more than one column." },
+  { id:"P07",
+    ask:"Count only the failed deploys for each service. Show service and failed_count, sorted by service name, A to Z.",
+    reference:"SELECT service, COUNT(*) AS failed_count FROM deploys WHERE status = 'failed' GROUP BY service ORDER BY service",
+    fallbackHint:"A deploy either failed or it did not \u2014 that is a fact about one row. Throw those rows out before the grouping happens, not after." },
+  { id:"P08",
+    ask:"Looking only at rides longer than 10 km, what is the average fare in each city? Show city and avg_fare rounded to 1 decimal, sorted by city name, A to Z.",
+    reference:"SELECT city, ROUND(AVG(fare),1) AS avg_fare FROM rides WHERE distance_km > 10 GROUP BY city ORDER BY city",
+    fallbackHint:"Distance belongs to a single ride, so the length test happens while you are still looking at individual rides, before they are bundled by city." },
+  { id:"P09",
+    ask:"How many P1 tickets has each team closed? Show team and closed_p1, sorted by team name, A to Z.",
+    reference:"SELECT team, COUNT(*) AS closed_p1 FROM tickets WHERE priority = 'P1' AND status = 'closed' GROUP BY team ORDER BY team",
+    fallbackHint:"Two conditions, both about one ticket: its priority and its status. Both belong at the row stage, before grouping." },
+  { id:"P10",
+    ask:"Considering prod deploys only, what is the average deploy duration per service? Show service and avg_seconds rounded to 1 decimal, slowest first.",
+    reference:"SELECT service, ROUND(AVG(duration_sec),1) AS avg_seconds FROM deploys WHERE env = 'prod' GROUP BY service ORDER BY avg_seconds DESC",
+    fallbackHint:"Environment is a property of one deploy. Drop the staging rows before the averaging starts, or the average will include them." },
+  { id:"P12",
+    ask:"Among closed tickets only, what is the longest close time for each priority? Show priority and longest_hours, sorted by priority, P1 first.",
+    reference:"SELECT priority, MAX(hours_to_close) AS longest_hours FROM tickets WHERE status = 'closed' GROUP BY priority ORDER BY priority",
+    fallbackHint:"Being closed is a property of one ticket. If you test it after grouping, the database is testing a group against a row's value." },
+  { id:"P13",
+    ask:"Ignoring the auth service, how many successful deploys did each environment get? Show env and success_count, sorted by env name, A to Z.",
+    reference:"SELECT env, COUNT(*) AS success_count FROM deploys WHERE status = 'success' AND service <> 'auth' GROUP BY env ORDER BY env",
+    fallbackHint:"Two row-level conditions here: the status, and excluding one service. Both belong before the grouping." },
+  { id:"P14",
+    ask:"Which services have been deployed more than 6 times? Show service and deploy_count, sorted by service name, A to Z.",
+    reference:"SELECT service, COUNT(*) AS deploy_count FROM deploys GROUP BY service HAVING COUNT(*) > 6 ORDER BY service",
+    fallbackHint:"A count does not exist until the rows are bundled. Filter on the count after the grouping step, not before it." },
+  { id:"P15",
+    ask:"Which cities have an average fare above 200? Show city and avg_fare rounded to 1 decimal, highest average first.",
+    reference:"SELECT city, ROUND(AVG(fare),1) AS avg_fare FROM rides GROUP BY city HAVING AVG(fare) > 200 ORDER BY avg_fare DESC",
+    fallbackHint:"You are testing a city's average, not one ride's fare. That average only exists after the rides are bundled, so the test has to come after." },
+  { id:"P16",
+    ask:"Which teams have spent more than 300 hours in total closing tickets? Show team and total_hours, sorted by team name, A to Z.",
+    reference:"SELECT team, SUM(hours_to_close) AS total_hours FROM tickets GROUP BY team HAVING SUM(hours_to_close) > 300 ORDER BY team",
+    fallbackHint:"The total belongs to the team, not to any single ticket. Filter on the team's total once the grouping has produced it." },
+  { id:"P17",
+    ask:"Which drivers have done at least 7 rides? Show driver and ride_count, most rides first.",
+    reference:"SELECT driver, COUNT(*) AS ride_count FROM rides GROUP BY driver HAVING COUNT(*) >= 7 ORDER BY ride_count DESC",
+    fallbackHint:"The number of rides is a fact about a driver, not about a ride. It can only be tested after the rows are bundled per driver." },
+  { id:"P18",
+    ask:"Which services have never had a deploy faster than 60 seconds? Show service and fastest_seconds, sorted by service name, A to Z.",
+    reference:"SELECT service, MIN(duration_sec) AS fastest_seconds FROM deploys GROUP BY service HAVING MIN(duration_sec) >= 60 ORDER BY service",
+    fallbackHint:"\"Never faster than 60\" is a claim about every deploy in a service. If you drop the fast rows first, the evidence that rules a service out is gone." },
+  { id:"P19",
+    ask:"Which priorities take less than 45 hours to close on average? Show priority and avg_hours rounded to 1 decimal, sorted by priority, P1 first.",
+    reference:"SELECT priority, ROUND(AVG(hours_to_close),1) AS avg_hours FROM tickets GROUP BY priority HAVING AVG(hours_to_close) < 45 ORDER BY priority",
+    fallbackHint:"You are comparing each priority's average against a number. The average appears only after grouping, so the comparison goes after it." },
+  { id:"P20",
+    ask:"Which cities have more than 100 km of rides in total? Show city and total_km rounded to 1 decimal, highest first.",
+    reference:"SELECT city, ROUND(SUM(distance_km),1) AS total_km FROM rides GROUP BY city HAVING SUM(distance_km) > 100 ORDER BY total_km DESC",
+    fallbackHint:"One ride's distance and a city's total distance are different things. Test the total, which exists only once the rides are bundled." },
 ];
 const Q = Object.fromEntries(QUESTIONS.map(q => [q.id, q]));
+const EXPECTED = JSON.parse(atob("eyJQMDIiOiBbWyJEZWxoaSIsIDE5NC41XSwgWyJJbmRvcmUiLCAyNTEuOV0sIFsiSmFpcHVyIiwgMjc3LjJdLCBbIktvY2hpIiwgMTgxLjVdLCBbIlB1bmUiLCAxMjIuMF1dLCAiUDA0IjogW1siRmFyaGFuIiwgMTMzLjddLCBbIkRpdnlhIiwgMTE3LjZdLCBbIkJlbGEiLCAxMDQuM10sIFsiQ2hldGFuIiwgNjcuNV0sIFsiQW1pdCIsIDU0LjddLCBbIkdpdGEiLCA5LjddXSwgIlAwNSI6IFtbImF1dGgiLCAicHJvZCIsIDFdLCBbImF1dGgiLCAic3RhZ2luZyIsIDVdLCBbImJpbGxpbmciLCAicHJvZCIsIDNdLCBbImJpbGxpbmciLCAic3RhZ2luZyIsIDddLCBbIm5vdGlmeSIsICJwcm9kIiwgMl0sIFsibm90aWZ5IiwgInN0YWdpbmciLCA1XSwgWyJwYXltZW50cyIsICJwcm9kIiwgMTBdLCBbInBheW1lbnRzIiwgInN0YWdpbmciLCAzXSwgWyJzZWFyY2giLCAicHJvZCIsIDFdLCBbInNlYXJjaCIsICJzdGFnaW5nIiwgM11dLCAiUDA3IjogW1siYXV0aCIsIDJdLCBbImJpbGxpbmciLCAzXSwgWyJub3RpZnkiLCA0XSwgWyJwYXltZW50cyIsIDJdLCBbInNlYXJjaCIsIDFdXSwgIlAwOCI6IFtbIkRlbGhpIiwgMjk0LjJdLCBbIkluZG9yZSIsIDMxMi4yXSwgWyJKYWlwdXIiLCAyOTkuOV0sIFsiS29jaGkiLCAyODcuNV0sIFsiUHVuZSIsIDI1NC4wXV0sICJQMDkiOiBbWyJkYXRhIiwgMl0sIFsibW9iaWxlIiwgMV0sIFsicGxhdGZvcm0iLCAzXV0sICJQMTAiOiBbWyJwYXltZW50cyIsIDI2OC45XSwgWyJub3RpZnkiLCAyNjQuNV0sIFsiYmlsbGluZyIsIDIzOC4wXSwgWyJzZWFyY2giLCAxMDAuMF0sIFsiYXV0aCIsIDcxLjBdXSwgIlAxMiI6IFtbIlAxIiwgNjldLCBbIlAyIiwgNjVdLCBbIlAzIiwgODldXSwgIlAxMyI6IFtbInByb2QiLCAxMV0sIFsic3RhZ2luZyIsIDEzXV0sICJQMTQiOiBbWyJiaWxsaW5nIiwgMTBdLCBbIm5vdGlmeSIsIDddLCBbInBheW1lbnRzIiwgMTNdXSwgIlAxNSI6IFtbIkphaXB1ciIsIDI3Ny4yXSwgWyJJbmRvcmUiLCAyNTEuOV1dLCAiUDE2IjogW1sibW9iaWxlIiwgNjEwXSwgWyJ3ZWIiLCA0ODBdXSwgIlAxNyI6IFtbIkRpdnlhIiwgMTJdLCBbIkZhcmhhbiIsIDEwXSwgWyJCZWxhIiwgN11dLCAiUDE4IjogW1siYXV0aCIsIDY5XSwgWyJwYXltZW50cyIsIDE2N10sIFsic2VhcmNoIiwgNjRdXSwgIlAxOSI6IFtbIlAxIiwgNDMuNl0sIFsiUDIiLCAzNi43XV0sICJQMjAiOiBbWyJKYWlwdXIiLCAxNjIuNV0sIFsiRGVsaGkiLCAxMzkuMl0sIFsiSW5kb3JlIiwgMTExLjNdXX0="));
 
 /* The event log. One flat array of events, exactly the shape help-session.js
  * reads and writes: attempt / help_decided / help_delivered. */
@@ -314,7 +389,9 @@ let db = null;
  * Open with ?hint=https://<ref>.supabase.co/functions/v1/hint to point at it. */
 const callModel = WRITER.makeWriter(TRANSPORT.edgeTransport(TRANSPORT.url));
 
-/* ---- result-set comparison: unchanged from the round-2 screener ---- */
+/* ---- result-set comparison: unchanged from the round-2 screener ----
+ * Rounds to 2 decimal places. grade_rule.py, the frozen analysis-time rule,
+ * rounds to 1. See the note in study-questions/DECISIONS.md. ---- */
 function norm(v){
   if (v === null || v === undefined) return "∅";
   if (typeof v === "number") return String(Math.round(v*100)/100);
@@ -377,7 +454,23 @@ function counts(id){
   else                 { pill.textContent = "not started"; pill.className = "pill"; }
 }
 
-/* ---- RUN ---- writes one `attempt` event, in the shape policy.js reads ---- */
+/* ---- RUN ---- writes one `attempt` event, in the shape policy.js reads ----
+ *
+ * Right and wrong are decided by the frozen rule in grade-rule.js, which is the
+ * same rule as study-questions/grade_rule.py. Before 19 Sep this function had a
+ * rule of its own — result rows at 2 decimal places, no look at the SQL — and it
+ * disagreed with the scoring rule in both directions. DECISIONS.md section 5.
+ *
+ * Two fields come out of a run and they are not the same thing:
+ *   ev.grade    the frozen verdict: correct | invalid | error | wrong
+ *   ev.outcome  what policy.js reads. Unchanged vocabulary, so the gate and the
+ *               escalation behave exactly as their 34 tests say.
+ * An `invalid` query that ran is an ordinary wrong attempt to the policy.
+ *
+ * ev.gradeReason is written to the log and NEVER rendered. Clause 2's reason names
+ * the learner's mistake, which is a hint; showing it would hand both arms help from
+ * outside the policy and change what Arm B's condition is (open decision 5).
+ */
 function runQ(id){
   const sql = document.getElementById(`sql-${id}`).value.trim();
   const out = document.getElementById(`out-${id}`);
@@ -385,35 +478,49 @@ function runQ(id){
 
   const s = state[id]; s.attempts++;
   const ev = { type:"attempt", q:id, arm:ARM, sql, at:new Date().toISOString() };
+  const want = EXPECTED[id];
 
-  let res;
+  let res = null, error = null;
   try { res = db.exec(sql); }
-  catch (err) {
-    ev.outcome = "error"; ev.error = String(err.message || err);
+  catch (err) { error = String(err.message || err); }
+
+  const cols = res && res.length ? res[0].columns : [];
+  const raw  = res && res.length ? res[0].values  : [];
+
+  const g = GRADE.grade({ sql, got: error ? null : raw, error, want });
+  ev.grade = g.verdict;
+  ev.gradeReason = g.reason;
+
+  if (error) {
+    ev.outcome = "error"; ev.error = error;
     LOG.events.push(ev); counts(id);
-    out.innerHTML = `<div class="verdict v-err">Didn't run: <code>${esc(ev.error)}</code></div>`;
+    out.innerHTML = `<div class="verdict v-err">Didn't run: <code>${esc(error)}</code></div>`;
     return;
   }
 
-  const cols = res.length ? res[0].columns : [];
-  const raw  = res.length ? res[0].values  : [];
   ev.rows = normRows(raw);                       // policy.js compares result sets on this
-  const want = EXPECTED[id];
 
-  if (eqOrdered(ev.rows, want)) {
+  if (g.verdict === "correct") {
     ev.outcome = "correct"; s.solved = true;
     LOG.events.push(ev); counts(id);
     out.innerHTML = `<div class="verdict v-ok">Correct. That's the one.</div>` + table(raw, cols);
     document.getElementById(`help-${id}`).disabled = true;
     return;
   }
-  ev.outcome = eqUnordered(ev.rows, want) ? "right_rows_wrong_order"
-             : cols.length !== (want[0] ? want[0].length : 0) ? "wrong_columns" : "wrong";
+
+  // Every remaining case reads the same to the learner. Only the log knows why.
+  const width = want[0] ? want[0].length : 0;
+  ev.outcome = g.verdict === "wrong" && g.reason === "right rows, wrong order"
+                 ? "right_rows_wrong_order"
+             : g.verdict === "wrong" && cols.length !== width
+                 ? "wrong_columns"
+                 : "wrong";
   LOG.events.push(ev); counts(id);
+
   const msg = ev.outcome === "right_rows_wrong_order"
       ? "Right rows, wrong order — check your ORDER BY."
     : ev.outcome === "wrong_columns"
-      ? `Not right yet — you returned ${cols.length} column${cols.length===1?"":"s"}, the question asks for ${want[0].length}.`
+      ? `Not right yet — you returned ${cols.length} column${cols.length===1?"":"s"}, the question asks for ${width}.`
       : "Not right yet. Here's what your query returned — compare it against what the question asked for.";
   out.innerHTML = `<div class="verdict v-warn">${msg}</div>` + table(raw, cols);
 }
