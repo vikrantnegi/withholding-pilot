@@ -1,4 +1,25 @@
 # 100x curriculum: the parts that matter for the capstone
+
+> **SUPERSEDED 1 Sep 2026 for its main purpose. Kept, not deleted.**
+>
+> This was read on 30 Aug to answer "where do participants come from", and it answered:
+> the cohort's low-code path. **On 1 Sep, 100x ruled that out** — cohort members cannot be
+> participants (`CAPSTONE-RULES.md` A1, `RECRUITMENT.md` section 1). The pool is workplace
+> non-engineering colleagues instead.
+>
+> So three sections below argue for a pool that does not exist: *the two execution paths*
+> (the recruitment finding), *contamination check*, and *why this pool strengthens the case
+> study*. Read them as the plan that was replaced, not as guidance.
+>
+> **Two things here are still live.** The module map at the bottom is factual context on where
+> C7 sits in the program. And the observation that the cohort institutionalises the exact
+> tradeoff the study measures — people shipping without writing the code, output arriving while
+> skill does not — still motivates *why the question is worth asking*, independent of who the
+> participants turned out to be. That is write-up material.
+>
+> Kept because FAQ rule B4 applies to plans as well as hypotheses: the before and the after are
+> the deliverable. The pool changing, and why, is part of the story.
+
 Source: https://www.100xengineers.com/#6mojourney (read 30 Aug 2026)
 Note: the public page shows the Cohort 9 (Dec 2026) layout. Week numbers may shift for C7.
 The two-path structure and the tool lists are the same.

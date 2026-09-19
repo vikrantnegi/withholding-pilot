@@ -107,7 +107,6 @@ Sorted this way on purpose. How a file behaves over time tells you how much to t
 |---|---|
 | `CAPSTONE-RULES.md` | **the rules, from the C7 FAQ, plus §E the marking rubric. Check before every checkpoint. If a plan conflicts with a rule here, the rule wins** |
 | `c7-capstone-decoded.md` | plain-language decode of the Learning OS brief (other four tracks cut 13 Sep) |
-| `100x-CURRICULUM.md` | the cohort's two paths and their tool stacks |
 | `research-papers/` | the four papers the design rests on, plus `research-papers/RESEARCH-READING.md` |
 
 ### Superseded — kept on purpose, because the diff is the deliverable
@@ -115,6 +114,7 @@ Sorted this way on purpose. How a file behaves over time tells you how much to t
 | file | what |
 |---|---|
 | `PRD-SEED.md` | first-pass spec. Had a four-level ladder and a skill estimator. Both cut. Replaced by `PRD-v1.md` |
+| `100x-CURRICULUM.md` | read 30 Aug to find a participant pool, and it found one: the cohort's low-code path. 100x ruled cohort members out on 1 Sep, so three of its four sections describe a plan that was replaced. The module map and the "why this question is worth asking" framing are still live |
 | `ANALYSIS-PLAN.md` | the measurement decisions fixed before data exists: unit of analysis, question pairing, budget arithmetic, and the null-result checklist read on 28 Sep. Was TODO-HYPOTHESIS-v1.md |
 
 ### Working folders
