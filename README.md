@@ -123,8 +123,8 @@ Sorted this way on purpose. How a file behaves over time tells you how much to t
 |---|---|
 | `screener/` | both screening rounds. Start at `screener/README.md` |
 | `study-questions/` | **the instrument. Frozen 19 Sep**: 28 items (16 practice, 12 held-out), the study schema, the scoring rule, and the three verifiers that must report `problems: 0` before any freeze. Start at `study-questions/README.md`; the decisions and their reasons are in `study-questions/DECISIONS.md` |
-| `app/` | the study app. Open `app/index.html`; `?arm=B` flips the arm. `policy.js`, `hint-guard.js`, `hint-writer.js`, `help-session.js` and `grade-rule.js` hold everything that decides anything, and are covered by 123 unit tests |
-| `diagrams/` | `architecture-arm-a.png` — the Arm A control graph, three zones, drawn 13 Sep. Editable sources alongside it |
+| `app/` | the study app. Participants open `index.html?p=<their code>`, which sets the arm and identifies the log; `?arm=` is the test path. `policy.js`, `hint-guard.js`, `hint-writer.js`, `help-session.js` and `grade-rule.js` hold everything that decides anything, and are covered by 123 unit tests |
+| `diagrams/` | the architecture, drawn in Excalidraw: `architecture-arm-a.png` and `architecture-arm-b.png`, three zones each, Arm B being the same drawing with its unused half greyed out. Both are embedded in `PRD-v1.md` §3. `.excalidraw` sources alongside |
 | `evals/` | `replay.js` hint quality, replayed from stored attempts (the 18 Sep checkpoint). `verify-app.mjs` drives the real page in a headless browser. `grader-conformance.mjs` proves the app's grader and the scoring rule agree. `link-check.mjs` fails if the docs name a file that is not on disk. `check-hint-function.mjs` proves a deployed hint function actually answers; `check-hosted.mjs` proves the hosted files are the build you made. Both run from your own terminal. Start at `evals/README.md` |
 | `supabase/` | `supabase/functions/hint/` — the edge function that holds the Groq key, so it is never in the page. **Not deployed.** Deploy and verification steps: `supabase/README.md` |
 
@@ -149,7 +149,7 @@ the classmate exclusion.
 ## Key dates
 
 **7 Oct 2026, submit.** 9 Oct is a backstop, not the plan.
-**27 Sep, the removal test.** This one cannot move.
+**26 or 27 Sep, the removal test.** The 5-to-7-day gap sets the floor, freeze sets the ceiling. Unbooked — `STATUS.md` has the live date.
 **30 Sep, feature freeze.** Demo Day **11 Oct**, 100x HQ.
 
 Full checkpoint table with current state: `STATUS.md`.

@@ -34,42 +34,48 @@ n=6 and I am not pretending otherwise — see §7.
 
 ## 3. Architecture (rubric E3)
 
-Drawn version, with the three zones marked: `diagrams/architecture-arm-a.png`.
-
 The one claim that matters: **the LLM is not in the control path.** It never decides whether to
 help or how much. A deterministic policy decides; the LLM only renders the help text once that
 decision is made.
 
-```mermaid
-flowchart TB
-    L["<b>HUMAN</b><br/>learner writes SQL,<br/>chooses when to ask for help"]
+Three zones, colour-coded in both diagrams: **human** (green), **deterministic** (orange),
+**probabilistic** (purple). Drawn in Excalidraw; sources next to the exports in `diagrams/`.
 
-    subgraph D["DETERMINISTIC — plain code, auditable, no LLM"]
-      RUN["query runner<br/>executes learner SQL"]
-      SCORE["scoring harness<br/>learner result-set vs reference result-set<br/>-> match or no-match"]
-      GATE["<b>the gate</b><br/>has an executing attempt<br/>been logged for this item?"]
-      POL["<b>the level selector — THE GRADED ARTEFACT</b><br/>arm + attempts + help-already-served<br/>-> none / hint / reveal"]
-      LOG[("event log<br/>every attempt, every help served")]
-    end
+### Arm A — the tested interface
 
-    subgraph P["PROBABILISTIC — LLM, rendering only"]
-      HINT["hint writer<br/>grounded on: reference query,<br/>learner's query, the result diff"]
-      LEAK["leak guard<br/>reject hint containing the answer"]
-    end
+![Arm A architecture](diagrams/architecture-arm-a.png)
 
-    A["<b>HUMAN, before the study</b><br/>Vikrant authors questions,<br/>reference queries, concept pairing"]
+Follow the two paths out of **Human**. *Attempt a question* runs the query and hits the
+correctness check, which either finishes the item or sends the learner back. *Help asked* hits
+the **gate** — no executing attempt yet, and the learner is sent back with nothing. Past the
+gate, the **policy** decides hint or reveal, and only then does anything reach the purple zone.
 
-    L --> RUN --> SCORE --> LOG
-    SCORE -->|wrong| L
-    L -->|presses Help| GATE
-    GATE -->|no attempt yet| L
-    GATE -->|attempt exists| POL
-    POL -->|reveal| L
-    POL -->|hint| HINT --> LEAK --> L
-    POL --> LOG
-    A -.-> SCORE
-    A -.-> HINT
-```
+Everything the policy reads comes from the event log, and everything it decides is written back
+to it. That is what makes the manipulation auditable after the fact.
+
+### Arm B — the answer-giving baseline
+
+![Arm B architecture](diagrams/architecture-arm-b.png)
+
+**Same diagram, with everything Arm B does not use greyed out.** The gate is grey. The policy is
+grey. The hint writer and the leak guard are grey, and so is the whole probabilistic zone. What
+is left is: ask for help, get the answer.
+
+This is the clearest statement of §1 in the document. The two arms are **one drawing with
+different parts live**, not two systems — one page, one question set, one runner, one log. The
+difference between the arms is exactly the difference between these two pictures, which is what
+makes a measured difference attributable to the help policy rather than to the environment.
+
+### One box has changed since these were drawn
+
+`match reference?` was literally that on 13 Sep: run the submission, run the reference, compare
+the rows. Since 19 Sep it is the frozen scoring rule — the query must also be valid grouped SQL,
+and numbers compare to one decimal place. `study-questions/grade_rule.py` and
+`app/grade-rule.js` are the two implementations, kept in step by
+`evals/grader-conformance.mjs`. `study-questions/DECISIONS.md` sections 3 to 5 have the reasoning.
+
+The shape of the diagram is unaffected: the box sits in the same place and feeds the same two
+edges. What changed is what counts as correct inside it.
 
 **Why the split sits there.** The independent variable has to be under my control. If an LLM
 judged "this learner seems stuck, give more," Arm A's treatment would vary unpredictably and I
@@ -183,10 +189,17 @@ tracing definition and it is what the scoring script implements.
 
 ## 5. What is already built
 
-The round-2 mini-screen (`screener/round-2-runbutton/sql-mini-screen.html`, 10 Sep) is the thin
-vertical slice, minus the help path. It already has: SQLite in the browser, an editor, a Run
-button, result-set comparison, error surfacing, per-attempt logging. That is most of §3's
+*This section described the 10 Sep state and is kept for the record. For what exists today,
+`STATUS.md` is the only file allowed to say — it is updated, this one is not.*
+
+The round-2 mini-screen (`screener/round-2-runbutton/sql-mini-screen.html`, 10 Sep) was the thin
+vertical slice, minus the help path. It already had: SQLite in the browser, an editor, a Run
+button, result-set comparison, error surfacing, per-attempt logging. That was most of §3's
 deterministic column.
+
+**All four items in §6 below are now built.** Items 1, 2 and 4 are done and verified; item 3
+(log persistence) was deliberately parked in favour of the copy-log button, as §6 item 3 itself
+allows.
 
 ## 6. What is left to build — four items
 
@@ -236,7 +249,13 @@ deterministic column.
    from imagination.
 3. **Log persistence.** Supabase table. If it threatens 20 Sep, fall back to the copy-log
    button already working in the mini-screen — 6 people pasting a blob is not the bottleneck.
-4. **The question set.** Revised 14 Sep — see `HYPOTHESIS-LOG.md` v0.1.
+
+   **Decided 19 Sep: the fallback, on purpose.** The table was not built. The copy and download
+   buttons carry `started`, `finished` and now `participant`, so a returned log identifies
+   itself. The clause above authorised this trade in advance; it is being taken, not missed.
+4. **The question set.** Revised 14 Sep — see `HYPOTHESIS-LOG.md` v0.1. **Frozen 19 Sep:**
+   28 items, 16 practice and 12 held-out, in `study-questions/`. Reasons in
+   `study-questions/DECISIONS.md`.
 
    **One concept: GROUP BY/HAVING.** Two-table joins are dead (round 2: 3 of 7 tried, 0
    solved, with an editor). T1 was already out. There is no second concept, and inventing one
@@ -244,12 +263,23 @@ deterministic column.
 
    **Four sub-skills, three practised, one held back.**
 
+   > **Corrected 19 Sep.** The four definitions below replace the ones written here on 10 Sep.
+   > Those said S2 was "choose the right aggregate" and S4 was "order by an aggregate". The
+   > question set was authored and frozen against the definitions below, so this document was
+   > describing a different experiment from the one that will run. The instrument is
+   > authoritative because it is what gets scored; `study-questions/items.py` carries the
+   > sub-skill on every item. `LEARNING-LOG.md` L20.
+
    | | sub-skill | practised? |
    |---|---|---|
-   | S1 | group by the right column | yes |
-   | S2 | choose the right aggregate | yes |
-   | S3 | filter groups, not rows (`WHERE` vs `HAVING`) | yes |
-   | S4 | order by an aggregate | **no — the control** |
+   | S1 | group, and one aggregate per group | yes |
+   | S2 | filter rows **before** grouping — `WHERE` with `GROUP BY` | yes |
+   | S3 | filter groups **after** aggregating — `HAVING` | yes |
+   | S4 | compose all three, with `ORDER BY` | **no — the control** |
+
+   S4 is not a fifth thing to learn. It is S2 and S3 in one query, which is why it works as a
+   control: a learner who has S2 and S3 separately may or may not combine them, and that is the
+   transfer the study is looking for.
 
    S3 is the modal failure across the 104 logged attempts, so it carries the most weight.
 
@@ -266,6 +296,13 @@ deterministic column.
    - Budget ~16 practice items: about 5 each on S1, S2, S3. Yield is 1 usable in 3 written,
      and they cannot be screened on the pool without burning participants — so write from the
      104 logged attempts, which say exactly how these seven fail.
+
+     **Outcome, 19 Sep: 16 practice items, but S1 x3, S2 x6, S3 x7 — not 5 each.** Three
+     candidate S1 items were cut because round 2 showed an item solved on the first attempt
+     produces no ladder decision and so feeds neither arm. The cut was right for the moments
+     budget and it leaves S1 measured on thinner practice than S3, which is recorded as a known
+     weakness rather than smoothed over. `study-questions/DECISIONS.md` section 1,
+     `HYPOTHESIS-LOG.md` v1 assumption 6.
    - Frozen before the policy is tuned, so it cannot be tuned to.
    - **Both screening rounds' questions are burned**, and the study needs a different schema
      as well.
@@ -334,4 +371,4 @@ removal test) **is**. Differential attrition by arm is the main threat to the st
 counter-metric; report `completed_removal_test` per person, by arm.
 
 Wu's motivation cost lands on the arm that *had* full answers and lost them — that is Arm B on
-removal day, not Arm A. Three Likert items on 27 Sep, near-zero build cost.
+removal day, not Arm A. Three Likert items on removal-test day, near-zero build cost.
