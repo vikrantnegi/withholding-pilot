@@ -10,8 +10,13 @@
  * Why this file exists at all: until 19 Sep the app judged a submission by
  * comparing result rows at 2 decimal places, while the scoring rule compared at
  * 1 and also checked the SQL itself. So the app called a learner wrong for
- * forgetting ROUND, and called the anuj-shaped query correct. Two graders, two
- * answers, on the shapes the study is about.
+ * forgetting ROUND, and called a query correct that returned the right rows
+ * through the wrong mental model — filtering groups on a row value. Two graders,
+ * two answers, on the shapes the study is about.
+ *
+ * Participants are unnamed here on purpose: this file is served to them, and the
+ * repo's own notes about who made which mistake are not.
+ * study-questions/DECISIONS.md section 3 has the full case.
  *
  * A submission is CORRECT only if all three hold:
  *   1. it runs,

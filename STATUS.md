@@ -10,20 +10,25 @@ reserved for testing, freeze and packaging by design.
 
 ## Where the project is
 
-**The instrument exists and the app serves it. What is missing is no longer code — it is three
-things that need people and one that needs a deploy.**
+**The instrument exists, the app serves it, and the hint function is live. What is missing is
+three things that need other people.**
 
 The question set was the binding constraint for a week. It is frozen: `study-questions/`, 28 items
 over one concept, 16 practice and 12 held-out. All three verifiers report `problems: 0`. The app
 serves the 16 practice items and was driven end to end in a headless browser on both arms.
 
-The blocker has moved to the hint edge function, which is **written and not deployed**. Until it
-is, every hint Arm A receives is the item's hand-written fallback rather than a hint grounded on
-that learner's query. The app degrades to fallbacks by design and never breaks, so this will not
-be visible on the day — which is exactly why it is written here.
+The hint function was the blocker and is now deployed and verified, with the URL set in
+`app/transport.js` for everybody. A real hint came back in 1875 ms and a request for a different
+model was refused in 55 ms, so the key works and the server-side model pin holds.
 
-**So what:** nothing stops the 21 Sep practice session from running. But if it runs undeployed,
-Arm A's treatment on the day is the static fallback, not the treatment `PRD-v1.md` §4 specifies.
+**The remaining silent failure is Groq's rate limit.** Arm A calls the model; Arm B never does.
+If six people press Help inside the same few minutes and Groq throttles, the function returns
+502, the app treats it as a rejected generation, and those learners get fallbacks — with nothing
+on screen to say so. It would hit Arm A only, and only for part of the session. Watch
+`function_edge_logs` during the session; a 502 there is the signal.
+
+**So what:** the 21 Sep session can run as specified. The thing to monitor is not whether it
+works, but whether it keeps working for all three Arm A testers at once.
 
 ### What exists
 
@@ -34,14 +39,15 @@ Arm A's treatment on the day is the static fallback, not the treatment `PRD-v1.m
 | The policy, written out | `PRD-v1.md` §4 | Specified, and built in `app/policy.js` |
 | The level selector | `app/policy.js` | Done 13 Sep. 34 tests, re-pointed at the study schema 19 Sep |
 | Leak guard + rejection policy | `app/hint-guard.js` | Done 13 Sep. 32 tests |
-| Hint writer, prompt + pinned model | `app/hint-writer.js` | Done 13 Sep. 14 tests. **Needs a Groq key and the function deployed** |
-| Key out of the page | `supabase/functions/hint/` | Written 13 Sep. **Not deployed** |
+| Hint writer, prompt + pinned model | `app/hint-writer.js` | Done 13 Sep. 14 tests. **Live 19 Sep** — deployed, key set, verified |
+| Key out of the page | `supabase/functions/hint/` | **Deployed 19 Sep** to project `yzmunjbhhtuerxoinxsd`. Verified: real hint in 1875 ms, model pin rejects a tampered request in 55 ms |
 | Hint-quality eval | `evals/replay.js` | Run 13 Sep. 20/20 from the model, 0 fallbacks, 1 leak caught. `EXPERIMENT-LOG.md` Run 3 |
 | Help-press orchestration + log shape | `app/help-session.js` | Done 13 Sep. 20 tests. Wired to the UI |
 | **The question set** | `study-questions/` | **Frozen 19 Sep.** 28 items, scoring rule, 3 verifiers at `problems: 0` |
 | **The scoring rule, in the app** | `app/grade-rule.js` | **Done 19 Sep.** 23 tests. One rule for the learner and the score |
 | **Grader agreement** | `evals/grader-conformance.mjs` | **Done 19 Sep.** 75 of 75 queries agree across both implementations |
 | **The app on the real question set** | `app/index.html` | **Done 19 Sep.** 16 practice items; held-out absent from the source |
+| **Hosted, live** | `https://tranquil-starlight-f0129e.netlify.app/` | **Up 19 Sep.** Both arms checked in a browser; the hint path returns a model-written hint from the hosted origin |
 | **Browser verification** | `evals/verify-app.mjs` | **Done 19 Sep.** 42 checks, both arms, 0 failed |
 | Log storage | — | **Not built, parked.** The copy-log button is the fallback |
 | Screening data, 2 rounds, 7 people | `screener/` | Done. See `EXPERIMENT-LOG.md` |
@@ -57,7 +63,8 @@ conformance run. All green as of 19 Sep.
 1. ~~**Help button and the policy.**~~ Done 13 Sep.
 2. **Hint writer — deployed.** The code, the prompt, the pinned model and the guard are all done
    and tested. The edge function is not deployed and there is no Groq key in place. **This is the
-   top technical item.**
+   top technical item.** `supabase/README.md` has the commands, the wiring, the verification, and
+   what to write down if it is not deployed by Monday.
 3. **Log storage.** A Supabase table. Parked; the copy-log button is the fallback. Before Monday,
    confirm the copied log carries `started` and `finished`.
 4. ~~**The question set.**~~ Done 19 Sep. `study-questions/`, frozen.
@@ -68,8 +75,9 @@ conformance run. All green as of 19 Sep.
 
 Ordered by what breaks if it is skipped. Only the first is code.
 
-1. **Deploy the hint function and put a Groq key in place.** Otherwise Arm A is measured on static
-   fallbacks. Silent failure, so nothing on the day will tell you.
+1. ~~**Deploy the hint function.**~~ Done and verified live 19 Sep, including from the hosted
+   page. Re-run `evals/check-hint-function.mjs` on Monday morning — a key or quota can lapse and
+   the failure is silent.
 2. **Arm assignment, and it has a prerequisite.** manish's round-1 grade is corrupted by the
    grader bug and must be recomputed before matched pairs can be formed. Then coin flips, then
    split the four former teammates across arms. **Doing any of this after Arm A data exists is
@@ -151,8 +159,10 @@ Demo Day: 11 Oct 2026, 100x HQ.
 
 ## Next actions
 
-1. **Deploy `supabase/functions/hint/` and set the Groq key.** Then re-run `evals/replay.js`
-   against the deployed function, so the 21 Sep session runs on real hints.
+1. ~~**Deploy the hint function.**~~ Done 19 Sep. Project `yzmunjbhhtuerxoinxsd`, URL set in
+   `app/transport.js`, verified by `evals/check-hint-function.mjs`. **Re-run that checker on the
+   morning of the 21st** — a key or quota can lapse between now and then, and the failure is
+   silent.
 2. **Recompute manish's round-1 grade, then assign arms.** Matched pairs, coin flips, four former
    teammates split. Before any Arm A data exists.
 3. **Find one pilot tester outside the seven** and run them through the 16 practice items.

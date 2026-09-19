@@ -112,9 +112,12 @@ function resultKey(a) {
 /*
  * Does this attempt count?
  *
- * Example first. Rishabh pressed Run on the same query five times, then wrote
- * `GroupBy` a different way and pressed it again. The first four presses count
- * for nothing. The fifth is a real attempt.
+ * Example first, from round 2. One tester pressed Run on the same query five
+ * times, then wrote `GroupBy` a different way and pressed it again. The first
+ * four presses count for nothing. The fifth is a real attempt.
+ *
+ * Unnamed on purpose: this file is served to participants, and naming one of
+ * them in a comment about failing five times is not something to host.
  *
  * The rule, in order:
  *   - the query text must have changed since the last counted attempt
