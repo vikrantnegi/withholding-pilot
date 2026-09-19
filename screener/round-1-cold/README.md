@@ -48,6 +48,19 @@ have psycopg2 installed. Same output.
 
 ## Reading the result
 
+> **Superseded 19 Sep. Do not use the verdict column to exclude anybody.**
+>
+> Round 1 measured punctuation, not ability. Five of seven scored 0/10 and were labelled
+> `FLOOR — exclude`, and the failures were `ORDERBY` without the space, `"ASC"` in double
+> quotes, and a missing comma. manish's two answers were complete, correct queries that
+> returned one column instead of two because he wrote `SELECT name city`. He was labelled
+> exclude.
+>
+> Nobody was excluded on it. Arm assignment ranks on round 2 alone —
+> `../ARM-ASSIGNMENT.md` section 2 for the measure, section 5 for the evidence, and
+> `../../LEARNING-LOG.md` L19 for the lesson. The pass-rate-by-tier table below is still
+> useful; the per-person verdict is not.
+
 **Per person** — the verdict column:
 
 - **FLOOR** (≤2 correct, or nothing above T1) — exclude. Nothing to measure.
@@ -93,7 +106,13 @@ Pattern-matchers fail it, people who understand it don't.
 
 ## After you have the scores
 
-1. Drop the FLOOR and CEILING people.
+> **Done 19 Sep**, and not the way step 1 says. Nobody was dropped, the ranking used round 2
+> rather than round 1, and the flip was seeded so it can be replayed. Steps 2 and 3 below were
+> followed as written. `../ARM-ASSIGNMENT.md` is the record.
+
+1. ~~Drop the FLOOR and CEILING people.~~ **Not done, deliberately.** The FLOOR verdicts are an
+   artifact of this grader, and `../../RECRUITMENT.md` section 4 says to over-recruit because
+   dropout is the threat, not ability.
 2. Sort the rest by score. Pair 1st+2nd, 3rd+4th, and so on. Coin-flip each pair
    into Arm A / Arm B. That's matched-pair randomisation and it protects you at
    n=3 per arm.

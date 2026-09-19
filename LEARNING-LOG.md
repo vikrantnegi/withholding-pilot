@@ -591,3 +591,50 @@ was silently hiding what the grading found. Both times the grader looked fine fr
 **Why it matters:** this score was about to rank a participant into an arm. A pool of seven has
 no room for a capable tester ranked last because of a comma — and the round-1 FLOOR verdicts
 would have excluded five of seven people if anyone had taken them at face value.
+
+---
+
+## L20 — The spec and the instrument agree about what is being measured
+
+**Believed until 19 Sep 2026.** `PRD-v1.md` §6 item 4 names four sub-skills, three practised and
+one held back as the control. `study-questions/` was authored to that spec and frozen. Both
+documents were current, both were written carefully, and nobody had put them side by side.
+
+**What broke it.** A sweep of every document in the folder for stale claims. The two definitions
+are not the same:
+
+| | `PRD-v1.md` §6, written 10 Sep | `study-questions/items.py`, frozen 19 Sep |
+|---|---|---|
+| S1 | group by the right column | group, and one aggregate per group |
+| S2 | **choose the right aggregate** | **filter rows before grouping — `WHERE`** |
+| S3 | filter groups, not rows | filter groups after aggregating — `HAVING` |
+| S4 | **order by an aggregate** | **compose all three, with `ORDER BY`** |
+
+S2 and S4 are different skills in the two documents, and S4 is the control — the one the whole
+attribution argument rests on. "Improvement on the practised sub-skills and flat on S4" means one
+thing if S4 is sorting by an aggregate and another if S4 is composing a filter, a grouping and a
+group filter in one query.
+
+The handoff that carried the question set even said *"sub-skills, defined fresh (PRD-v1 had
+none)"*. PRD-v1 had four. They were not read, so four new ones were written, and the conflict
+travelled inside a document whose job was to remove ambiguity.
+
+**What changed.** §6 item 4 now carries the instrument's definitions, marked as a correction with
+the superseded wording quoted, because a reader who saw the old table needs to know it moved.
+The instrument wins on principle: it is the thing that gets scored, and every item in `items.py`
+carries its sub-skill as data. §6's item budget was corrected in the same pass — it said "about 5
+each on S1, S2, S3" and the frozen set is S1 x3, S2 x6, S3 x7.
+
+**The lesson.** Two documents that describe the same thing will drift, and the drift is invisible
+while both look right on their own. What makes it invisible is that neither is wrong internally —
+there is no broken link, no failing test, no contradiction inside either file. It only appears
+when something forces them together.
+
+Nothing forced them together here. The question set was generated *from* the spec by a reader who
+did not find the spec's own answer, which is the failure L14 named: a rule with no trigger is a
+hope. The difference is that L14 was about a rule nobody fired, and this is about a definition
+nobody compared.
+
+**Why it matters:** this would have surfaced on 28 Sep, while writing up which sub-skills
+improved, with the data already collected and the wording no longer changeable. Found on the
+19th it is an edit. Found on the 28th it is a hole in the central claim.

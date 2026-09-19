@@ -1,6 +1,24 @@
-# evals/ — is the hint any good?
+# evals/ — is the hint any good, and is what shipped what you built?
 
 The 18 Sep checkpoint. Run it, read the sheet, mark the boxes.
+
+**This folder now holds two kinds of thing.** `replay.js` and `adversarial.js` answer *is the
+hint any good* — the question this file was written for, and the rest of it is about them. The
+five scripts below answer *does the system still do what it says*, and they exist because every
+one of them caught something real on 19 Sep.
+
+| script | what it refuses to let past | run it |
+|---|---|---|
+| `verify-app.mjs` | the real page, driven in a headless browser: both arms, the gate, the ladder, navigation, the schema panel, no held-out item in the source. 84 checks | before any freeze |
+| `grader-conformance.mjs` | the app's grader and the scoring rule disagreeing. All 75 queries in `items.py` through both, verdict *and* reason | after touching either grader |
+| `check-hint-function.mjs` | a deployed hint function that answers but is not really working. Takes the function URL | after deploying, and on session morning |
+| `check-hosted.mjs` | the hosted files not being the build you made. Takes the site URL | after every upload |
+| `link-check.mjs` | a document naming a file that is not on disk | before any commit that moves files |
+
+The last three need the open internet, so they run from your own terminal rather than a Cowork
+session. `check-hint-function.mjs` and `check-hosted.mjs` both guard the same failure shape: the
+app degrades instead of breaking, so a missing function or a stale upload produces a session that
+looks completely normal and measures the wrong thing.
 
 ```
 node evals/replay.js --out evals/sheet.md     20 cases
@@ -28,8 +46,8 @@ participants. Anyone who reads hints about GROUP BY/HAVING before 21 Sep has
 practised the study's topic with the study's treatment, outside the study, with no
 measurement — and has to be dropped.
 
-Data is free. Contact is not. People touch this app exactly twice: 21 Sep practice,
-27 Sep removal test.
+Data is free. Contact is not. People touch this app exactly twice: the 21 Sep practice
+session and the removal test five to seven days later — `STATUS.md` has the date.
 
 ## Reading the sheet without knowing SQL
 

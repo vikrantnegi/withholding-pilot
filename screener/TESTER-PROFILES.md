@@ -330,5 +330,8 @@ character habit belongs to the group, not to one person.
 Arm assignment therefore ranks on round 2 alone. See `ARM-ASSIGNMENT.md` sections 2 and 5, and
 `../LEARNING-LOG.md` L19.
 
-**Still open from the list above:** which four of the seven were on his team. The flip cannot
-run without it.
+**Closed since:** which four were on his team, and the arms. See `ARM-ASSIGNMENT.md`.
+
+**One date in this file has moved.** The glossary above and manish's entry both say the removal
+test is 27 Sep, which was the plan on 13 Sep. The window is now 26 or 27 Sep and it is unbooked;
+`STATUS.md` is the only file allowed to say which. Everything else in those entries stands.

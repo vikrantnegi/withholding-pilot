@@ -61,10 +61,9 @@ conformance run. All green as of 19 Sep.
 ### What is not built — `PRD-v1.md` §6
 
 1. ~~**Help button and the policy.**~~ Done 13 Sep.
-2. **Hint writer — deployed.** The code, the prompt, the pinned model and the guard are all done
-   and tested. The edge function is not deployed and there is no Groq key in place. **This is the
-   top technical item.** `supabase/README.md` has the commands, the wiring, the verification, and
-   what to write down if it is not deployed by Monday.
+2. ~~**Hint writer — deployed.**~~ Done 19 Sep. Deployed to `yzmunjbhhtuerxoinxsd`, key set, URL
+   in `app/transport.js`, and verified from the hosted page in a browser: a model-written hint,
+   no fallback. `supabase/README.md` has the evidence and the Monday-morning re-check.
 3. **Log storage.** A Supabase table. Parked; the copy-log button is the fallback. Before Monday,
    confirm the copied log carries `started` and `finished`.
 4. ~~**The question set.**~~ Done 19 Sep. `study-questions/`, frozen.
@@ -144,7 +143,7 @@ comes in far below round 2's solve rates, clause 2 is the first suspect.
 | 6 Sep | Scope lock | Done 10 Sep, late |
 | 13 Sep | Thin working slice end to end | Done, on the day |
 | 18 Sep | Testing and guards | Done 13 Sep. Guard built, eval run, Run 3 logged |
-| 20 Sep | First version on real data | **Question set and app ready. Hint function not deployed** |
+| 20 Sep | First version on real data | **Done 19 Sep**, a day early. Question set frozen, app hosted and verified on both arms, hint function live |
 | 21 Sep | **Practice session** | **Not booked.** App frozen from here |
 | 26 Sep+ | **REMOVAL TEST** | **Not booked.** 26 Sep is the earliest the 5-day gap allows |
 | 28–29 Sep | Analysis | `ANALYSIS-PLAN.md` is read on 28 Sep |

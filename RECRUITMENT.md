@@ -1,7 +1,7 @@
 # Recruitment and participant handling
 
 **Living file.** Rules that still govern how participants are recruited, assigned to arms, and
-kept to 27 Sep. For the current pool count, read `STATUS.md` — this file holds rules, not numbers.
+kept to the removal test. For the current pool count and the live dates, read `STATUS.md` — this file holds rules, not numbers.
 
 Written 2 Sep 2026 for the networking session. Trimmed 13 Sep to the parts still in force.
 The session-specific material was dropped; recruitment is done.
@@ -88,12 +88,16 @@ That gap is what pulled v0 forward to 20 Sep. The dates it produced:
 |---|---|
 | 20 Sep | v0 usable by a stranger, on real data |
 | 21 Sep | Practice session, both arms |
-| 27 Sep | Removal test, both arms |
+| 26-27 Sep | Removal test, both arms. **Not booked** — `STATUS.md` has the live date |
 | 28-29 Sep | Score, analyse, write up the gap |
 | 30 Sep | Feature freeze — results land just before it |
 
 **So what:** if the removal test slips past 27 Sep, results arrive after freeze and cannot change
 the build. At that point the experiment was run for the write-up, not for the product.
+
+**Note, 19 Sep.** The 5-to-7-day gap from a 21 Sep practice session puts the removal test between
+26 and 28 Sep, and freeze puts the ceiling at 27. So the window is **26 or 27 Sep**, and it is
+still unbooked. This file states the rule; `STATUS.md` states the date, and wins.
 
 ## 7. The pitch, if more people are needed
 

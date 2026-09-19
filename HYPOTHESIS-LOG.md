@@ -296,3 +296,35 @@ that produces them — which is the difference between a claim and a hypothesis.
 grade is corrupted by the grader bug and has to be recomputed before matched pairs can be
 formed, and the four former teammates must be split across arms. Doing this after any Arm A
 data exists would be indefensible in the same way a re-pointed pair would be.
+
+---
+
+## Correction to v1, 19 Sep 2026 — the sub-skill definitions
+
+v1 above, and every entry before it, referred to S1 to S4 as if one definition were in force.
+Two were. `PRD-v1.md` §6 defined them on 10 Sep; `study-questions/items.py` was frozen on 19 Sep
+against different ones, and S2 and S4 differ materially between the two. `LEARNING-LOG.md` L20
+has the table.
+
+**The instrument's definitions are the ones in force**, because they are what the items were
+written to and what will be scored:
+
+| | sub-skill | practised |
+|---|---|---|
+| S1 | group, and one aggregate per group | yes, 3 items |
+| S2 | filter rows before grouping — `WHERE` with `GROUP BY` | yes, 6 items |
+| S3 | filter groups after aggregating — `HAVING` | yes, 7 items |
+| S4 | compose all three, with `ORDER BY` | no — the control, 3 held-out items |
+
+**This does not change the hypothesis, and it does change what it claims.** The shape is
+unaltered: improvement on practised sub-skills, flat on the unpractised one. What moved is what
+S4 is. Under the old definition it was a fourth, separate skill. Under the frozen one it is the
+composition of S2 and S3 — so "flat on S4" now means *they did not combine what they practised*,
+which is a stronger and more interesting claim than *they did not learn a skill nobody taught*.
+
+Assumption 7 in the index — that the sub-skills are separable enough to improve on S3 and not
+S4 — is the assumption this bears on, and it is unchanged in substance. It is worth re-reading
+under the new definition before 28 Sep: separability between S3 and a composition containing S3
+is a different question from separability between two unrelated skills.
+
+`PRD-v1.md` §6 item 4 was corrected the same day and quotes the superseded wording.

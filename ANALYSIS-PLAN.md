@@ -299,14 +299,45 @@ as well.
 
 A larger drop means the paired item tests something the practice item did not teach. **Fail.**
 
-**4b. The S4 precondition.** At least **2 of 6** learners must solve the S4 held-out item.
+**4b. The S4 precondition.** At least **2 of 6** learners must grade `correct` on **at least one
+of H10, H11 and H12**, with no help available.
 
-If nobody solves it, "flat on S4" proves nothing. The within-person control is lost. Assumption 5
-in `HYPOTHESIS-LOG.md` v0.1 was wrong. The attribution clause in the hypothesis is dead. **Fail.**
+*Reworded 19 Sep. It said "the S4 held-out item", singular, and there are three.*
+`study-questions/DECISIONS.md` section 2 has the reasoning: S4 is the hardest sub-skill and has
+no dedicated practice, so one solve out of three attempts is enough to show the set is reachable.
+
+If nobody solves any of the three, "flat on S4" proves nothing. The within-person control is lost.
+Assumption 5 in `HYPOTHESIS-LOG.md` v0.1 was wrong. The attribution clause in the hypothesis is
+dead. **Fail.**
 
 **Why it matters:** S4 is the whole attribution argument. Improvement on S1 to S3 with S4 flat is
 what rules out "they just got comfortable with the editor". That only works if S4 was reachable
 in the first place.
+
+### 4c. "Flat on S4" means no gap between the arms, not a low score
+
+Stated because it is the objection the S4 contrast exists to answer, and the wrong reading of
+"flat" concedes it.
+
+**"S4 was simply harder" predicts both arms score lower on S4. It does not predict that the gap
+between them closes.** Difficulty moves the levels; it does not move the difference. Both arms sit
+the same items, on the same day, in the same app, so whatever S4's difficulty is, **Arm B
+measures it.** That is what the control arm absorbs.
+
+| | Arm A | Arm B | gap |
+|---|---|---|---|
+| a practised sub-skill | higher | lower | positive |
+| S4, if it is only harder | lower | lower | **the same positive gap** |
+| S4, if transfer stopped there | lower | lower | **≈ zero** |
+
+So the S4 finding is a statement about the **arm difference on S4**, compared against the arm
+difference on S1 to S3. It is never a statement about S4's raw solve rate. Report it that way on
+28 Sep, and do not write the sentence "they did badly on S4" — that sentence is true in every one
+of the three rows above and distinguishes none of them.
+
+**Where 4b fits.** There is one case where a zero gap means nothing: both arms at zero. Zero minus
+zero is zero, and it looks identical to transfer stopping. 4b is the guard — if at least two
+learners reach at least one S4 item, a zero gap is a real zero rather than a floor.
 
 ### 5. Only if every check above passes
 
