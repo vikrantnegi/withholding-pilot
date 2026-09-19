@@ -228,8 +228,36 @@ This is Bastani's superficial-versus-non-superficial check, adapted. Both arms r
 so there is no free-text chat to classify. Attempts-before-help is the equivalent signal, and it
 comes free from the existing log.
 
-**Why it matters:** 1a and 1b check the system. 1c checks the learner. A policy that fired
-correctly and changed nobody's behaviour has still not run the experiment.
+**1d. Per sub-skill — was the treatment delivered *there*?** A reporting rule, not a pass/fail.
+
+1a, 1b and 1c are computed across the whole arm. That is right for "did the study happen", and
+wrong for "did it happen on S1". A sub-skill can produce no help decisions at all while the arm
+total clears 8 comfortably.
+
+**Count Arm A's `help_decided` events per sub-skill. Below 3 — fewer than one per learner — a
+null on that sub-skill is reported as NOT TESTED, never as "no effect".**
+
+The reason is mechanical. Arm A and Arm B run the same page, the same questions and the same
+runner. **They differ at exactly one moment: when Help is pressed.** An item solved on the first
+attempt produces no help press, so for that item Arm A *was* Arm B — same app, same experience.
+A zero gap across a sub-skill where nobody pressed Help is not a finding about learning. It is
+arithmetic, and reporting it as "the policy did not work for S1" claims something the data
+cannot support.
+
+**S1 is where this is most likely, and it is predictable now.** S1 has 3 practice items against
+S2's 6 and S3's 7; it is the easiest sub-skill; and the three S1 candidates that were cut were
+cut precisely *because* round 2 showed that shape gets solved on the first try
+(`study-questions/DECISIONS.md` section 1). The sub-skill with the fewest items is also the one
+most likely to generate no moments. If S1 comes back flat on 28 Sep, check this before concluding
+anything.
+
+The same logic applies to check 3 read per sub-skill: a ceiling on S1 alone is invisible in an
+arm-wide mean of 12 held-out items.
+
+**Why it matters:** 1a and 1b check the system. 1c checks the learner. 1d checks that the two
+are true *where the conclusion is being drawn*. A policy that fired correctly and changed nobody's
+behaviour has still not run the experiment — and a policy that never fired on a sub-skill has not
+been tested on it.
 
 ### 2. Floor — did anyone learn anything?
 
