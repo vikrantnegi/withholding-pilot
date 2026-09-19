@@ -87,6 +87,40 @@ def compare(got, want):
     if got and want and len(got[0]) != len(want[0]): return False
     return sorted(map(repr, got)) == sorted(map(repr, want))
 
+def diagnose(got, want):
+    """Say what is actually wrong, not just how many rows came back.
+
+    The old message was always `got N rows, expected M`. When N == M it named no
+    fault at all, which is how manish's round 1 ended up reading as two blank
+    failures — `WRONG got 3 rows, expected 3` twice. His answers were the right
+    shape and nobody could tell from the output. See TESTER-PROFILES.md.
+
+    This changes the REPORT only. compare() is untouched, so no score moves.
+    """
+    if not got and want: return f"returned nothing, expected {len(want)} rows"
+    if got and not want: return f"returned {len(got)} rows, expected none"
+    if len(got) != len(want):
+        return f"{len(got)} rows, expected {len(want)}"
+
+    wide_got = len(got[0]) if got else 0
+    wide_want = len(want[0]) if want else 0
+    if wide_got != wide_want:
+        return f"{wide_got} column{'' if wide_got == 1 else 's'}, expected {wide_want}"
+
+    # Same shape, so the values differ. compare() ignores row order, so a pure
+    # ordering difference would already have passed — this is a real mismatch.
+    same_bag = sorted(map(repr, got)) == sorted(map(repr, want))
+    if same_bag:
+        return "same rows, and compare() ignores order — should not reach here"
+
+    extra = [r for r in got if r not in want]
+    missing = [r for r in want if r not in got]
+    bits = [f"{len(got)} rows, right shape, wrong values"]
+    if missing: bits.append(f"missing {missing[0]!r}")
+    if extra:   bits.append(f"returned {extra[0]!r} instead")
+    return "; ".join(bits)
+
+
 def grade_one(con, answers, ref):
     res = {}
     for q in sorted(ref):
@@ -97,7 +131,7 @@ def grade_one(con, answers, ref):
         if err: res[q] = ("error", err)
         elif compare(got, want): res[q] = ("pass", None)
         else:
-            res[q] = ("wrong", f"got {len(got)} rows, expected {len(want)}")
+            res[q] = ("wrong", diagnose(got, want))
     return res
 
 def ceiling_tier(res):

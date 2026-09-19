@@ -542,3 +542,52 @@ something forces the fixture and the system to share a source.
 system. The suite's silence was the defect. A test that cannot fail when the system changes
 underneath it is not covering the system — and this one guards the rule that decides which
 attempts count toward the gate.
+
+---
+
+## L19 — A zero on the screener means the person could not do it
+
+**Believed until 19 Sep 2026.** Round 1 scored four passes across seven people and 35 attempted
+answers. Five of the seven scored 0/10, and `grade.py` labelled each of them `FLOOR — exclude`.
+`README.md` in `screener/` already warned that round 1 measured the wrong thing, but the warning
+was general. Nobody had looked at what a specific zero was made of.
+
+**What broke it.** Arm assignment needed a ranking, so manish's round 1 had to be regraded — his
+was the score the grader bug demonstrably broke. His whole round read:
+
+```
+Q1  T1  WRONG got 3 rows, expected 3
+Q2  T1  WRONG got 6 rows, expected 6
+```
+
+Row counts matching, no fault named. Fixing the report showed `1 column, expected 2` on both. The
+cause was one character:
+
+```sql
+SELECT name city FROM customers WHERE city = 'Bengaluru' ORDER BY name ASC;
+```
+
+A missing comma. SQL reads `name city` as the column `name` aliased to `city`, so one column comes
+back instead of two. The table, the filter and the sort are all correct. Same fault on both
+questions.
+
+Both of manish's answers were complete, correct queries. He scored 0/10 and was labelled
+*exclude*.
+
+**What changed.** `grade.py` gains `diagnose()`, which names the real mismatch — wrong column
+count, wrong row count, or right shape with wrong values and the first row that differs.
+`compare()` is untouched, so no score moved; the scores were right, the explanation was missing.
+The arm-assignment measure in `screener/ARM-ASSIGNMENT.md` uses round 2 alone, and section 5
+there records why.
+
+**The lesson.** A grader that reports a summary statistic instead of a diagnosis produces scores
+nobody can audit. `got 3 rows, expected 3` is true, and it is useless — it describes the output
+without naming the defect, so a reader cannot tell a near miss from a blank page. Worse, the
+verdict built on top of it (`FLOOR — exclude`) reads as a judgement about the person.
+
+The same shape as L15: there the seed data was silently doing half the grading, here the message
+was silently hiding what the grading found. Both times the grader looked fine from outside.
+
+**Why it matters:** this score was about to rank a participant into an arm. A pool of seven has
+no room for a capable tester ranked last because of a comma — and the round-1 FLOOR verdicts
+would have excluded five of seven people if anyone had taken them at face value.

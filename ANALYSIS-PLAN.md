@@ -397,6 +397,43 @@ item that is broken, ambiguous, or impossible — which is the failure mode that
 cell. If no pilot tester is found, say so here and treat every practice-session item result as
 first contact.
 
+### 3. Two participants are closer to Vikrant than the recruitment rule allows
+
+`RECRUITMENT.md` section 1 defines the pool as workplace non-engineering colleagues — not
+classmates, not on his team. Section 2 adds the consent rule: nobody who reports to him, and
+participation explicitly voluntary.
+
+The actual pool, recorded 19 Sep in `screener/ARM-ASSIGNMENT.md` section 6:
+
+| person | relationship | arm |
+|---|---|---|
+| gaurav, ritesh | on his team before | A |
+| anuj, manish | on his team before | B |
+| nabin | current teammate | A |
+| rishabh | current teammate | B |
+| vikash | **his brother** | B |
+
+The consent rule is satisfied — nobody reports to him. What is not satisfied is the pool
+definition, in two places.
+
+**vikash is his brother.** A sibling has his own reason to try hard, to stay to the end, and to
+under-report frustration. That is demand characteristics, and it acts on effort, which is one of
+the two secondary measures section 5 pre-commits. He is in Arm B, the answer-on-demand arm, so if
+the effect runs the way it usually does it inflates Arm B's engagement — which works *against*
+the hypothesis rather than for it. Worth saying, because a limitation that happens to favour the
+prediction deserves more suspicion than one that does not.
+
+**nabin and rishabh are current teammates**, an ongoing working relationship rather than a former
+one. Milder, and split one per arm.
+
+**Why it was not fixed.** The pool is seven. Dropping vikash leaves six, and one dropout after
+that puts a cell at two. At that point the study has no comparison left to make. Running with him
+and saying so is the honest trade; quietly dropping him after seeing his result would not be.
+
+**How it is bounded.** Report `completed_removal_test` and attempt counts per person, not only
+per arm. If vikash is an outlier on effort in the direction above, it is visible in his own row
+rather than hidden in Arm B's mean.
+
 ---
 
 ## Still open

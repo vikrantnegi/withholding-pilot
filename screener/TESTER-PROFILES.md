@@ -310,3 +310,25 @@ cases produced nothing.
   split across both arms. Which four is recorded nowhere in this folder.
 
 **Why it matters:** items 1 and 5 change your data. Item 5 has to be settled before 20 Sep.
+
+---
+
+## Correction, 19 Sep 2026 — manish's round 1, regraded
+
+The open item at the top of this section is closed. `round-1-cold/grade.py` now reports the
+actual mismatch instead of a row count, and manish's round 1 was regraded.
+
+**His score did not move. 0/10 stands.** `compare()` was never wrong; only the message was. What
+the fix revealed is the cause: both his answers were `1 column, expected 2`, from a missing comma
+in `SELECT name city`. SQL reads that as the column `name` aliased to `city`. The table, filter
+and sort were correct on both questions.
+
+So his 0/10 is not evidence about his ability, and the verdict `FLOOR — exclude` that sat beside
+it was never a finding about him. This is a fourth instance of finding 3 above — the missing
+character habit belongs to the group, not to one person.
+
+Arm assignment therefore ranks on round 2 alone. See `ARM-ASSIGNMENT.md` sections 2 and 5, and
+`../LEARNING-LOG.md` L19.
+
+**Still open from the list above:** which four of the seven were on his team. The flip cannot
+run without it.
