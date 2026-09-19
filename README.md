@@ -122,8 +122,11 @@ Sorted this way on purpose. How a file behaves over time tells you how much to t
 | folder | what |
 |---|---|
 | `screener/` | both screening rounds. Start at `screener/README.md` |
+| `study-questions/` | **the instrument. Frozen 19 Sep**: 28 items (16 practice, 12 held-out), the study schema, the scoring rule, and the three verifiers that must report `problems: 0` before any freeze. Start at `study-questions/README.md`; the decisions and their reasons are in `study-questions/DECISIONS.md` |
+| `app/` | the study app. Open `app/index.html`; `?arm=B` flips the arm. `policy.js`, `hint-guard.js`, `hint-writer.js`, `help-session.js` and `grade-rule.js` hold everything that decides anything, and are covered by 123 unit tests |
 | `diagrams/` | `architecture-arm-a.png` — the Arm A control graph, three zones, drawn 13 Sep. Editable sources alongside it |
-| `evals/` | `replay.js` — hint quality, replayed from stored attempts. The 18 Sep checkpoint. Start at `evals/README.md` |
+| `evals/` | `replay.js` hint quality, replayed from stored attempts (the 18 Sep checkpoint). `verify-app.mjs` drives the real page in a headless browser. `grader-conformance.mjs` proves the app's grader and the scoring rule agree. `link-check.mjs` fails if the docs name a file that is not on disk. Start at `evals/README.md` |
+| `supabase/` | `supabase/functions/hint/` — the edge function that holds the Groq key, so it is never in the page. Written 13 Sep, **not deployed** |
 
 **Why it matters:** a new reader can trust the Living files and skip the Superseded ones. That is
 the whole point of the grouping.

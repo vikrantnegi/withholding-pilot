@@ -412,3 +412,133 @@ the part to fix.
 ---
 
 ## Append below: number, what you believed, what broke it, what changed, the lesson
+
+---
+
+## L15 — The grader is what decides whether an answer is correct
+
+**Believed until 19 Sep 2026.** Grading was result matching: run the submission, run the
+reference, compare the rows. The grader was treated as the whole correctness surface, so
+making grading stricter meant changing the grader.
+
+**What broke it.** anuj's round-1 query for the "highest price per category above 10000"
+item put the threshold in `HAVING price > 10000` — filtering groups on a single row's price
+rather than on the group's maximum. It scored **correct**. The rows were right. Nothing was
+wrong with the rows; what was wrong was the query.
+
+The reason it passed is that the round-1 seed data could not tell the two queries apart. In
+that data, the arbitrary row SQLite picks for a bare `price` happened to be the group's
+maximum often enough that both queries returned the same rows. Change one product's price and
+the same grader would have caught it. So the *data* was doing half the grading, silently, and
+nobody had decided that it should.
+
+**What changed.** Two defences, each independent of the other.
+
+`grade_rule.py` clause 2 checks the submitted SQL: every non-aggregated column selected, or
+filtered on in `HAVING`, must also appear in `GROUP BY`. That is a property of the query, so
+no dataset can make it pass.
+
+`verify.py` checks the data: it executes all 47 wrong queries listed across the 28 items in
+`items.py` and fails if any returns the reference's rows, compared both in order and unordered.
+The seed data now has to earn its separating power before a freeze, rather than being assumed
+to have it.
+
+**The lesson.** When a check compares outputs, the inputs are part of the check. A
+result-matching grader is only ever as strict as the data's ability to separate a right answer
+from a wrong one — and that strictness is invisible, because a passing wrong answer looks
+exactly like a passing right one.
+
+**Why it matters:** the whole study is a comparison of who gets items correct. A grader whose
+strictness depends on undeclared properties of the seed data is not a measuring instrument.
+
+---
+
+## L16 — There is one grader
+
+**Believed until 19 Sep 2026.** `grade_rule.py` was written, tested, and frozen as *the*
+scoring rule, with its reasoning dated in `DECISIONS.md` section 3. Freezing it felt like
+settling the question of what counts as correct.
+
+**What broke it.** Wiring the frozen question set into `app/index.html`. The app had a rule of
+its own, inherited from the round-2 screener: compare result rows at 2 decimal places, and
+never look at the SQL. So there were two rules, and they disagreed in both directions.
+
+A learner who grouped correctly but omitted `ROUND(...,1)` returns 194.4666 where the reference
+says 194.5. The app compared at 2 decimals, saw 194.47 against 194.5, and said "Not right yet".
+The scoring rule compared at 1 decimal and counted the same submission correct. Eleven of the
+16 practice items ask for rounding, so this was the common case rather than a corner.
+
+The anuj shape ran the other way. The app said "Correct. That's the one.", disabled Help, and
+recorded no ladder decision; the scoring rule graded it `invalid`.
+
+**What changed.** `app/grade-rule.js` ports the frozen rule and the app now uses it.
+`evals/grader-conformance.mjs` runs all 75 queries in `items.py` — 28 references and 47 wrong
+models — through both implementations and fails unless the verdict *and* the reason match. 75
+of 75 agree. `DECISIONS.md` sections 4 and 5 record the decision and the rounding tie-break it
+forced, both dated before the practice session.
+
+**The lesson.** A rule is not frozen until every place that applies it has been found.
+Freezing the document froze one of the two implementations and left the other running, and the
+frozen one was the one nobody was looking at during a session.
+
+**Why it matters:** the disagreement fell on exactly the two query shapes this study is about —
+correct grouping with sloppy formatting, and the wrong mental model that returns right rows. In
+the results it would have been indistinguishable from an effect of the help policy.
+
+---
+
+## L17 — A number a script prints is a record of that number
+
+**Believed until 19 Sep 2026.** `validate-substance-bar.js` printed its own baseline on every
+run: "121 of 128 passed, 7 rejected (6 empty, 1 bare SELECT)". It read like a measurement
+carried forward from the run that produced it.
+
+**What broke it.** The new schema pushed the pass count down to 7 of 122, which is expected —
+the logged attempts name tables that no longer exist. Judging whether any *genuine* attempt had
+been lost meant re-running the same extractor against the old schema. That gave **121 of 122
+passed, 1 rejected.** The 121 reproduced exactly. The 128 and the 7 did not.
+
+The 6 empty submissions the baseline counted are not in the corpus the extractor reads now.
+Whether the logs changed or the extractor did is no longer recoverable, because the only record
+of the original run is the sentence describing it.
+
+**What changed.** The line now states numbers that can be reproduced, and says how: run it with
+`--schema` pointing at the old schema. The withdrawn claim is named rather than quietly
+replaced.
+
+**The lesson.** A number in a print statement is an assertion, not a measurement. It cannot
+fail, because nothing re-derives it. So it outlives the thing it described and keeps being read
+as current — and a baseline is the worst place for that, because its whole job is to be the
+thing a later judgment is compared against.
+
+**Why it matters:** the judgment resting on this baseline was whether the substance bar had
+started rejecting real work. That call was made against a denominator that was wrong by 6
+attempts.
+
+---
+
+## L18 — A passing test suite proves the code is exercised against the real thing
+
+**Believed until 19 Sep 2026.** `policy.test.js` had 34 green tests over the level selector and
+the substance bar, including named round-2 learners. Green was read as coverage.
+
+**What broke it.** The schema changed from `customers`/`products`/`orders`/`order_items` to
+`deploys`/`tickets`/`rides`. The handoff predicted the suite would break, because the substance
+bar's schema half matches an attempt against the schema's identifiers and those tests use
+queries naming the old tables.
+
+The suite stayed green. It declares its own identifier list — `const IDS = ['customers',
+'products', ...]` — and passes it in explicitly. So it kept testing the bar against a schema
+that no longer existed anywhere else in the project, and reported success for doing so.
+
+**What changed.** The identifier list and every learner query in it now name the study schema.
+Still 34 green, but green about the current system. The bar itself was not touched.
+
+**The lesson.** A fixture that declares its own world cannot notice that the world changed.
+Green means "consistent with the fixture", and only means "consistent with the system" when
+something forces the fixture and the system to share a source.
+
+**Why it matters:** the prediction that these tests would fail was correct reasoning about the
+system. The suite's silence was the defect. A test that cannot fail when the system changes
+underneath it is not covering the system — and this one guards the rule that decides which
+attempts count toward the gate.

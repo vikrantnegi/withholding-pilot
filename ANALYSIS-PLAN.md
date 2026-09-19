@@ -343,12 +343,70 @@ to support you. Writing both directions down today is what makes that reach legi
 
 ---
 
+## Stated limitations — pre-committed 19 Sep, before any session ran
+
+Two limits on what this study can conclude. Both are written here, in the document read on
+28 Sep, rather than discovered while writing up. Neither is a reason not to run; both are
+reasons not to over-claim.
+
+### 1. The two arms' error messages are not of matched quality
+
+Arm B's condition is the bare error message plus the answer on demand. Arm A gets the same error
+message plus the hint ladder. So the error message is held constant and the help differs, which
+is the design.
+
+What is *not* held constant is how good that error message is. Round 2 showed SQLite pointing at
+the wrong word and a participant sustaining 63 attempts on one item without the message helping
+(`LEARNING-LOG.md` L7). If Arm A's hints happen to repair a confusion that a better error message
+would also have repaired, then part of any measured gap is the hint doing the error message's job
+rather than teaching anything.
+
+**The choice made, and why.** The alternative was to write matched-quality error messages for
+both arms. That is a second treatment built one day before a frozen app, and it would have made
+Arm B a designed condition rather than the realistic baseline it is meant to be. So the bare
+message stays and this is reported as a limit.
+
+**How it is bounded, not just admitted.** Arm B's attempt logs record how many attempts followed
+each error message without a change in the learner's mental model. If Arm B shows the round-2
+pattern of repeated near-identical attempts against an unhelpful message, that is evidence the
+confound is live and the gap is partly attributable to error-message quality. It is a
+post-hoc description, not a test, and is reported as such.
+
+**A control condition is a design choice, not the absence of one.** `LEARNING-LOG.md` L7.
+
+### 2. The items were piloted, not screened
+
+The 28 items were verified mechanically, not on people. `verify.py` confirms every reference runs
+and returns 2 to 10 rows with no tie on the sort key, and that each of the 47 listed wrong queries
+either errors or returns rows different from the reference. `test_grade_rule.py` confirms all 28
+references grade `correct` and none of the 47 wrong models does.
+
+None of that says an item sits at a usable difficulty for these six people. It cannot, because of
+a constraint that has no way around it: **the pool is seven people and anyone who sees an item
+burns it.** An item shown to a participant during screening cannot be used to measure that
+participant later. Screening the items properly would consume the sample the study needs.
+
+**What follows.** Difficulty is calibrated from the two round-2 screening rounds, which used
+different questions and a different schema. So the difficulty estimate is transferred, not
+measured. Assumption 4 in `HYPOTHESIS-LOG.md` stays open for this reason, and checks 2 and 3
+below exist to catch a floor or a ceiling after the fact rather than before.
+
+**The single mitigation available, and it is not yet done.** One pilot tester from outside the
+seven, run before 21 Sep. One person cannot establish difficulty, but one person can catch an
+item that is broken, ambiguous, or impossible — which is the failure mode that would cost a whole
+cell. If no pilot tester is found, say so here and treat every practice-session item result as
+first contact.
+
+---
+
 ## Still open
 
 - **The held-out set size is planned at 12, not yet frozen.** Every threshold is a percentage and
   survives a change. The *derivations* do not — check 3 and check 2's gap clause are sized
   against headroom on a 12-item set. Confirm the count at question-set freeze and record it here.
   If it moves, re-derive both.
+  **Closed 19 Sep: frozen at 12** (`study-questions/DECISIONS.md` section 1). S1 to S4, three
+  items each. The derivations stand as written; no re-derivation needed.
 - **Check 3 may be measuring the wrong thing.** Solve rate sits on where learners ended up.
   `LEARNING-LOG.md` L6 argues the mechanism lives on the path they took.
 

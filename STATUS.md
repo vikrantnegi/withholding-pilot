@@ -1,27 +1,29 @@
-# Status — as of 14 Sep 2026
+# Status — as of 19 Sep 2026
 
 **The only source of truth for the present.** If another file disagrees with this one about today,
 this one wins. **Update the date above whenever you touch it.**
 
-**24 days to submission on 7 Oct 2026.** Teaching ends 14 Sep. That leaves 23 days of build time.
-About half is reserved for testing, freeze and packaging by design.
+**18 days to submission on 7 Oct 2026.** Teaching ended 14 Sep. About half the remaining time is
+reserved for testing, freeze and packaging by design.
 
 ---
 
 ## Where the project is
 
-**The slice runs, the guard is measured, the scope is settled. The question set does not exist.**
+**The instrument exists and the app serves it. What is missing is no longer code — it is three
+things that need people and one that needs a deploy.**
 
-The 13 Sep checkpoint was a thin working slice end to end. **It runs**, one day late in effect
-and on the day in fact. Open `app/index.html`; `?arm=B` flips the arm. Verified in a headless
-browser — gate, hint, refusal, escalation, and Arm B's unconditional reveal. 59 unit tests plus
-the smoke run.
+The question set was the binding constraint for a week. It is frozen: `study-questions/`, 28 items
+over one concept, 16 practice and 12 held-out. All three verifiers report `problems: 0`. The app
+serves the 16 practice items and was driven end to end in a headless browser on both arms.
 
-Two caveats, both stated in `app/README.md`: the questions in it are the **burned** round-2
-screener questions, and `callModel` is a stub. It is a dev harness, not the study app.
+The blocker has moved to the hint edge function, which is **written and not deployed**. Until it
+is, every hint Arm A receives is the item's hand-written fallback rather than a hint grounded on
+that learner's query. The app degrades to fallbacks by design and never breaks, so this will not
+be visible on the day — which is exactly why it is written here.
 
-The binding constraint has moved. It is no longer code — it is the question set, which is blocked
-behind decisions 1 and 3.
+**So what:** nothing stops the 21 Sep practice session from running. But if it runs undeployed,
+Arm A's treatment on the day is the static fallback, not the treatment `PRD-v1.md` §4 specifies.
 
 ### What exists
 
@@ -29,127 +31,101 @@ behind decisions 1 and 3.
 |---|---|---|
 | Scope lock and spec | `PRD-v1.md` | Done 10 Sep, four days late |
 | Architecture diagram | `PRD-v1.md` §3 | Done. The LLM is not in the control path |
-| The policy, written out | `PRD-v1.md` §4 | Specified, and **built** in `app/policy.js` |
-| The level selector | `app/policy.js` | Done 13 Sep. 20 tests green |
-| Leak guard + rejection policy | `app/hint-guard.js` | Done 13 Sep. 22 tests |
-| Hint writer, prompt + pinned model | `app/hint-writer.js` | Done 13 Sep. 14 tests. Needs a Groq key and the function deployed |
+| The policy, written out | `PRD-v1.md` §4 | Specified, and built in `app/policy.js` |
+| The level selector | `app/policy.js` | Done 13 Sep. 34 tests, re-pointed at the study schema 19 Sep |
+| Leak guard + rejection policy | `app/hint-guard.js` | Done 13 Sep. 32 tests |
+| Hint writer, prompt + pinned model | `app/hint-writer.js` | Done 13 Sep. 14 tests. **Needs a Groq key and the function deployed** |
 | Key out of the page | `supabase/functions/hint/` | Written 13 Sep. **Not deployed** |
-| Hint-quality eval | `evals/replay.js` | Done and **run** 13 Sep. 20/20 from the model, 0 fallbacks, 1 leak caught. `EXPERIMENT-LOG.md` Run 3 |
-| Help-press orchestration + log shape | `app/help-session.js` | Done 13 Sep. 20 tests. Not yet wired to a UI |
-| Browser SQL environment | `screener/round-2-runbutton/sql-mini-screen.html` | Working. Editor, Run, result comparison, error display, per-attempt logging |
+| Hint-quality eval | `evals/replay.js` | Run 13 Sep. 20/20 from the model, 0 fallbacks, 1 leak caught. `EXPERIMENT-LOG.md` Run 3 |
+| Help-press orchestration + log shape | `app/help-session.js` | Done 13 Sep. 20 tests. Wired to the UI |
+| **The question set** | `study-questions/` | **Frozen 19 Sep.** 28 items, scoring rule, 3 verifiers at `problems: 0` |
+| **The scoring rule, in the app** | `app/grade-rule.js` | **Done 19 Sep.** 23 tests. One rule for the learner and the score |
+| **Grader agreement** | `evals/grader-conformance.mjs` | **Done 19 Sep.** 75 of 75 queries agree across both implementations |
+| **The app on the real question set** | `app/index.html` | **Done 19 Sep.** 16 practice items; held-out absent from the source |
+| **Browser verification** | `evals/verify-app.mjs` | **Done 19 Sep.** 42 checks, both arms, 0 failed |
+| Log storage | — | **Not built, parked.** The copy-log button is the fallback |
 | Screening data, 2 rounds, 7 people | `screener/` | Done. See `EXPERIMENT-LOG.md` |
-| Participant pool | `RECRUITMENT.md` | 8 named, 7 active. Need 6 alive on 27 Sep |
-| Hypothesis log | `HYPOTHESIS-LOG.md` | **v0 only.** The v1 entry is owed and blocked. See decision 2 |
+| Participant pool | `RECRUITMENT.md` | 8 named, 7 active. Need 6 alive at the removal test |
+| Hypothesis log | `HYPOTHESIS-LOG.md` | **v1 appended 19 Sep.** The claim is now falsifiable |
+| Pre-committed limitations | `ANALYSIS-PLAN.md` | **Done 19 Sep.** Both written before any session ran |
 
-The browser environment already covers most of the deterministic half of the architecture. What it
-lacks is the help path.
+Test totals: **123 unit tests** across five modules, plus 42 browser checks, plus the grader
+conformance run. All green as of 19 Sep.
 
 ### What is not built — `PRD-v1.md` §6
 
-1. ~~**Help button and the policy.**~~ Done 13 Sep. `app/policy.js` + `app/help-session.js` +
-   `app/index.html`. A learner can reach it.
-2. **Hint writer.** One LLM call, grounded on the answer key, the learner's query and the result
-   difference. Plus a guard that rejects any hint containing the answer. The guard is the 18 Sep
-   deliverable.
-3. **Log storage.** A Supabase table. The existing copy-log button is the fallback.
-4. **The question set.** Practice questions plus a held-out set, frozen before the policy is
-   written. Blocked on decision 3.
-
-**Why it matters:** item 1 is what you are marked on, and it is the smallest of the four.
+1. ~~**Help button and the policy.**~~ Done 13 Sep.
+2. **Hint writer — deployed.** The code, the prompt, the pinned model and the guard are all done
+   and tested. The edge function is not deployed and there is no Groq key in place. **This is the
+   top technical item.**
+3. **Log storage.** A Supabase table. Parked; the copy-log button is the fallback. Before Monday,
+   confirm the copied log carries `started` and `finished`.
+4. ~~**The question set.**~~ Done 19 Sep. `study-questions/`, frozen.
 
 ---
 
-## The miss cascades. Read this before planning the week
+## The four things standing between here and the removal test
 
-The 13 Sep slice is not a self-contained slip. Three later checkpoints depend on it.
+Ordered by what breaks if it is skipped. Only the first is code.
 
-- **18 Sep, testing and guards.** The deliverable guards the hint writer. The hint writer needs the
-  policy. So items 1 and 2 must both exist first.
-- **20 Sep, first version on real data.** Already pulled forward from 23 Sep, because the removal
-  test needs 5 to 7 days before 27 Sep. There is no slack left here.
-- **21 Sep, practice session.** Real people touch the real app. After this, changing the app
-  invalidates the comparison.
+1. **Deploy the hint function and put a Groq key in place.** Otherwise Arm A is measured on static
+   fallbacks. Silent failure, so nothing on the day will tell you.
+2. **Arm assignment, and it has a prerequisite.** manish's round-1 grade is corrupted by the
+   grader bug and must be recomputed before matched pairs can be formed. Then coin flips, then
+   split the four former teammates across arms. **Doing any of this after Arm A data exists is
+   indefensible** — the same objection as re-pointing a question pair after seeing results.
+3. **A pilot tester from outside the seven, before 21 Sep.** Anyone in the pool who sees an item
+   burns it. One outsider cannot establish difficulty but can catch an item that is broken,
+   ambiguous or impossible — the failure mode that costs a whole cell. Named as the only available
+   mitigation in `ANALYSIS-PLAN.md`, and **not yet done.**
+4. **Book both sessions.** The practice session on 21 Sep with six testers, and the removal test on
+   **26 Sep at the earliest** — the 5-day gap rule. Neither is booked.
 
-So the build window for items 1 to 3 is **now to 20 Sep. Seven days.** And item 4 is blocked behind
-an unresolved decision.
-
-**Why it matters:** this is a bigger risk than the 30 Sep freeze date flagged in `CAPSTONE-PLAN.md`.
+**So what:** three of the four need other people's time, and the practice session is in two days.
+They are the schedule risk now, not the build.
 
 ---
 
 ## Open decisions
 
-Only decision 2 is still open. It blocks nothing today, and everything on 27 Sep.
+### 1–4, 6 — CLOSED
 
-### 1. ~~Not enough moments to act on~~ — CLOSED 14 Sep
+Closed 13–14 Sep. Moments arithmetic, the four cut-off numbers, the second topic, the syntax-error
+gate, and N = 2. The reasoning is in `HYPOTHESIS-LOG.md` v0.1 and v0.2 and in `ANALYSIS-PLAN.md`.
 
-Round 2 measured 0.14 moments per person-question, which over 48 person-questions is ~7 against
-a budgeted 48. Two fixes were available and only one of them left the treatment intact.
+### 5. Error message quality — CLOSED 19 Sep, as a stated limitation
 
-Closed by the combination: a syntax error satisfies the gate (§9.3, raising the rate to ~0.48,
-so ~23 moments), and the scope drops to one concept (halving the cells to 2, so ~11 each against
-a budget of 12). It was always the same decision as 3.
+Arm B's condition is the bare error message, and its quality is not matched to Arm A's. Round 2
+showed SQLite pointing at the wrong word and one participant sustaining 63 attempts on a single
+item without the message helping.
 
-Numbers in `EXPERIMENT-LOG.md` Run 2. The reasoning error that hid it is `LEARNING-LOG.md` L5.
+**Resolved by writing it up rather than by building a fix.** Matched-quality error messages would
+be a second treatment built two days before the app freezes, and would turn Arm B from a realistic
+baseline into a designed condition. Pre-committed in `ANALYSIS-PLAN.md` under "Stated limitations",
+with the way it will be bounded after the fact. Evidence: `LEARNING-LOG.md` L7.
 
-### 2. ~~The four cut-off numbers~~ — CLOSED 14 Sep
+### 7. New, 19 Sep — does clause 2 collapse the solve rate?
 
-Filled. TODO-HYPOTHESIS-v1.md was rewritten and renamed `ANALYSIS-PLAN.md`. It is now a live
-document, read on 28 Sep, not a task to delete.
+The scoring rule now requires valid grouped SQL, not only matching rows. Nothing has tested that
+against a real learner; only the 28 references and 47 listed wrong models. If the practice session
+comes in far below round 2's solve rates, clause 2 is the first suspect.
 
-Section 4 holds the checklist. Two checks were added in front of the original four: attrition
-(0a) and actual elapsed gap per participant (0b). The original check 1 was replaced — it asked
-for a percentage of about 23 events across Arm A, which cannot be computed.
-
-Section 5 is new. It pre-commits the direction of two secondary measures, attempt rate and
-satisfaction, so neither can be reached for on 28 Sep after the fact.
-
-Still owed: the v1 entry in `HYPOTHESIS-LOG.md`, which this unblocks.
-
-### 3. ~~The second topic~~ — CLOSED 14 Sep
-
-**One concept: GROUP BY/HAVING. Four sub-skills, three practised, S4 held back as the control.**
-
-Held-out items are hand-paired to practice items by sub-skill, which keeps the attribution
-argument without a second concept. Cells drop from 4 to 2, so ~23 moments become ~11 per cell
-against a budget of 12.
-
-`HYPOTHESIS-LOG.md` v0.1 records the evidence and what it changed. `PRD-v1.md` §6 item 4 has the
-authoring spec. **Decision 1 closes with it** — the moments arithmetic was the same problem.
-
-### 4. ~~Does a syntax error satisfy the gate?~~ — CLOSED 13 Sep
-
-**Yes.** Five of 21 tries produced no working query at all. Built in `app/policy.js`, with a
-text-changed clause so identical re-presses do not count (`LEARNING-LOG.md` L11). `PRD-v1.md`
-§9.3.
-
-### 5. Error message quality
-
-Arm B's condition is the bare error message. Round 2 showed SQLite can point at the wrong word and
-sustain 63 useless attempts.
-
-Two options. Give both groups error messages of matched quality. Or write this up as a stated limit
-before Arm B runs. Evidence: `LEARNING-LOG.md` L7.
-
-### 6. ~~How many tries with the hint before showing the answer~~ — CLOSED 13 Sep
-
-**N = 2.** Fixed, never adaptive. A constant in `app/policy.js`; `PRD-v1.md` §9.1.
+**Decided by data, not by argument.** First evidence is 21 Sep. Assumption 8 in
+`HYPOTHESIS-LOG.md`.
 
 ---
 
 ## Live risks on the participant pool
 
-- **Former reports.** Nobody reports to Vikrant now. But he was senior to most, and 4 were on his
-  team before.
-- Mitigations already agreed. Split those 4 across both groups. Never say which group is "his".
-  Say plainly that dropping out is free.
-- **Dropout is the main threat, not ability.** 8 named, 7 active, 6 needed alive on 27 Sep.
-- Dropout that differs *between the groups* would break the comparison outright. Over-recruit to
-  10 or 12. Track who completed the removal test, by group.
-- **Both rounds' questions are burned.** The study must not reuse them, and it needs a different
-  schema too.
-
-**Why it matters:** one named dropout risk already exists. See manish in `screener/TESTER-PROFILES.md`.
+- **Dropout is the main threat, not ability.** 8 named, 7 active, 6 needed alive at the removal
+  test. Dropout that differs *between the arms* breaks the comparison outright. Over-recruit, and
+  track who completed the removal test by arm.
+- **One named dropout risk already exists.** See manish in `screener/TESTER-PROFILES.md` — who is
+  also the person whose round-1 grade needs recomputing before arm assignment.
+- **Former reports.** Nobody reports to Vikrant now, but he was senior to most and 4 were on his
+  team. Split those 4 across both arms, never say which arm is "his", and say plainly that
+  dropping out is free.
+- **Both screening rounds' questions are burned**, and so is their schema. The study uses neither.
 
 ---
 
@@ -158,12 +134,12 @@ before Arm B runs. Evidence: `LEARNING-LOG.md` L7.
 | date | checkpoint | state |
 |---|---|---|
 | 6 Sep | Scope lock | Done 10 Sep, late |
-| 13 Sep | Thin working slice end to end | **Done**, on the day |
-| 18 Sep | Testing and guards | **Done 13 Sep.** Guard built, eval run, Run 3 logged |
-| 20 Sep | First version on real data | 7 days out, nothing built |
-| 21 Sep | Practice session | App frozen from here |
-| 27 Sep | **REMOVAL TEST** | The measurement. Cannot move |
-| 28–29 Sep | Analysis | |
+| 13 Sep | Thin working slice end to end | Done, on the day |
+| 18 Sep | Testing and guards | Done 13 Sep. Guard built, eval run, Run 3 logged |
+| 20 Sep | First version on real data | **Question set and app ready. Hint function not deployed** |
+| 21 Sep | **Practice session** | **Not booked.** App frozen from here |
+| 26 Sep+ | **REMOVAL TEST** | **Not booked.** 26 Sep is the earliest the 5-day gap allows |
+| 28–29 Sep | Analysis | `ANALYSIS-PLAN.md` is read on 28 Sep |
 | 30 Sep | **FEATURE FREEZE** | |
 | 3 Oct | Video, README, deploy | |
 | 5 Oct | Dry run | |
@@ -175,12 +151,13 @@ Demo Day: 11 Oct 2026, 100x HQ.
 
 ## Next actions
 
-1. **Author the question set** — `PRD-v1.md` §6 item 4. One concept, ~16 practice items over
-   S1/S2/S3, a held-out set covering all four sub-skills, the pairing table, and a fallback hint
-   per question. This is now the only thing between here and 20 Sep.
-2. ~~Fill the four numbers~~ Done 14 Sep; see section 2 above. Still owed: append v1 to
-   `HYPOTHESIS-LOG.md`.
-3. ~~**`git init`.**~~ Done 13 Sep, commit `7439b80`. Commit small and often from here.
-4. Build items 1 to 3 from `PRD-v1.md` §6 against a 20 Sep wall.
+1. **Deploy `supabase/functions/hint/` and set the Groq key.** Then re-run `evals/replay.js`
+   against the deployed function, so the 21 Sep session runs on real hints.
+2. **Recompute manish's round-1 grade, then assign arms.** Matched pairs, coin flips, four former
+   teammates split. Before any Arm A data exists.
+3. **Find one pilot tester outside the seven** and run them through the 16 practice items.
+4. **Book 21 Sep and the removal test.**
+5. Confirm the copy-log button captures `started` and `finished`.
 
-**Why it matters:** item 1 is a decision, not work. It costs an hour and unblocks seven days.
+**Why it matters:** items 1 and 2 are the two that cannot be repaired after the fact. A missing
+deploy silently changes the treatment; late arm assignment invalidates the comparison.

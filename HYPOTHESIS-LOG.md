@@ -12,6 +12,9 @@ reader does not have to reconstruct the story from three entries written out of 
 > If the assistant **requires an attempt** before giving anything, and gives a **hint before the
 > answer**, then unaided performance 5–7 days after removal improves against an answer-giving
 > baseline — **on the sub-skills that were practised, and not on the one that was not.**
+>
+> Measured per person-question on the 26 Sep removal test, graded by
+> `study-questions/grade_rule.py`, against the thresholds in `ANALYSIS-PLAN.md` §4 (v1).
 
 Two things to notice against the 30 Aug statement. The independent variable is **withholding**,
 not *adaptive* withholding: the competence estimator is cut, so nothing adapts per learner. And
@@ -28,6 +31,7 @@ v0.2 describes an earlier change than v0.1 because it was logged a week late.
 | **v0** | 30 Aug | 30 Aug | the submitted statement: adaptive help, four levels chosen by a competence estimate | — | Bastani et al. (PNAS 2025), Kestin et al., Wu et al. |
 | **v0.2** | 7–10 Sep | **14 Sep, late** | four levels → two (hint, reveal); competence estimator cut; **the gate added**. The independent variable moves from adaptive withholding to withholding | an estimator cannot converge at n=6 over a short set; with a gate in front, the nudge is redundant; the gate is what actually implements retrieval | Koedinger & Aleven on the assistance dilemma; Bastani's GPT Tutor prompt in the SI appendix |
 | **v0.1** | 13–14 Sep | 13–14 Sep | two concepts → **one** (GROUP BY/HAVING), with four sub-skills: three practised, one held back as a within-person control. Held-out items hand-paired to practice items by sub-skill | T3 is dead (3 of 7 tried with an editor, 0 solved); the moments arithmetic does not close at four cells; questions cannot be screened without burning participants | `EXPERIMENT-LOG.md` Run 2; `LEARNING-LOG.md` L3, L4, L5 |
+| **v1** | 19 Sep | 19 Sep | no new mechanism. The claim becomes falsifiable: thresholds attached, and "correct" narrows from *right rows* to *right rows by grouping correctly* (scoring rule clause 2). Records that practice is skewed S1 x3 / S2 x6 / S3 x7, so a null on S1 is weaker evidence than a null on S3 | the thresholds and the question set both exist now, so a refuting result can be specified; clause 2 exists because the seed data was silently doing half the grading | `ANALYSIS-PLAN.md` §4; `study-questions/DECISIONS.md`; `LEARNING-LOG.md` L15, L16 |
 
 **Why v0.2 is late and says so:** three design changes went into `PRD-v1.md` and none reached
 this file for a week. Caught by a reader, not by the process. `LEARNING-LOG.md` L14 has the
@@ -41,10 +45,11 @@ now ends by asking whether the hypothesis moved.
 | 1 | v0 | a competence estimate can be inferred fast enough from a few queries to be useful | **abandoned, not tested** — the estimator was cut before it could be (v0.2). Stays as a roadmap claim |
 | 2 | v0 | four levels is the right granularity; two might do | **resolved: two** (v0.2) |
 | 3 | v0 | withholding does not cost so much motivation that learners quit mid-study | **open.** Counter-metrics on 27 Sep, `PRD-v1.md` §10. Wu's motivation cost lands on Arm B at removal, not Arm A |
-| 4 | v0 | the question set sits at a difficulty where a floor and a ceiling both exist | **open, and now the top risk.** Round 2 found a ceiling — M2 was solved by 5 of 6 at a median of one attempt (`LEARNING-LOG.md` L6) |
+| 4 | v0 | the question set sits at a difficulty where a floor and a ceiling both exist | **narrowed, still open** (v1). The three plain group-and-aggregate S1 items were cut, which removes the shape that produced the round-2 ceiling — M2, solved by 5 of 6 at a median of one attempt (`LEARNING-LOG.md` L6). Reduced by design, not measured. Check 3 on 28 Sep |
 | 5 | v0.1 | S4 is not at the floor for everyone | **open.** If nobody can do it before or after, "flat on S4" proves nothing and the control is lost |
-| 6 | v0.1 | ~5 practice items per sub-skill is enough repetition to move anything | **open** |
+| 6 | v0.1 | ~5 practice items per sub-skill is enough repetition to move anything | **false as stated for S1** (v1). The frozen set is S1 x3, S2 x6, S3 x7. Holds as written for S2 and S3; S1 transfer is measured on thinner practice |
 | 7 | v0.1 | sub-skills within one concept are separable enough to improve on S3 and not S4 | **open.** If they rise together, the design measures nothing new |
+| 8 | v1 | scoring-rule clause 2 does not reclassify so many submissions that both arms hit the floor | **open.** Only the 28 references and 47 listed wrong models have been graded, no real learners. First evidence 21 Sep; if practice solve rates fall far below round 2's, clause 2 is the first suspect |
 
 ---
 
@@ -208,3 +213,86 @@ moved.
 ---
 
 ## Append below: date, what evidence arrived, what it changed
+
+---
+
+## v1: 19 Sep 2026 — the instrument exists, so the hypothesis becomes falsifiable
+
+This is the entry owed since 14 Sep. v0.1 and v0.2 settled *what* is being claimed. Nothing
+until now settled what result would count as the claim failing, because neither the thresholds
+nor the question set existed. Both do now, so v1 states the hypothesis with the numbers that
+can refute it.
+
+**What arrived.** Two things, in this order.
+
+`ANALYSIS-PLAN.md`, 14 Sep: the four cut-off numbers, derived from the moments arithmetic rather
+than asserted, plus two checks in front of the original four — attrition (0a) and actual elapsed
+gap per participant (0b). The original check 1 was replaced; it asked for a percentage of about
+23 events across Arm A, which cannot be computed.
+
+`study-questions/`, frozen 19 Sep: 28 items — 16 practice and 12 held-out — with a reference
+query each, a hand-written fallback hint each, a pairing table, and a scoring rule that runs.
+
+**The hypothesis, stated so it can fail.**
+
+> If the assistant **requires an attempt** before giving anything, and gives a **hint before the
+> answer**, then on the 26 Sep removal test Arm A outperforms Arm B on held-out items paired to
+> **practised** sub-skills (S1, S2, S3), and the two arms do **not** differ on held-out items
+> for the **unpractised** sub-skill (S4) — measured per person-question, graded by the frozen
+> rule in `study-questions/grade_rule.py`, against the thresholds in `ANALYSIS-PLAN.md` §4.
+
+The final clause is what makes a positive result attributable. A gap on S1–S3 *and* on S4 is not
+support for the hypothesis; it is evidence of something acting on SQL performance generally.
+
+**What the frozen instrument changed about the claim.**
+
+1. **"Correct" is now a property of the query, not only of the rows.** Clause 2 of the scoring
+   rule requires every non-aggregated column selected, or filtered on in `HAVING`, to appear in
+   `GROUP BY`. A submission that returns the reference's rows through a wrong mental model grades
+   `invalid`. This narrows "unaided performance" from *produced the right output* to *produced
+   the right output by grouping correctly*, which is the construct the study is actually about.
+   `LEARNING-LOG.md` L15 is why: without it, the seed data was doing half the grading.
+
+2. **Practice is not evenly spread across the practised sub-skills.** The set is S1 x3, S2 x6,
+   S3 x7. Three candidate S1 items (P01, P03, P06) were cut because round 2 showed that an item
+   solved on the first attempt produces no ladder decision and therefore feeds neither arm. The
+   cut was right for the moments budget and it skews the practice. **Transfer on S1 is measured
+   against 3 practice items; transfer on S3 against 7.** A null result on S1 is therefore weaker
+   evidence than a null result on S3, and must not be read as equally strong.
+
+3. **Two pairs were re-pointed, before any result existed.** The cut orphaned pairs, so H01 now
+   pairs with P05 (both count per group) and H03 with P04 (both one aggregate per group). Looser
+   than the originals. Recorded here and in `DECISIONS.md` section 1 because a pair re-pointed
+   *after* seeing results would be indefensible.
+
+4. **Triage check 4b has a referent.** It said "the S4 held-out item", singular, where there are
+   three (H10, H11, H12). It now reads: at least 2 of the 6 testers grade `correct` on at least
+   one of the three, with no help available.
+
+5. **One grader decides in-session and at analysis.** Until 19 Sep the app judged submissions by
+   its own rule and disagreed with the scoring rule on the two shapes this study turns on.
+   `LEARNING-LOG.md` L16. The arms are comparable by policy only if the thing that tells a
+   learner "correct" is the thing that later counts them correct.
+
+**Hypothesis after this change.** Unchanged in substance from the box above the versions table.
+v1 adds no new mechanism. What it adds is a set of numbers that can refute it and an instrument
+that produces them — which is the difference between a claim and a hypothesis.
+
+**Which assumptions this moves:**
+
+- **Assumption 4** (the set has both a floor and a ceiling) — **narrowed, still open.** Cutting
+  the three plain group-and-aggregate S1 items removes the shape that produced the round-2
+  ceiling (M2, solved by 5 of 6 at a median of one attempt). The ceiling risk is reduced by
+  design rather than measured away. It is confirmed or refuted by check 3 on 28 Sep.
+- **Assumption 6** (~5 practice items per sub-skill is enough repetition) — **now false as
+  stated for S1.** S1 has 3. The assumption holds as written for S2 (6) and S3 (7).
+- **Assumption 8, new:** clause 2 does not reclassify so many submissions that solve rates
+  collapse and both arms hit the floor. Evidence so far is only that the 28 references pass and
+  none of the 47 listed wrong models grades correct. Real learners were not part of that check.
+  **First evidence arrives 21 Sep,** and if practice-session solve rates come in far below round
+  2's, clause 2 is the first suspect.
+
+**What is still not pre-committed, and is owed before 26 Sep.** Arm assignment. manish's round-1
+grade is corrupted by the grader bug and has to be recomputed before matched pairs can be
+formed, and the four former teammates must be split across arms. Doing this after any Arm A
+data exists would be indefensible in the same way a re-pointed pair would be.
