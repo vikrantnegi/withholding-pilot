@@ -18,41 +18,82 @@
     }
   }
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--ink);
+  body{margin:0;background:var(--bg);color:var(--ink);overflow-x:hidden;
     font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}
-  .wrap{max-width:860px;margin:0 auto;padding-block:32px;padding-left:20px;padding-right:20px}
-  h1{font-size:24px;margin:0 0 6px;letter-spacing:-.2px}
-  .sub{color:var(--muted);margin:0 0 24px;font-size:14px}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;
-    padding:18px 20px;margin-bottom:18px}
-  .intro{font-size:14px}
-  .intro p{margin:0 0 10px}
+  h1{font-size:21px;margin:0 0 4px;letter-spacing:-.2px}
+  .sub{color:var(--muted);margin:0;font-size:13.5px}
+
+  /* ---- masthead ---- */
+  .top{border-bottom:1px solid var(--line);background:var(--panel)}
+  .top-in{max-width:1320px;margin:0 auto;padding:16px 24px}
+
+  /* ---- three columns: where you are / the question / the schema ----
+   * The schema column is the point of this layout. In the single-scroll version it
+   * was collapsed at the top of the page, so by question 12 the column names were
+   * a long scroll away — in a task that is entirely about naming columns. */
+  .app{max-width:1320px;margin:0 auto;padding:22px 24px 56px;
+    display:grid;grid-template-columns:176px minmax(0,1fr) 372px;gap:20px;align-items:start}
+  /* A grid item's automatic minimum is its content, so one wide table or one long
+   * schema line pushes the whole column past the viewport. min-width:0 lets each
+   * column shrink and keeps the overflow inside .scroll, where it belongs. */
+  .rail,.stage,.ref{min-width:0}
+  .rail,.ref{position:sticky;top:22px}
+
+  /* ---- the rail: all 16, their state, jump to any ---- */
+  .rail{font-size:13px}
+  .progress{font-size:12px;color:var(--muted);margin:0 0 10px;padding-left:2px}
+  .progress b{color:var(--ink)}
+  .bar{height:4px;border-radius:3px;background:var(--line);overflow:hidden;margin:0 0 14px}
+  .bar span{display:block;height:100%;background:var(--accent);width:0;transition:width .25s}
+  .raillist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1px}
+  .raillist button{width:100%;text-align:left;border:0;background:none;padding:6px 9px;
+    border-radius:6px;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px;
+    cursor:pointer;line-height:1.35}
+  .raillist button:hover{background:var(--code);color:var(--ink)}
+  .raillist button[aria-current="true"]{background:var(--code);color:var(--ink);font-weight:600}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--line);flex:none}
+  .dot.tried{background:var(--warn)}
+  .dot.done{background:var(--accent)}
+  .rlabel{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .railsep{margin:10px 0 6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--muted);padding-left:9px}
+
+  /* ---- the stage: exactly one screen at a time ---- */
+  .screen[hidden]{display:none}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px 24px}
+  .intro{font-size:14.5px}
+  .intro p{margin:0 0 11px}
   .intro p:last-child{margin-bottom:0}
-  details{background:var(--panel);border:1px solid var(--line);border-radius:10px;
-    padding:14px 18px;margin-bottom:22px}
-  summary{cursor:pointer;font-weight:600;font-size:14px}
-  .schema{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:16px;margin-top:14px}
-  .tbl h4{margin:0 0 6px;font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--accent)}
-  .tbl ul{margin:0;padding-left:16px;font-size:12.5px;color:var(--muted);line-height:1.7}
-  .tbl code{font-size:12.5px;color:var(--ink)}
-  .qhead{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
-  .qnum{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .intro h2{font-size:17px;margin:0 0 12px}
+
+  .qhead{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+    flex-wrap:wrap;margin-bottom:12px}
+  .qnum{font-size:11.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
   .pill{font-size:11.5px;padding:3px 9px;border-radius:20px;background:var(--code);color:var(--muted);white-space:nowrap}
   .pill.ok{background:var(--accent-soft);color:var(--accent);font-weight:600}
-  .ask{margin:10px 0 14px;font-size:15px}
+
+  /* The question itself is the thing being read, so it gets the largest type on
+   * the page and a measure short enough to scan without losing the line. */
+  .ask{margin:0 0 18px;font-size:17px;line-height:1.55;max-width:62ch}
   .ask b{font-weight:600}
-  textarea{width:100%;min-height:110px;resize:vertical;padding:12px;border-radius:8px;
+  .lbl{font-size:11.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--muted);display:block;margin-bottom:7px}
+
+  textarea{width:100%;min-height:132px;resize:vertical;padding:13px;border-radius:9px;
     border:1px solid var(--line);background:var(--code);color:var(--ink);
-    font:13.5px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace}
+    font:13.5px/1.65 ui-monospace,SFMono-Regular,Menlo,monospace;tab-size:2}
   textarea:focus{outline:2px solid var(--accent);outline-offset:-1px}
-  .row{display:flex;gap:10px;align-items:center;margin-top:10px;flex-wrap:wrap}
-  button{font:inherit;font-size:14px;padding:8px 16px;border-radius:7px;cursor:pointer;
+  .row{display:flex;gap:10px;align-items:center;margin-top:11px;flex-wrap:wrap}
+  button{font:inherit;font-size:14px;padding:8px 16px;border-radius:8px;cursor:pointer;
     border:1px solid var(--line);background:var(--panel);color:var(--ink)}
   button.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
-  button:disabled{opacity:.5;cursor:not-allowed}
+  button:disabled{opacity:.45;cursor:not-allowed}
   .hint{font-size:12.5px;color:var(--muted)}
-  .out{margin-top:14px;font-size:13.5px}
-  .verdict{padding:10px 13px;border-radius:7px;font-size:13.5px;margin-bottom:10px}
+  .grow{flex:1}
+
+  .out{margin-top:16px;font-size:13.5px}
+  .out:empty{margin-top:0}
+  .verdict{padding:11px 14px;border-radius:8px;font-size:13.5px;margin-bottom:10px}
   .v-ok{background:var(--accent-soft);color:var(--accent);font-weight:600}
   .v-err{background:var(--bad-soft);color:var(--bad)}
   .v-warn{background:var(--warn-soft);color:var(--warn)}
@@ -61,22 +102,110 @@
   table{border-collapse:collapse;font-size:13px;min-width:100%}
   th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;white-space:nowrap}
   th{background:var(--code);font-weight:600;font-size:12px}
+
+  /* prev / next, so the rail is never the only way to move */
+  .nav{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
+
+  /* ---- the schema reference ---- */
+  .ref details{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .ref summary{cursor:pointer;font-weight:600;font-size:13px;list-style:none}
+  .ref summary::-webkit-details-marker{display:none}
+  .ref summary::after{content:" ▾";color:var(--muted)}
+  .ref details[open] summary::after{content:" ▴"}
+  .schema{display:grid;gap:14px;margin-top:13px}
+
+  /* Each table is its own bordered block with a filled header bar. Before this the
+   * three names were 12px green text in the same column as everything else, with a
+   * gap between them, and the whole panel read as one long list of 16 columns. The
+   * border is what says "this is where deploys ends and tickets begins". */
+  .tbl{border:1px solid var(--line);border-radius:9px;overflow:hidden;background:var(--panel)}
+  .tbl h4{margin:0;padding:9px 11px;background:var(--accent-soft);
+    border-bottom:1px solid var(--line);font-size:14px;font-weight:700;color:var(--accent);
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:-.1px;
+    display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+  /* The grain — "one row per deploy". What a row IS, is the first thing GROUP BY needs. */
+  .tbl h4 span{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    font-size:10.5px;font-weight:500;color:var(--muted);letter-spacing:0;text-transform:none;
+    white-space:nowrap}
+
+  /* Each table is drawn AS a table: one row per column, so the shape of the
+   * thing being queried is visible at a glance. It replaced three bullet lists,
+   * which buried the column name in a sentence and did not line anything up. */
+  .cols{width:100%;border-collapse:collapse;table-layout:fixed;font-size:12px}
+  .cols col.c1{width:36%} .cols col.c2{width:17%} .cols col.c3{width:47%}
+  .cols th{text-align:left;font-weight:600;font-size:9.5px;letter-spacing:.07em;
+    text-transform:uppercase;color:var(--muted);background:none;border:0;
+    border-bottom:1px solid var(--line);padding:7px 6px 4px 0;white-space:nowrap}
+  .cols td{border:0;border-bottom:1px solid var(--line);padding:5px 6px 5px 0;
+    vertical-align:top;white-space:normal;color:var(--muted);line-height:1.4}
+  .cols tr:last-child td{border-bottom:0}
+  /* The table now runs edge to edge inside its card, so the padding lives on the cells. */
+  .cols th:first-child,.cols td:first-child{padding-left:11px}
+  .cols th:last-child,.cols td:last-child{padding-right:11px}
+  .cols code{font-size:11.5px;color:var(--ink);word-break:break-word}
+  /* Values are chips rather than a comma list: at this width a comma list wraps to
+   * one value per line and makes the panel twice as tall as the viewport. */
+  .cols .vals{line-height:1.75}
+  .cols .vals code{color:var(--muted);background:var(--code);border:1px solid var(--line);
+    border-radius:4px;padding:0 4px;margin:0 2px 0 0;font-size:11px;display:inline-block}
+  .cols .none{opacity:.4}
+
+  /* Sixteen columns over three tables is taller than a laptop viewport, and the
+   * panel is sticky — so it scrolls inside itself rather than running off. */
+  .ref details{max-height:calc(100vh - 44px);overflow:auto}
+
   .send{background:var(--accent-soft);border-color:var(--accent)}
-  .send h3{margin:0 0 8px;font-size:16px}
+  .send h2{margin:0 0 8px;font-size:17px}
   .send p{margin:0 0 12px;font-size:14px}
   #logbox{width:100%;min-height:90px;font-size:11px;margin-top:10px;display:none}
   .tiny{font-size:12px;color:var(--muted);margin-top:10px}
-  .boot{padding:14px;border-radius:8px;background:var(--warn-soft);color:var(--warn);font-size:14px}
+  .boot{padding:14px;border-radius:9px;background:var(--warn-soft);color:var(--warn);font-size:14px}
+
+  /* ---- narrow: the rail becomes a strip, the schema a tap away in place ----
+   * The schema sits directly above the editor here rather than at the top of the
+   * page, so it is never more than one tap from the box you are typing in. */
+  @media (max-width:1040px){
+    .app{grid-template-columns:minmax(0,1fr);gap:16px;padding:16px 16px 48px}
+    .rail,.ref{position:static}
+    /* Static here, so let the page scroll rather than trapping a scrollbar inside. */
+    .ref details{max-height:none;overflow:visible}
+    .rail{order:1} .ref{order:2} .stage{order:3}  /* schema above the editor */
+    .raillist{flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:4px;
+      -webkit-overflow-scrolling:touch;scrollbar-width:thin;max-width:100%}
+    .raillist button{width:auto;padding:6px 11px;border:1px solid var(--line);white-space:nowrap}
+    .rlabel{max-width:none}
+    .railsep{display:none}
+    .schema{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+    .ask{font-size:16px}
+    .card{padding:18px 17px}
+  }
+  @media (max-width:640px){
+    .nav button{flex:1}
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <h1>SQL practice — grouping and filtering groups</h1>
-  <p class="sub">Practice session. 16 questions — get through what you can.</p>
+<header class="top">
+  <div class="top-in">
+    <h1>SQL practice — grouping and filtering groups</h1>
+    <p class="sub">Practice session. 16 questions — get through what you can. No time limit.</p>
+  </div>
+</header>
 
-  <div class="card intro">
-    <p><b>What changed from last time:</b> there's a real database in this page and a Run
+<div class="app">
+
+  <nav class="rail" aria-label="Where you are">
+    <p class="progress" id="progress">Not started</p>
+    <div class="bar"><span id="barfill"></span></div>
+    <ol class="raillist" id="rail"></ol>
+  </nav>
+
+  <main class="stage">
+
+    <section class="screen card intro" id="screen-intro">
+      <h2>Before you start</h2>
+<p><b>What changed from last time:</b> there's a real database in this page and a Run
     button. Write a query, run it, see what comes back, fix it, run it again. That's the
     point — last round asked you to write SQL blind, which isn't how anyone actually works.</p>
     <p><b>Still on your own</b> — no Google, no ChatGPT/Claude, no asking a colleague. But
@@ -85,50 +214,79 @@
     won't crack, hit "I'm stuck" and move on. You can stop whenever, and pull out of the
     whole thing later with no explanation needed.</p>
     <p>When you're done, scroll to the bottom and send me the log.</p>
-  </div>
+      <div class="nav">
+        <span></span>
+        <button class="primary" id="startBtn">Start with question 1 →</button>
+      </div>
+    </section>
 
-  <details open>
-    <summary>The database — three tables, new since last time</summary>
-    <div class="schema">
-      <div class="tbl"><h4>deploys</h4><ul>
-        <li><code>deploy_id</code> integer</li>
-        <li><code>service</code> text — <code>auth</code>, <code>billing</code>, <code>notify</code>, <code>payments</code>, <code>search</code></li>
-        <li><code>env</code> text — <code>prod</code> or <code>staging</code></li>
-        <li><code>status</code> text — <code>success</code> or <code>failed</code></li>
-        <li><code>duration_sec</code> integer</li></ul></div>
-      <div class="tbl"><h4>tickets</h4><ul>
-        <li><code>ticket_id</code> integer</li>
-        <li><code>team</code> text — <code>data</code>, <code>mobile</code>, <code>platform</code>, <code>web</code></li>
-        <li><code>priority</code> text — <code>P1</code>, <code>P2</code>, <code>P3</code></li>
-        <li><code>status</code> text — <code>open</code> or <code>closed</code></li>
-        <li><code>hours_to_close</code> integer</li></ul></div>
-      <div class="tbl"><h4>rides</h4><ul>
-        <li><code>ride_id</code> integer</li>
-        <li><code>city</code> text — Delhi, Indore, Jaipur, Kochi, Pune</li>
-        <li><code>driver</code> text</li>
-        <li><code>fare</code> integer</li>
-        <li><code>distance_km</code> number</li>
-        <li><code>rating</code> integer — 3 to 5</li></ul></div>
-    </div>
-    <p class="tiny">Nothing here joins to anything. Every question is answerable from one table.</p>
-  </details>
+    <div id="boot" class="boot">Loading the database…</div>
 
-  <div id="boot" class="boot">Loading the database…</div>
+    <div id="questions" hidden></div>
 
-  <div id="questions" hidden></div>
+    <section class="screen card send" id="screen-send">
+      <h2>Send it back</h2>
+      <p>Click copy, then paste into our chat. It's a record of the queries you ran — no
+      personal data in it.</p>
+      <div class="row">
+        <button class="primary" id="copy">Copy my log</button>
+        <button id="dl">Download instead</button>
+        <button id="show">Show me what it says</button>
+      </div>
+      <textarea id="logbox" readonly></textarea>
+      <p class="tiny">Thanks. Genuinely useful either way.</p>
+    </section>
 
-  <div class="card send">
-    <h3>Send it back</h3>
-    <p>Click copy, then paste into our chat. It's a record of the queries you ran — no
-    personal data in it.</p>
-    <div class="row">
-      <button class="primary" id="copy">Copy my log</button>
-      <button id="dl">Download instead</button>
-      <button id="show">Show me what it says</button>
-    </div>
-    <textarea id="logbox" readonly></textarea>
-    <p class="tiny">Thanks. Genuinely useful either way.</p>
-  </div>
+  </main>
+
+  <aside class="ref">
+    <details open id="schemaBox">
+      <summary>The database — three tables</summary>
+      <div class="schema">
+        <div class="tbl"><h4>deploys <span>one row per deploy</span></h4>
+          <table class="cols">
+            <colgroup><col class="c1"><col class="c2"><col class="c3"></colgroup>
+            <thead><tr><th>column</th><th>type</th><th>values</th></tr></thead>
+            <tbody>
+              <tr><td><code>deploy_id</code></td><td>integer</td><td class="vals"><span class="none">—</span></td></tr>
+              <tr><td><code>service</code></td><td>text</td><td class="vals"><code>auth</code> <code>billing</code> <code>notify</code> <code>payments</code> <code>search</code></td></tr>
+              <tr><td><code>env</code></td><td>text</td><td class="vals"><code>prod</code> <code>staging</code></td></tr>
+              <tr><td><code>status</code></td><td>text</td><td class="vals"><code>success</code> <code>failed</code></td></tr>
+              <tr><td><code>duration_sec</code></td><td>integer</td><td class="vals"><span class="none">—</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tbl"><h4>tickets <span>one row per ticket</span></h4>
+          <table class="cols">
+            <colgroup><col class="c1"><col class="c2"><col class="c3"></colgroup>
+            <thead><tr><th>column</th><th>type</th><th>values</th></tr></thead>
+            <tbody>
+              <tr><td><code>ticket_id</code></td><td>integer</td><td class="vals"><span class="none">—</span></td></tr>
+              <tr><td><code>team</code></td><td>text</td><td class="vals"><code>data</code> <code>mobile</code> <code>platform</code> <code>web</code></td></tr>
+              <tr><td><code>priority</code></td><td>text</td><td class="vals"><code>P1</code> <code>P2</code> <code>P3</code></td></tr>
+              <tr><td><code>status</code></td><td>text</td><td class="vals"><code>open</code> <code>closed</code></td></tr>
+              <tr><td><code>hours_to_close</code></td><td>integer</td><td class="vals"><span class="none">—</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tbl"><h4>rides <span>one row per ride</span></h4>
+          <table class="cols">
+            <colgroup><col class="c1"><col class="c2"><col class="c3"></colgroup>
+            <thead><tr><th>column</th><th>type</th><th>values</th></tr></thead>
+            <tbody>
+              <tr><td><code>ride_id</code></td><td>integer</td><td class="vals"><span class="none">—</span></td></tr>
+              <tr><td><code>city</code></td><td>text</td><td class="vals"><code>Delhi</code> <code>Indore</code> <code>Jaipur</code> <code>Kochi</code> <code>Pune</code></td></tr>
+              <tr><td><code>driver</code></td><td>text</td><td class="vals"><span class="none">—</span></td></tr>
+              <tr><td><code>fare</code></td><td>integer</td><td class="vals"><span class="none">—</span></td></tr>
+              <tr><td><code>distance_km</code></td><td>number</td><td class="vals"><span class="none">—</span></td></tr>
+              <tr><td><code>rating</code></td><td>integer</td><td class="vals">3 to 5</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="tiny">Nothing here joins to anything. Every question is answerable from one table.</p>
+    </details>
+  </aside>
 
 </div>
 
@@ -303,8 +461,36 @@ POLICY.setSchemaIdentifiers(SCHEMA_IDENTIFIERS);
  * EXPECTED is base64 so the answers are not plain text in the source.
  * ======================================================================= */
 
-// The whole difference between the two groups. PRD-v1 §1.
-const ARM = new URLSearchParams(location.search).get('arm') === 'B' ? 'B' : 'A';
+/* ---- who is this, and which arm ----
+ *
+ * Each participant gets a link ending ?p=<code>. The code does two jobs: it picks
+ * the arm, and it is written into the log so every log says who produced it.
+ *
+ * It replaced ?arm=B, which had two problems on a pool of seven workplace
+ * colleagues who talk to each other. Arm B's link visibly differed from Arm A's,
+ * and anyone could edit it. A code leaks neither — the table below holds codes
+ * and arms, no names, so reading the source tells you nothing without the
+ * mapping in screener/participant-links.md, which is never sent to anyone.
+ *
+ * An unknown code STOPS the app. The old default was Arm A, which meant a typo in
+ * a link produced a real-looking session, silently logged as the wrong arm.
+ *
+ * ?arm= still works when no ?p= is given. That is the path the test suites and
+ * evals/verify-app.mjs use; participants are never sent one. */
+const PARTICIPANTS = {
+  "gnas5": "B",
+  "geu2z": "A",
+  "rqkkx": "B",
+  "4cwkq": "A",
+  "3b3xe": "B",
+  "efkxn": "A",
+  "s6nqb": "B"
+};
+
+const PID = new URLSearchParams(location.search).get('p');
+const ARM = PID
+  ? PARTICIPANTS[PID]
+  : (new URLSearchParams(location.search).get('arm') === 'B' ? 'B' : 'A');
 
 const QUESTIONS = [
   { id:"P02",
@@ -377,7 +563,8 @@ const EXPECTED = JSON.parse(atob("eyJQMDIiOiBbWyJEZWxoaSIsIDE5NC41XSwgWyJJbmRvcm
 
 /* The event log. One flat array of events, exactly the shape help-session.js
  * reads and writes: attempt / help_decided / help_delivered. */
-const LOG = { version:"slice-1", arm:ARM, started:new Date().toISOString(), events:[] };
+const LOG = { version:"slice-1", participant:PID || null, arm:ARM,
+              started:new Date().toISOString(), events:[] };
 let db = null;
 
 /* The hint writer. Same prompt and same pinned model as evals/replay.js —
@@ -418,40 +605,137 @@ const esc = s => String(s).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'
 const state = {};
 QUESTIONS.forEach(q => state[q.id] = { attempts:0, solved:false });
 
+/* ---- the stage: every question is built once, one is shown at a time ----
+ *
+ * All 16 are in the DOM from the start, and navigating flips which is visible.
+ * Built this way on purpose rather than rendering on demand: a learner who leaves
+ * a half-written query, goes to another question and comes back finds it still
+ * there, because the textarea was never destroyed.
+ *
+ * Only the layout changed on 19 Sep. Nothing a learner is TOLD changed — the
+ * verdicts, the error text, the hint and the reveal are all byte-identical, and
+ * they have to be: the error message is Arm B's whole condition, and the help
+ * text is the treatment. `PRD-v1.md` §1 — the two arms differ in the help policy
+ * and in nothing else, including look and feel.
+ */
+const SCREENS = ["intro", ...QUESTIONS.map(q => q.id), "send"];
+let current = "intro";
+
+const screenEl = key =>
+  document.getElementById(key === "intro" ? "screen-intro"
+                        : key === "send"  ? "screen-send"
+                        : `screen-${key}`);
+
+function show(key){
+  if (!SCREENS.includes(key)) return;
+  current = key;
+  SCREENS.forEach(k => { const el = screenEl(k); if (el) el.hidden = k !== key; });
+  paintRail();
+  window.scrollTo({ top: 0, behavior: "instant" });
+  const box = document.getElementById(`sql-${key}`);
+  if (box) box.focus({ preventScroll: true });
+}
+
+const step = n => {
+  const i = SCREENS.indexOf(current);
+  const next = SCREENS[i + n];
+  if (next) show(next);
+};
+
 function render(){
   const host = document.getElementById("questions");
   QUESTIONS.forEach((q,i) => {
-    const el = document.createElement("div");
-    el.className = "card";
+    const el = document.createElement("section");
+    el.className = "screen card";
+    el.id = `screen-${q.id}`;
+    el.hidden = true;
     el.innerHTML = `
       <div class="qhead">
         <span class="qnum">Question ${i+1} of ${QUESTIONS.length}</span>
         <span class="pill" id="pill-${q.id}">not started</span>
       </div>
       <p class="ask">${q.ask}</p>
-      <textarea id="sql-${q.id}" spellcheck="false" placeholder="SELECT ..."></textarea>
+      <label class="lbl" for="sql-${q.id}">Your query</label>
+      <textarea id="sql-${q.id}" spellcheck="false" autocomplete="off"
+        autocapitalize="off" placeholder="SELECT ..."></textarea>
       <div class="row">
         <button class="primary" id="run-${q.id}">Run</button>
         <button id="help-${q.id}">Help</button>
-        <span class="hint" id="cnt-${q.id}">Ctrl/Cmd + Enter also runs it.</span>
+        <span class="hint grow" id="cnt-${q.id}">Ctrl/Cmd + Enter also runs it.</span>
       </div>
       <div class="out" id="help-out-${q.id}"></div>
-      <div class="out" id="out-${q.id}"></div>`;
+      <div class="out" id="out-${q.id}"></div>
+      <div class="nav">
+        <button id="prev-${q.id}">← Back</button>
+        <button id="next-${q.id}">${i === QUESTIONS.length-1 ? "Finish →" : "Next question →"}</button>
+      </div>`;
     host.appendChild(el);
     document.getElementById(`run-${q.id}`).onclick  = () => runQ(q.id);
     document.getElementById(`help-${q.id}`).onclick = () => helpQ(q.id);
+    document.getElementById(`prev-${q.id}`).onclick = () => step(-1);
+    document.getElementById(`next-${q.id}`).onclick = () => step(1);
     document.getElementById(`sql-${q.id}`).addEventListener("keydown", e => {
       if ((e.metaKey||e.ctrlKey) && e.key === "Enter") { e.preventDefault(); runQ(q.id); }
     });
   });
+
+  /* The rail. Skipping has to stay free — the brief tells them to move on when an
+   * item will not crack, so nothing here gates on solving anything. */
+  const rail = document.getElementById("rail");
+  rail.innerHTML = "";
+  QUESTIONS.forEach((q,i) => {
+    const li = document.createElement("li");
+    li.innerHTML = `<button id="rail-${q.id}" type="button">
+      <span class="dot" id="dot-${q.id}"></span>
+      <span class="rlabel">Question ${i+1}</span></button>`;
+    rail.appendChild(li);
+    li.querySelector("button").onclick = () => show(q.id);
+  });
+  const sep = document.createElement("li");
+  sep.innerHTML = `<p class="railsep">When you're done</p>
+    <button id="rail-send" type="button"><span class="dot"></span>
+    <span class="rlabel">Send your log</span></button>`;
+  rail.appendChild(sep);
+  sep.querySelector("button").onclick = () => show("send");
+
+  document.getElementById("startBtn").onclick = () => show(QUESTIONS[0].id);
+
   host.hidden = false;
+}
+
+function paintRail(){
+  QUESTIONS.forEach(q => {
+    const btn = document.getElementById(`rail-${q.id}`);
+    if (btn) btn.setAttribute("aria-current", String(current === q.id));
+  });
+  const send = document.getElementById("rail-send");
+  if (send) send.setAttribute("aria-current", String(current === "send"));
+}
+
+/* Progress is an aggregate of feedback the learner already has, question by
+ * question, and it is identical in both arms. It is not new information. */
+function paintProgress(){
+  const solved = QUESTIONS.filter(q => state[q.id].solved).length;
+  const touched = QUESTIONS.filter(q => state[q.id].attempts > 0).length;
+  const el = document.getElementById("progress");
+  el.innerHTML = solved || touched
+    ? `<b>${solved}</b> of ${QUESTIONS.length} solved`
+    : "Not started";
+  document.getElementById("barfill").style.width =
+    `${Math.round(100 * solved / QUESTIONS.length)}%`;
 }
 
 function counts(id){
   const s = state[id], pill = document.getElementById(`pill-${id}`);
+  const dot = document.getElementById(`dot-${id}`);
   if (s.solved)        { pill.textContent = `solved in ${s.attempts}`; pill.className = "pill ok"; }
   else if (s.attempts) { pill.textContent = `${s.attempts} attempt${s.attempts>1?"s":""}`; pill.className = "pill"; }
   else                 { pill.textContent = "not started"; pill.className = "pill"; }
+  if (dot) dot.className = "dot" + (s.solved ? " done" : s.attempts ? " tried" : "");
+  // Once an item is solved, pull them forward rather than leaving them on it.
+  const nxt = document.getElementById(`next-${id}`);
+  if (nxt) nxt.className = s.solved ? "primary" : "";
+  paintProgress();
 }
 
 /* ---- RUN ---- writes one `attempt` event, in the shape policy.js reads ----
@@ -575,7 +859,7 @@ document.getElementById("copy").onclick = async () => {
 document.getElementById("dl").onclick = () => {
   const a = document.createElement("a");
   a.href = URL.createObjectURL(new Blob([payload()], {type:"application/json"}));
-  a.download = `learning-os-log-arm${ARM}.json`; a.click();
+  a.download = `learning-os-log-${PID || "arm" + ARM}.json`; a.click();
 };
 document.getElementById("show").onclick = () => {
   const b = document.getElementById("logbox");
@@ -585,10 +869,24 @@ document.getElementById("show").onclick = () => {
 
 initSqlJs({ locateFile: f => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${f}` })
   .then(SQL => {
+    if (PID && !PARTICIPANTS[PID]) {
+      document.getElementById("boot").innerHTML =
+        "That link doesn't look right. Send me a message and I'll get you a new one — " +
+        "nothing you do here will be lost.";
+      return;
+    }
     db = new SQL.Database(); db.run(SCHEMA);
     document.getElementById("boot").remove();
     render();
     QUESTIONS.forEach(q => counts(q.id));
+    /* On a narrow screen the schema is stacked above the editor, and left open it
+     * fills the first screen and pushes the question below the fold. Collapsed, it
+     * is one tap away and still directly above the box being typed in. Set once at
+     * boot, never again, so a learner who opens it keeps it open. */
+    if (window.matchMedia("(max-width:1040px)").matches) {
+      document.getElementById("schemaBox").open = false;
+    }
+    show("intro");
     window.__READY = true;
   })
   .catch(e => {

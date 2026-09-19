@@ -28,14 +28,19 @@ import { readFileSync } from 'fs';
 
 const URL = process.env.APP_URL || 'http://127.0.0.1:8731/index.test.html';
 const RAW_PATH = process.env.APP_RAW || new URL('../app/index.html', import.meta.url).pathname;
+const SCHEMA_SQL = process.env.SCHEMA_SQL ||
+  new URL('../study-questions/schema.sql', import.meta.url).pathname;
 
 let pass = 0, fail = 0;
 const ok  = (n) => { pass++; console.log(`  ok    ${n}`); };
 const bad = (n, d) => { fail++; console.log(`  FAIL  ${n}\n          ${d}`); };
+/* Compared by value, not by reference — several checks assert on arrays, and === on
+ * two arrays is always false, which reads as a failure with identical got and want. */
 const check = (n, got, want) =>
-  got === want ? ok(n) : bad(n, `got ${JSON.stringify(got)}  want ${JSON.stringify(want)}`);
+  JSON.stringify(got) === JSON.stringify(want)
+    ? ok(n) : bad(n, `got ${JSON.stringify(got)}  want ${JSON.stringify(want)}`);
 
-async function open(browser, arm) {
+async function open(browser, arm, query) {
   const page = await browser.newPage();
   const errs = [];
   page.on('pageerror', e => errs.push(String(e)));
@@ -43,8 +48,13 @@ async function open(browser, arm) {
   page.on('console', m => {
     if (m.type() === 'error' && !/favicon/i.test(m.location()?.url || '')) errs.push(m.text());
   });
-  await page.goto(arm ? `${URL}?arm=${arm}` : URL);
-  await page.waitForSelector('#questions:not([hidden])', { timeout: 30000 });
+  await page.goto(query ? `${URL}${query}` : arm ? `${URL}?arm=${arm}` : URL);
+  /* window.__READY is set once the database is up and the questions are built. It
+   * replaced waiting for #questions to become visible, which stopped working when
+   * the page went to one-question-at-a-time on 19 Sep: the container is unhidden
+   * but its children are not, so it has no visible box. __READY says what we
+   * actually mean — the app is usable. */
+  await page.waitForFunction(() => window.__READY === true, null, { timeout: 30000 });
   return { page, errs };
 }
 
@@ -72,6 +82,14 @@ console.log('\nBOOT');
 const { page, errs } = await open(browser);
 const ids = await page.evaluate(() => QUESTIONS.map(q => q.id));
 check('16 practice items are served', ids.length, 16);
+check('the questions container is live', await page.evaluate(
+  () => !document.getElementById('questions').hidden), true);
+check('all 16 are built into the page at once, so a draft survives navigation',
+  await page.evaluate(() => QUESTIONS.filter(q => document.getElementById(`sql-${q.id}`)).length), 16);
+check('the session lands on the intro, not mid-question', await page.evaluate(
+  () => !document.getElementById('screen-intro').hidden), true);
+check('exactly one screen is showing', await page.evaluate(
+  () => [...document.querySelectorAll('.screen')].filter(e => !e.hidden).length), 1);
 check('no held-out item is in the question set', ids.some(i => i.startsWith('H')), false);
 
 /* The removal test on 26 Sep reuses the 12 held-out items. Anything a tester can
@@ -86,6 +104,153 @@ const refs = await page.evaluate(() => QUESTIONS.map(q => [q.id, q.reference]));
 for (const [id, ref] of refs) {
   const out = await run(page, id, ref);
   out.startsWith('Correct.') ? ok(`${id} correct`) : bad(id, out.slice(0, 120));
+}
+
+console.log('\nPARTICIPANT LINKS — identity and arm, without saying so in the URL');
+{
+  const codes = await page.evaluate(() => PARTICIPANTS);
+  const ids = Object.keys(codes);
+  check('seven codes, one per participant', ids.length, 7);
+  check('three are Arm A and four are Arm B',
+    [Object.values(codes).filter(a => a === 'A').length,
+     Object.values(codes).filter(a => a === 'B').length], [3, 4]);
+
+  /* The table is in the page source. It must carry no names, or a tester reading
+   * the source learns who is in which arm — and that arms exist at all. */
+  const RAW_SRC = readFileSync(RAW_PATH, 'utf8');
+  const block = RAW_SRC.slice(RAW_SRC.indexOf('const PARTICIPANTS'),
+                              RAW_SRC.indexOf('const PID'));
+  for (const name of ['nabin', 'gaurav', 'ritesh', 'anuj', 'vikash', 'manish', 'rishabh']) {
+    if (block.toLowerCase().includes(name)) bad(`the code table names ${name}`, 'leaked');
+  }
+  ok('the code table holds no participant names');
+
+  const aCode = ids.find(c => codes[c] === 'A');
+  const bCode = ids.find(c => codes[c] === 'B');
+
+  const { page: pa } = await open(browser, null, `?p=${aCode}`);
+  check('an Arm A code lands in Arm A', await pa.evaluate(() => ARM), 'A');
+  check('and the log says who produced it', await pa.evaluate(() => LOG.participant), aCode);
+  check('the URL says nothing about the arm', /arm/i.test(`?p=${aCode}`), false);
+
+  const { page: pb } = await open(browser, null, `?p=${bCode}`);
+  check('an Arm B code lands in Arm B', await pb.evaluate(() => ARM), 'B');
+  check('and its log is identified too', await pb.evaluate(() => LOG.participant), bCode);
+
+  /* A typo used to produce a real-looking session silently logged as Arm A. */
+  const bad1 = await browser.newPage();
+  await bad1.goto(`${URL}?p=notacode`);
+  await bad1.waitForFunction(
+    () => document.getElementById('boot') &&
+          document.getElementById('boot').textContent.includes("doesn't look right"),
+    null, { timeout: 30000 });
+  check('an unknown code stops the app instead of defaulting to Arm A',
+    await bad1.evaluate(() => !!document.getElementById('questions').hidden), true);
+  check('and says something a tester can act on, without mentioning arms',
+    await bad1.evaluate(() => /arm/i.test(document.getElementById('boot').textContent)), false);
+}
+
+console.log('\nNAVIGATION — one question at a time, skipping stays free');
+{
+  const { page: n } = await open(browser);
+  const showing = () => n.evaluate(() =>
+    [...document.querySelectorAll('.screen')].filter(e => !e.hidden).map(e => e.id));
+
+  await n.evaluate(() => document.getElementById('startBtn').click());
+  check('start goes to question 1', await showing(), ['screen-P02']);
+
+  await n.evaluate(() => document.getElementById('next-P02').click());
+  check('next advances one question', await showing(), ['screen-P04']);
+
+  await n.evaluate(() => document.getElementById('prev-P04').click());
+  check('back returns', await showing(), ['screen-P02']);
+
+  // The brief tells them to move on when an item will not crack, so nothing may
+  // gate on solving anything. Jump from question 1 to question 14 unsolved.
+  await n.evaluate(() => document.getElementById('rail-P19').click());
+  check('the rail jumps to any question, solved or not', await showing(), ['screen-P19']);
+
+  // A half-written query must survive leaving the question and coming back.
+  await n.evaluate(() => { document.getElementById('sql-P19').value = 'SELECT priority, AVG('; });
+  await n.evaluate(() => document.getElementById('rail-P02').click());
+  await n.evaluate(() => document.getElementById('rail-P19').click());
+  check('an unfinished draft is still there on return',
+    await n.evaluate(() => document.getElementById('sql-P19').value), 'SELECT priority, AVG(');
+
+  await n.evaluate(() => document.getElementById('rail-send').click());
+  check('the log screen is reachable at any time', await showing(), ['screen-send']);
+
+  await n.evaluate(() => document.getElementById('next-P20').click());
+  check('finishing the last question goes to the log screen', await showing(), ['screen-send']);
+
+  check('progress starts at nothing solved',
+    (await n.evaluate(() => document.getElementById('progress').textContent)).trim(), 'Not started');
+  await run(n, 'P02', 'SELECT city, ROUND(AVG(fare),1) AS avg_fare FROM rides GROUP BY city ORDER BY city');
+  check('progress counts a solved question',
+    await n.evaluate(() => document.getElementById('progress').textContent), '1 of 16 solved');
+  check('the rail marks it done',
+    await n.evaluate(() => document.getElementById('dot-P02').className), 'dot done');
+}
+
+console.log('\nTHE SCHEMA IS ALWAYS REACHABLE — the point of the layout change');
+{
+  const { page: sc } = await open(browser);
+  const names = await sc.evaluate(() => document.getElementById('schemaBox').textContent);
+  for (const t of ['deploys', 'tickets', 'rides', 'duration_sec', 'hours_to_close', 'distance_km']) {
+    if (!names.includes(t)) { bad(`schema panel names ${t}`, 'missing'); } else ok(`schema panel names ${t}`);
+  }
+  check('it is open by default, not behind a click',
+    await sc.evaluate(() => document.getElementById('schemaBox').open), true);
+
+  /* The panel is hand-written and schema.sql is the source of truth, so they can
+   * drift — and they did: until 19 Sep the panel still listed the round-2 tables
+   * customers/products/orders/order_items, which had not existed for hours. A
+   * tester would have been reading columns that were not in the database. */
+  const sql = readFileSync(SCHEMA_SQL, 'utf8');
+  const declared = [];
+  for (const m of sql.matchAll(/CREATE TABLE\s+(\w+)\s*\(([^;]*)\)\s*;/gi)) {
+    const table = m[1];
+    const cols = m[2].split(',').map(x => x.trim().split(/\s+/)[0]).filter(Boolean);
+    declared.push({ table, cols });
+  }
+  const panel = await sc.evaluate(() => {
+    const box = document.getElementById('schemaBox');
+    return {
+      tables: [...box.querySelectorAll('.tbl h4')].map(h => h.firstChild.textContent.trim()),
+      cols: [...box.querySelectorAll('.cols tbody tr td:first-child code')].map(c => c.textContent.trim()),
+    };
+  });
+  check('the panel lists exactly the tables in schema.sql',
+    panel.tables.sort(), declared.map(d => d.table).sort());
+  check('and exactly their columns, none missing, none invented',
+    panel.cols.slice().sort(), declared.flatMap(d => d.cols).sort());
+  check('each table is drawn as a table, not a bullet list',
+    await sc.evaluate(() => document.querySelectorAll('#schemaBox table.cols').length), 3);
+  check('every column row carries a type',
+    await sc.evaluate(() => [...document.querySelectorAll('#schemaBox .cols tbody tr')]
+      .every(r => r.children[1].textContent.trim().length > 0)), true);
+  check('it is outside the question screens, so it never scrolls away with one',
+    await sc.evaluate(() => !document.getElementById('schemaBox').closest('.screen')), true);
+}
+
+console.log('\nNARROW SCREENS — no sideways scrolling, question above the fold');
+for (const [w, h, label] of [[390, 844, 'phone'], [768, 1024, 'tablet']]) {
+  const ctx = await browser.newContext({ viewport: { width: w, height: h } });
+  const p = await ctx.newPage();
+  await p.goto(URL);
+  await p.waitForFunction(() => window.__READY === true, null, { timeout: 30000 });
+  await p.evaluate(() => document.getElementById('startBtn').click());
+  // A page wider than its viewport means every question drags sideways all session.
+  const m = await p.evaluate(() => ({ doc: document.documentElement.scrollWidth, win: window.innerWidth }));
+  check(`${label}: the page never scrolls sideways`, m.doc <= m.win, true);
+  check(`${label}: the schema starts collapsed so the question is what you see`,
+    await p.evaluate(() => document.getElementById('schemaBox').open), false);
+  check(`${label}: and opens on one tap`, await p.evaluate(() => {
+    const d = document.getElementById('schemaBox');
+    d.querySelector('summary').click();
+    return d.open && d.textContent.includes('duration_sec');
+  }), true);
+  await ctx.close();
 }
 
 console.log('\nTHE FROZEN RULE, IN THE APP — DECISIONS.md section 5');
