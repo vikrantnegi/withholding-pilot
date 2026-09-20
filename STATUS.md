@@ -139,10 +139,15 @@ comes in far below round 2's solve rates, clause 2 is the first suspect.
 
 ---
 
-**Open since 20 Sep: the hosted copy is one commit behind.** A stale-refusal fix landed in
-`app/index.html` and `app/dist/` after the 19 Sep upload. **Re-upload `app/dist` to Netlify and
-re-run `node evals/check-hosted.mjs <url>`** — until that is done, the testers are served the
-page with the bug.
+**Hosted copy is current, 20 Sep.** The stale-refusal fix (`LEARNING-LOG.md` L10) is deployed
+and `evals/check-hosted.mjs` passes 14 of 14 against the live URL — byte-compared, so the served
+page is the build on disk and not an older upload. One warning, already understood: Netlify
+injects an ad comment and a HUD script into both arms identically, so it cannot bias the
+comparison.
+
+**Still owed by hand, because no script can see it.** Open one link, run a wrong-but-valid query,
+press Help, and confirm the hint does *not* say `(fallback)`. A hint function that answers from
+the terminal but not from the hosted origin — usually CORS — looks exactly like a working session.
 
 **One deliberate inconsistency.** `HYPOTHESIS-LOG.md` and `EXPERIMENT-LOG.md` still say 26 and
 21 Sep. Both are append-only — an entry is never edited, it is superseded. The live dates are in
