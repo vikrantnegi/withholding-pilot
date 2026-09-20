@@ -92,8 +92,8 @@ check('exactly one screen is showing', await page.evaluate(
   () => [...document.querySelectorAll('.screen')].filter(e => !e.hidden).length), 1);
 check('no held-out item is in the question set', ids.some(i => i.startsWith('H')), false);
 
-/* The removal test on 26 Sep reuses the 12 held-out items. Anything a tester can
- * read in this page's source on 21 Sep is burned, so the source must not name
+/* The removal test on 27 Sep reuses the 12 held-out items. Anything a tester can
+ * read in this page's source on 22 Sep is burned, so the source must not name
  * them at all — not as a prompt, not as an answer, not even as a pair label. */
 const RAW = readFileSync(RAW_PATH, 'utf8');
 check('no held-out id appears anywhere in the raw source', /\bH(0[1-9]|1[0-2])\b/.test(RAW), false);

@@ -41,7 +41,7 @@ one rule drift silently. Change either and run `node ../evals/grader-conformance
 all 75 queries in `items.py` through both and compares verdict *and* reason.
 
 **The held-out items are not in this page.** Not as questions, not as answers, not as pair labels.
-Anything a tester can read on 21 Sep is burned for the removal test. `make-dist.sh` refuses to
+Anything a tester can read on 22 Sep is burned for the removal test. `make-dist.sh` refuses to
 build if a held-out id or a participant name appears in what would be hosted.
 
 ## Hosting

@@ -1,9 +1,9 @@
-# Status — as of 19 Sep 2026
+# Status — as of 20 Sep 2026
 
 **The only source of truth for the present.** If another file disagrees with this one about today,
 this one wins. **Update the date above whenever you touch it.**
 
-**18 days to submission on 7 Oct 2026.** Teaching ended 14 Sep. About half the remaining time is
+**17 days to submission on 7 Oct 2026.** Teaching ended 14 Sep. About half the remaining time is
 reserved for testing, freeze and packaging by design.
 
 ---
@@ -27,7 +27,7 @@ If six people press Help inside the same few minutes and Groq throttles, the fun
 on screen to say so. It would hit Arm A only, and only for part of the session. Watch
 `function_edge_logs` during the session; a 502 there is the signal.
 
-**So what:** the 21 Sep session can run as specified. The thing to monitor is not whether it
+**So what:** the 22 Sep session can run as specified. The thing to monitor is not whether it
 works, but whether it keeps working for all three Arm A testers at once.
 
 ### What exists
@@ -64,8 +64,9 @@ conformance run. All green as of 19 Sep.
 2. ~~**Hint writer — deployed.**~~ Done 19 Sep. Deployed to `yzmunjbhhtuerxoinxsd`, key set, URL
    in `app/transport.js`, and verified from the hosted page in a browser: a model-written hint,
    no fallback. `supabase/README.md` has the evidence and the Monday-morning re-check.
-3. **Log storage.** A Supabase table. Parked; the copy-log button is the fallback. Before Monday,
-   confirm the copied log carries `started` and `finished`.
+3. **Log storage.** A Supabase table. Parked; the copy-log button is the fallback.
+   **Checked 20 Sep:** `payload()` stamps `LOG.finished` on every copy and download, and
+   `LOG.started` is set when the session opens. Both are in the returned log. Nothing to build.
 4. ~~**The question set.**~~ Done 19 Sep. `study-questions/`, frozen.
 
 ---
@@ -75,21 +76,23 @@ conformance run. All green as of 19 Sep.
 Ordered by what breaks if it is skipped. Only the first is code.
 
 1. ~~**Deploy the hint function.**~~ Done and verified live 19 Sep, including from the hosted
-   page. Re-run `evals/check-hint-function.mjs` on Monday morning — a key or quota can lapse and
-   the failure is silent.
-2. **Arm assignment, and it has a prerequisite.** manish's round-1 grade is corrupted by the
-   grader bug and must be recomputed before matched pairs can be formed. Then coin flips, then
-   split the four former teammates across arms. **Doing any of this after Arm A data exists is
-   indefensible** — the same objection as re-pointing a question pair after seeing results.
-3. **A pilot tester from outside the seven, before 21 Sep.** Anyone in the pool who sees an item
+   page. Re-run `evals/check-hint-function.mjs` on the morning of 22 Sep — a key or quota can
+   lapse and the failure is silent.
+2. ~~**Arm assignment.**~~ **Done 19 Sep.** manish's round-1 grade was regraded first — the fault
+   was a missing comma, and no score moved. Ranked on round 2, paired, flipped within pairs, four
+   former teammates split. Arm A: nabin, gaurav, ritesh. Arm B: anuj, vikash, manish, rishabh.
+   Reproducible from a seed, and settled before any Arm A data exists. `screener/ARM-ASSIGNMENT.md`.
+3. **A pilot tester from outside the seven, before 22 Sep.** Anyone in the pool who sees an item
    burns it. One outsider cannot establish difficulty but can catch an item that is broken,
    ambiguous or impossible — the failure mode that costs a whole cell. Named as the only available
-   mitigation in `ANALYSIS-PLAN.md`, and **not yet done.**
-4. **Book both sessions.** The practice session on 21 Sep with six testers, and the removal test on
-   **26 Sep at the earliest** — the 5-day gap rule. Neither is booked.
+   mitigation in `ANALYSIS-PLAN.md`, and **still not done. 20 Sep is the last day it is possible.**
+4. **Send the seven messages.** The practice session moved to **22 Sep** and the removal test is
+   **27 Sep, exactly** — see `RECRUITMENT.md` §6, note of 20 Sep. The messages are written, one
+   per person with the link inlined: `screener/round-3-practice/SEND-SHEET-22SEP.md`. **Nothing
+   has been sent.** Times still need filling in, staggered across the day.
 
-**So what:** three of the four need other people's time, and the practice session is in two days.
-They are the schedule risk now, not the build.
+**So what:** two of the four are one evening's work and both are still open. They are the schedule
+risk now, not the build.
 
 ---
 
@@ -117,7 +120,7 @@ The scoring rule now requires valid grouped SQL, not only matching rows. Nothing
 against a real learner; only the 28 references and 47 listed wrong models. If the practice session
 comes in far below round 2's solve rates, clause 2 is the first suspect.
 
-**Decided by data, not by argument.** First evidence is 21 Sep. Assumption 8 in
+**Decided by data, not by argument.** First evidence is 22 Sep. Assumption 8 in
 `HYPOTHESIS-LOG.md`.
 
 ---
@@ -136,6 +139,12 @@ comes in far below round 2's solve rates, clause 2 is the first suspect.
 
 ---
 
+**One deliberate inconsistency.** `HYPOTHESIS-LOG.md` and `EXPERIMENT-LOG.md` still say 26 and
+21 Sep. Both are append-only — an entry is never edited, it is superseded. The live dates are in
+this file, and this file wins.
+
+---
+
 ## Remaining checkpoints
 
 | date | checkpoint | state |
@@ -144,8 +153,8 @@ comes in far below round 2's solve rates, clause 2 is the first suspect.
 | 13 Sep | Thin working slice end to end | Done, on the day |
 | 18 Sep | Testing and guards | Done 13 Sep. Guard built, eval run, Run 3 logged |
 | 20 Sep | First version on real data | **Done 19 Sep**, a day early. Question set frozen, app hosted and verified on both arms, hint function live |
-| 21 Sep | **Practice session** | **Not booked.** App frozen from here |
-| 26 Sep+ | **REMOVAL TEST** | **Not booked.** 26 Sep is the earliest the 5-day gap allows |
+| 22 Sep | **Practice session** | **Not sent.** Moved from 21 Sep on 20 Sep. App frozen from here |
+| 27 Sep | **REMOVAL TEST** | **Not sent.** 27 Sep exactly — the only date the gap rule and the analysis window both allow |
 | 28–29 Sep | Analysis | `ANALYSIS-PLAN.md` is read on 28 Sep |
 | 30 Sep | **FEATURE FREEZE** | |
 | 3 Oct | Video, README, deploy | |
@@ -158,15 +167,30 @@ Demo Day: 11 Oct 2026, 100x HQ.
 
 ## Next actions
 
-1. ~~**Deploy the hint function.**~~ Done 19 Sep. Project `yzmunjbhhtuerxoinxsd`, URL set in
-   `app/transport.js`, verified by `evals/check-hint-function.mjs`. **Re-run that checker on the
-   morning of the 21st** — a key or quota can lapse between now and then, and the failure is
-   silent.
-2. **Recompute manish's round-1 grade, then assign arms.** Matched pairs, coin flips, four former
-   teammates split. Before any Arm A data exists.
-3. **Find one pilot tester outside the seven** and run them through the 16 practice items.
-4. **Book 21 Sep and the removal test.**
-5. Confirm the copy-log button captures `started` and `finished`.
+**Today, 20 Sep:**
 
-**Why it matters:** items 1 and 2 are the two that cannot be repaired after the fact. A missing
-deploy silently changes the treatment; late arm assignment invalidates the comparison.
+1. **Fill in the seven times and send the messages.** Staggered across 22 Sep, not clustered.
+   `screener/round-3-practice/SEND-SHEET-22SEP.md`. Send manish first — he is the flagged dropout
+   risk.
+2. **Run one pilot tester from outside the seven** through the 16 practice items. Today is the
+   last day this is possible, and it costs nothing: that person's data was never going to count.
+
+**Morning of 22 Sep:**
+
+3. **Re-run the hint checker.**
+   `node evals/check-hint-function.mjs https://yzmunjbhhtuerxoinxsd.supabase.co/functions/v1/hint`
+   A lapsed key or quota produces a normal-looking session on hand-written fallbacks, and nothing
+   on screen says so.
+
+**During and straight after the session:**
+
+4. **Watch `function_edge_logs` in Supabase.** Any status other than 200 means some Arm A help
+   presses fell back. Check it on the day, while the person can still be asked what they saw.
+5. **File each returned log** as `learning-os-log-<code>.json` in `screener/round-3-practice/logs/`,
+   and tick attendance in `screener/participant-links.md`.
+
+**Done since this file last said otherwise:** the hint function is deployed and verified, arm
+assignment is final, and the copied log carries `started` and `finished`.
+
+**Why it matters:** items 1 and 2 need other people and cannot be compressed. Item 3 cannot be
+repaired after the fact — a missing key silently changes the treatment for one arm only.

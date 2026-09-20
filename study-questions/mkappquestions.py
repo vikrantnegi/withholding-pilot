@@ -4,7 +4,7 @@ Replaces the app-questions-snippet.js that never landed. Field names here are th
 app's real ones, read off index.html, not guessed: id / ask / reference / fallbackHint.
 
 PRACTICE ITEMS ONLY. The 12 held-out items must not appear in the page source at all —
-a tester who opens view-source on 21 Sep would burn them for the 26 Sep removal test.
+a tester who opens view-source on 22 Sep would burn them for the 27 Sep removal test.
 
 EXPECTED holds each item's reference result RAW — numbers as numbers, text as text.
 It used to be pre-normalised into strings, which baked the app's old 2-decimal

@@ -451,7 +451,7 @@ measured. Assumption 4 in `HYPOTHESIS-LOG.md` stays open for this reason, and ch
 below exist to catch a floor or a ceiling after the fact rather than before.
 
 **The single mitigation available, and it is not yet done.** One pilot tester from outside the
-seven, run before 21 Sep. One person cannot establish difficulty, but one person can catch an
+seven, run before 22 Sep. One person cannot establish difficulty, but one person can catch an
 item that is broken, ambiguous, or impossible — which is the failure mode that would cost a whole
 cell. If no pilot tester is found, say so here and treat every practice-session item result as
 first contact.

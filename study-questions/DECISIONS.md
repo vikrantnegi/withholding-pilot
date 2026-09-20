@@ -1,7 +1,7 @@
 # Frozen decisions — 19 Sep 2026
 
 Written before the practice session and before any outcome data exists. Do not edit after
-21 Sep; append a dated correction instead.
+22 Sep; append a dated correction instead.
 
 ## 1. The question set is 16 practice + 12 held-out
 

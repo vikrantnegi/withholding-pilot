@@ -42,11 +42,11 @@ The hint writer's only input is a learner's wrong query. **104 of those are alre
 on disk** from round 2. Replaying stored attempts costs nothing.
 
 Asking the seven to try again would cost a great deal. They are the study's
-participants. Anyone who reads hints about GROUP BY/HAVING before 21 Sep has
+participants. Anyone who reads hints about GROUP BY/HAVING before 22 Sep has
 practised the study's topic with the study's treatment, outside the study, with no
 measurement — and has to be dropped.
 
-Data is free. Contact is not. People touch this app exactly twice: the 21 Sep practice
+Data is free. Contact is not. People touch this app exactly twice: the 22 Sep practice
 session and the removal test five to seven days later — `STATUS.md` has the date.
 
 ## Reading the sheet without knowing SQL
@@ -76,7 +76,7 @@ node evals/replay.js --all --out evals/all.md      104 cases, ~15 min
 ```
 
 The writer is `app/hint-writer.js` — **the same module, prompt and model the app
-serves on 21 Sep.** Only the transport differs: the eval calls Groq directly from
+serves on 22 Sep.** Only the transport differs: the eval calls Groq directly from
 your machine, the app goes through the Edge Function. If the eval had its own
 prompt you would evaluate one thing and ship another.
 
@@ -106,7 +106,7 @@ Re-measure with `probe.js` if you ever change the model or the prompt length. If
 the overhead ever does get large, `llama-3.3-70b-versatile` is the swap — also
 production on Groq, no reasoning channel. Change `MODEL` in
 `app/hint-writer.js` and the matching constant in
-`supabase/functions/hint/index.ts`. **Never after 21 Sep.**
+`supabase/functions/hint/index.ts`. **Never after 22 Sep.**
 
 Without a key every case shows the fallback, which is still worth reading — it is
 what a learner sees when the model fails twice, and four of the current twenty are

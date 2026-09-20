@@ -179,7 +179,7 @@ function, except it can appear halfway through a session that started fine.
 200 on a real request means those presses fell back. Worth checking immediately afterwards
 rather than on the 28th, while it is still possible to ask the person what they saw.
 
-## Before the session on the 21st
+## Before the session on the 22nd
 
 ```sh
 node evals/check-hint-function.mjs https://yzmunjbhhtuerxoinxsd.supabase.co/functions/v1/hint

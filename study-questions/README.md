@@ -1,6 +1,6 @@
 # study-questions/
 
-The instrument for the 21 Sep practice session and the 26 Sep removal test.
+The instrument for the 22 Sep practice session and the 27 Sep removal test.
 Self-contained: `verify.py` resolves paths via `HERE`, so this folder moves whole.
 
 | file | what |

@@ -178,7 +178,7 @@ function spread(all, n) {
   say(`asking the seven to try again would burn them as study participants.\n`);
   if (haveModel) {
     say(`Hint writer: \`${MODEL}\` at temperature ${TEMPERATURE}, prompt from \`app/hint-writer.js\` —`);
-    say(`the same module and the same prompt the app serves on 21 Sep.\n`);
+    say(`the same module and the same prompt the app serves on 22 Sep.\n`);
   } else {
     say(`> **No hint writer configured.** Every case below shows the hand-written fallback.`);
     say(`> \`export GROQ_API_KEY=gsk_...\` and re-run to evaluate \`${MODEL}\`.\n`);

@@ -90,7 +90,7 @@ referral-gathering and mentor-question slot, not a recruiting slot.
 
 ## 🔴 GAP: no baseline before build (rule B2)
 
-The plan runs practice 21 Sep and the removal test 27 Sep, after v0. The FAQ says the baseline
+The plan runs practice 22 Sep and the removal test 27 Sep, after v0. The FAQ says the baseline
 is the arm every team skips, and it comes first.
 
 The baseline arm needs zero product. It is a chatbot with the schema pasted in. So it can run

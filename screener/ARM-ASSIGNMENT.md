@@ -1,6 +1,6 @@
 # Arm assignment — the record
 
-**Written 19 Sep 2026, before the 21 Sep practice session and before any Arm A data exists.**
+**Written 19 Sep 2026, before the 22 Sep practice session and before any Arm A data exists.**
 That timing is the point of the file. An assignment settled afterwards cannot be defended,
 because nobody can show it was not influenced by what had already been seen.
 
@@ -177,7 +177,7 @@ is what a written-down procedure produced, not what anyone chose.
 
 - **Arm A has no slack.** Three people, and losing one takes it to two. Arm B can lose one and
   still have three. The flagged dropout risk, manish, is in Arm B — which is the lucky way round,
-  but it means Arm A's margin depends on nabin, gaurav and ritesh all completing 26 Sep.
+  but it means Arm A's margin depends on nabin, gaurav and ritesh all completing 27 Sep.
 - **Arm A holds the three richest help-path cases.** nabin produced the most wrong-but-running
   attempts; gaurav produced the cleanest hint-able moment in the dataset; ritesh is the reason the
   gate was relaxed. Good for observing the mechanism. It is a chance outcome of the draw, not a

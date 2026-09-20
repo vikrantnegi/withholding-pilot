@@ -87,8 +87,8 @@ That gap is what pulled v0 forward to 20 Sep. The dates it produced:
 | Date | What |
 |---|---|
 | 20 Sep | v0 usable by a stranger, on real data |
-| 21 Sep | Practice session, both arms |
-| 26-27 Sep | Removal test, both arms. **Not booked** — `STATUS.md` has the live date |
+| 22 Sep | Practice session, both arms |
+| 27 Sep | Removal test, both arms. `STATUS.md` has the live date |
 | 28-29 Sep | Score, analyse, write up the gap |
 | 30 Sep | Feature freeze — results land just before it |
 
@@ -98,6 +98,13 @@ the build. At that point the experiment was run for the write-up, not for the pr
 **Note, 19 Sep.** The 5-to-7-day gap from a 21 Sep practice session puts the removal test between
 26 and 28 Sep, and freeze puts the ceiling at 27. So the window is **26 or 27 Sep**, and it is
 still unbooked. This file states the rule; `STATUS.md` states the date, and wins.
+
+**Note, 20 Sep — supersedes the note above.** The practice session moved to **22 Sep**, to buy a
+day for the pilot tester and the send sheet. A 5-to-7-day gap from 22 Sep gives 27 to 29 Sep, and
+the 28-29 Sep analysis window puts the ceiling at 27. So the removal test is **27 Sep, exactly**.
+
+**There is no slack left.** If the practice session slips to 23 Sep, the gap rule and the analysis
+window cannot both be satisfied, and one of them has to be broken and written up as a limitation.
 
 ## 7. The pitch, if more people are needed
 
@@ -111,5 +118,5 @@ were picked, so the ask lands as an offer rather than a favour.
 
 ## 8. Capture sheet fields
 
-Name · contact · screener score · last used SQL · confidence 1-5 · availability 21 Sep ·
+Name · contact · screener score · last used SQL · confidence 1-5 · availability 22 Sep ·
 availability 27 Sep · arm (assigned by §3) · completed_removal_test

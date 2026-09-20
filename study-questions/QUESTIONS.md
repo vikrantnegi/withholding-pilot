@@ -1,6 +1,6 @@
 # Question set — FROZEN 19 Sep 2026
 
-16 practice + 12 held-out. Cuts and pairing changes are recorded in `DECISIONS.md`. Do not edit after the 21 Sep session; append a dated correction instead.
+16 practice + 12 held-out. Cuts and pairing changes are recorded in `DECISIONS.md`. Do not edit after the 22 Sep session; append a dated correction instead.
 
 ## Sub-skills
 
