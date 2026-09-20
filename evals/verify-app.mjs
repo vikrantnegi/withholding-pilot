@@ -26,7 +26,7 @@
 import { chromium } from 'playwright';
 import { readFileSync } from 'fs';
 
-const URL = process.env.APP_URL || 'http://127.0.0.1:8731/index.test.html';
+const APP_URL = process.env.APP_URL || 'http://127.0.0.1:8731/index.test.html';
 const RAW_PATH = process.env.APP_RAW || new URL('../app/index.html', import.meta.url).pathname;
 const SCHEMA_SQL = process.env.SCHEMA_SQL ||
   new URL('../study-questions/schema.sql', import.meta.url).pathname;
@@ -48,7 +48,7 @@ async function open(browser, arm, query) {
   page.on('console', m => {
     if (m.type() === 'error' && !/favicon/i.test(m.location()?.url || '')) errs.push(m.text());
   });
-  await page.goto(query ? `${URL}${query}` : arm ? `${URL}?arm=${arm}` : URL);
+  await page.goto(query ? `${APP_URL}${query}` : arm ? `${APP_URL}?arm=${arm}` : APP_URL);
   /* window.__READY is set once the database is up and the questions are built. It
    * replaced waiting for #questions to become visible, which stopped working when
    * the page went to one-question-at-a-time on 19 Sep: the container is unhidden
@@ -139,7 +139,7 @@ console.log('\nPARTICIPANT LINKS — identity and arm, without saying so in the 
 
   /* A typo used to produce a real-looking session silently logged as Arm A. */
   const bad1 = await browser.newPage();
-  await bad1.goto(`${URL}?p=notacode`);
+  await bad1.goto(`${APP_URL}?p=notacode`);
   await bad1.waitForFunction(
     () => document.getElementById('boot') &&
           document.getElementById('boot').textContent.includes("doesn't look right"),
@@ -237,7 +237,7 @@ console.log('\nNARROW SCREENS — no sideways scrolling, question above the fold
 for (const [w, h, label] of [[390, 844, 'phone'], [768, 1024, 'tablet']]) {
   const ctx = await browser.newContext({ viewport: { width: w, height: h } });
   const p = await ctx.newPage();
-  await p.goto(URL);
+  await p.goto(APP_URL);
   await p.waitForFunction(() => window.__READY === true, null, { timeout: 30000 });
   await p.evaluate(() => document.getElementById('startBtn').click());
   // A page wider than its viewport means every question drags sideways all session.
@@ -281,6 +281,32 @@ console.log('\nTHE FROZEN RULE, IN THE APP — DECISIONS.md section 5');
   const shown = await r.evaluate(() => document.body.textContent);
   check('the reason is never shown to the learner', shown.includes('row value, not a group value'), false);
   check('a failing submission reads the same as any other', anuj.startsWith('Not right yet'), true);
+}
+
+console.log('\nA REFUSAL DOES NOT OUTLIVE THE CLICK THAT ANSWERS IT');
+{
+  /* Reported 20 Sep: the help box kept its previous message across a new submission,
+   * so "run something first" still sat above the learner's fresh result. Both refusals
+   * are Arm A only — policy.js serves Arm B the answer on demand and never refuses —
+   * so a stale one is a difference between the arms that is not the help policy.
+   * LEARNING-LOG L7 is the same shape. A delivered hint or answer must still persist:
+   * the learner is working from it while they write the next query. */
+  const { page: a } = await open(browser, 'A');
+
+  const refused = await help(a, 'P02');
+  check('the gate refuses before any countable attempt', refused.length > 0, true);
+
+  await run(a, 'P02', 'SELECT city FROM rides');
+  check('and the refusal is gone once a query runs',
+        await a.evaluate(() => document.getElementById('help-out-P02').textContent.trim()), '');
+
+  const hint = await help(a, 'P02');
+  check('a hint is delivered after a countable attempt', hint.startsWith('Hint.'), true);
+
+  await run(a, 'P02', 'SELECT city, COUNT(*) FROM rides GROUP BY city');
+  check('and the hint survives the next run',
+        await a.evaluate(
+          () => document.getElementById('help-out-P02').textContent.trim().startsWith('Hint.')), true);
 }
 
 console.log('\nARM A — the gate, then two levels (PRD-v1 §7), N = 2');

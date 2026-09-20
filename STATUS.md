@@ -139,6 +139,11 @@ comes in far below round 2's solve rates, clause 2 is the first suspect.
 
 ---
 
+**Open since 20 Sep: the hosted copy is one commit behind.** A stale-refusal fix landed in
+`app/index.html` and `app/dist/` after the 19 Sep upload. **Re-upload `app/dist` to Netlify and
+re-run `node evals/check-hosted.mjs <url>`** — until that is done, the testers are served the
+page with the bug.
+
 **One deliberate inconsistency.** `HYPOTHESIS-LOG.md` and `EXPERIMENT-LOG.md` still say 26 and
 21 Sep. Both are append-only — an entry is never edited, it is superseded. The live dates are in
 this file, and this file wins.

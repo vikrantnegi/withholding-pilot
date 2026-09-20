@@ -760,6 +760,14 @@ function runQ(id){
   const out = document.getElementById(`out-${id}`);
   if (!sql) { out.innerHTML = `<div class="verdict v-warn">Nothing to run — the box is empty.</div>`; return; }
 
+  /* A refusal ("run something first", "try once more with the hint") is answered by
+     this very click, so it must not sit above the new result. A delivered hint or
+     answer is NOT cleared — the learner is working from it. helpQ marks which is
+     which. Refusals are Arm A only (policy.js line 195), so a stale one would be a
+     difference between the arms that is not the help policy. LEARNING-LOG L7. */
+  const helpBox = document.getElementById(`help-out-${id}`);
+  if (helpBox.dataset.transient) { helpBox.innerHTML = ""; delete helpBox.dataset.transient; }
+
   const s = state[id]; s.attempts++;
   const ev = { type:"attempt", q:id, arm:ARM, sql, at:new Date().toISOString() };
   const want = EXPECTED[id];
@@ -828,16 +836,20 @@ async function helpQ(id){
 
   const A = POLICY.ACTION;
   if (r.action === A.REFUSE_GATE || r.action === A.REFUSE_RETRY) {
+    box.dataset.transient = "1";          // cleared by the next run — see runQ
     box.innerHTML = `<div class="verdict v-warn">${esc(r.text)}</div>`;
   } else if (r.action === A.HINT) {
+    delete box.dataset.transient;
     const tag = r.source === GUARD.SOURCE.FALLBACK ? ' <span class="hint">(fallback)</span>' : '';
     const last = LOG.events[LOG.events.length - 1];
     if (last && last.type === 'help_delivered') { last.model = WRITER.MODEL; last.temperature = WRITER.TEMPERATURE; }
     box.innerHTML = `<div class="verdict v-warn"><b>Hint.</b> ${esc(r.text)}${tag}</div>`;
   } else if (r.action === A.REVEAL) {
+    delete box.dataset.transient;
     box.innerHTML = `<div class="verdict v-err"><b>The answer.</b><br>
       <code>${esc(Q[id].reference)}</code></div>`;
   } else {
+    delete box.dataset.transient;
     box.innerHTML = `<div class="verdict v-ok">You've already solved this one.</div>`;
   }
 

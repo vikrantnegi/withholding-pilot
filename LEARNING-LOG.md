@@ -638,3 +638,36 @@ nobody compared.
 **Why it matters:** this would have surfaced on 28 Sep, while writing up which sub-skills
 improved, with the data already collected and the wording no longer changeable. Found on the
 19th it is an edit. Found on the 28th it is a hole in the central claim.
+
+---
+
+## L10 — 20 Sep 2026. A refusal outlived the click that answered it
+
+**What broke.** Vikrant pressed Help before running anything, got "give it one run first",
+then wrote a query and ran it. The refusal was still sitting above the new result.
+
+**The assumption.** That `runQ` owned the whole result area. It does not. The question card
+has two boxes: `help-out-<id>` above and `out-<id>` below. `runQ` rewrites the lower one on
+every path and never touched the upper one, so whatever Help last wrote stayed on screen
+through every later submission.
+
+**Why it is not cosmetic.** Both refusals are Arm A only — `policy.js` line 195 serves Arm B
+the answer on demand and never refuses. So a stale refusal is something Arm A learners see
+and Arm B learners cannot. That is the L7 shape again: a difference between the arms that is
+not the help policy. Here it points the wrong way as well — the message contradicts what the
+learner just did, which is worse than an unhelpful message, because it is a false one.
+
+**The fix, and what it deliberately does not do.** A refusal is marked transient when it is
+written, and the next run clears it. A delivered hint or revealed answer is not marked, so it
+survives — the learner is working from it while writing the next query. Clearing the whole box
+on every run would have been one line shorter and would have deleted the Arm A treatment from
+the screen the moment it was used.
+
+**Caught by.** Nothing. Five unit suites and 84 browser checks all passed with the bug in
+place, because every one of them reads the help box straight after pressing Help. The test
+helper in `evals/verify-app.mjs` even cleared the box itself before each press — the workaround
+was sitting in the harness with a comment explaining it, and nobody read it as a finding.
+
+**So what:** a per-element assertion cannot catch a bug about what is on screen *together*.
+The new block in `verify-app.mjs` checks the box after a *different* action, which is the only
+way this class of fault shows up. 88 checks now, and the new one fails on the pre-fix page.
