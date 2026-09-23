@@ -1,4 +1,8 @@
-# Status — as of 20 Sep 2026
+# Status — as of 23 Sep 2026
+
+> **23 Sep:** practice session runs **today**, removal test moved to **Mon 28 Sep** (5 days; each
+> person's 28 Sep slot at or after their 23 Sep clock time, or check 0b excludes them). Analysis
+> is squeezed into 28 evening and 29 Sep. Send sheet updated. Everything below is as of 20 Sep.
 
 **The only source of truth for the present.** If another file disagrees with this one about today,
 this one wins. **Update the date above whenever you touch it.**

@@ -55,7 +55,7 @@ so a log that cannot be matched to a person is a lost participant.
 `RECRUITMENT.md` section 4: dropout that differs between arms breaks the comparison outright, and
 it cannot be reconstructed afterwards.
 
-| person | arm | practice 22 Sep | removal test 27 Sep |
+| person | arm | practice 23 Sep | removal test 28 Sep |
 |---|---|---|---|
 | gaurav | A | | |
 | nabin | A | | |

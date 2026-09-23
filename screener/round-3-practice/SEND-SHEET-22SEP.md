@@ -1,4 +1,7 @@
-# Send sheet — practice session, Tue 22 Sep 2026
+# Send sheet — practice session, Wed 23 Sep 2026
+
+**Moved 23 Sep:** practice slipped from 22 to 23 Sep, so the removal test moves from 27 to **Mon 28 Sep**
+(`../../RECRUITMENT.md` §6 predicted this). Filename kept so links elsewhere still resolve.
 
 **DO NOT SEND THIS FILE TO ANYONE.** Send each person only their own message block from section 4.
 
@@ -30,12 +33,13 @@ the session.
 
 | what | when | why that date |
 |---|---|---|
-| Practice session | **Tue 22 Sep** | One day of slack spent. Anything later breaks the gap rule below |
-| Removal test | **Sun 27 Sep** | 5 days after practice — the minimum `../../RECRUITMENT.md` §6 allows |
+| Practice session | **Wed 23 Sep** | Slipped from 22 Sep. All slack is gone |
+| Removal test | **Mon 28 Sep** | 5 days after practice — the minimum `../../RECRUITMENT.md` §6 allows |
 
-22 Sep to 27 Sep is exactly five days. **There is no slack left after this.** If the practice
-session slips to 23 Sep the removal test has to move to 28 Sep, which lands results after the
-28-29 Sep analysis window and just before the 30 Sep freeze.
+23 Sep to 28 Sep is exactly five days, and check 0b counts the real gap per person. **So each
+person's 28 Sep slot must be at the same clock time as their 23 Sep slot, or later.** A 7 pm
+practice and a 10 am test is 4.6 days, and that person's data is excluded. Analysis shrinks to
+28 evening and 29 Sep, the day before the 30 Sep freeze.
 
 ---
 
@@ -66,11 +70,11 @@ Each block is complete. Copy it, replace `[TIME]`, send. Do not send two people 
 
 > Hey gaurav — the SQL practice thing is ready.
 >
-> Session 1 is Tue 22 Sep at [TIME], about 45-60 minutes. From your own laptop, nothing to install.
+> Session 1 is today, Wed 23 Sep, at [TIME], about 45-60 minutes. From your own laptop, nothing to install.
 >
 > Your link: https://tranquil-starlight-f0129e.netlify.app/index.html?p=geu2z
 >
-> Don't open it until your slot on Tuesday — the session starts the moment the page loads.
+> Don't open it until your slot — the session starts the moment the page loads.
 >
 > That link is tagged to you so your work comes back matched to your name. Please don't share it or use anyone else's.
 >
@@ -81,7 +85,7 @@ Each block is complete. Copy it, replace `[TIME]`, send. Do not send two people 
 >
 > At the end there's a "Copy my log" button. Press it and paste the result back to me here. That's the whole handover.
 >
-> Session 2 is Sun 27 Sep, about 30 minutes, no tools at all. That one is the actual point of the exercise.
+> Session 2 is Mon 28 Sep, at the same time as today's slot or later, about 30 minutes, no tools at all. That one is the actual point of the exercise.
 >
 > Completely voluntary — pulling out at any stage costs you nothing, just tell me.
 
@@ -89,11 +93,11 @@ Each block is complete. Copy it, replace `[TIME]`, send. Do not send two people 
 
 > Hey nabin — the SQL practice thing is ready.
 >
-> Session 1 is Tue 22 Sep at [TIME], about 45-60 minutes. From your own laptop, nothing to install.
+> Session 1 is today, Wed 23 Sep, at [TIME], about 45-60 minutes. From your own laptop, nothing to install.
 >
 > Your link: https://tranquil-starlight-f0129e.netlify.app/index.html?p=4cwkq
 >
-> Don't open it until your slot on Tuesday — the session starts the moment the page loads.
+> Don't open it until your slot — the session starts the moment the page loads.
 >
 > That link is tagged to you so your work comes back matched to your name. Please don't share it or use anyone else's.
 >
@@ -104,7 +108,7 @@ Each block is complete. Copy it, replace `[TIME]`, send. Do not send two people 
 >
 > At the end there's a "Copy my log" button. Press it and paste the result back to me here. That's the whole handover.
 >
-> Session 2 is Sun 27 Sep, about 30 minutes, no tools at all. That one is the actual point of the exercise.
+> Session 2 is Mon 28 Sep, at the same time as today's slot or later, about 30 minutes, no tools at all. That one is the actual point of the exercise.
 >
 > Completely voluntary — pulling out at any stage costs you nothing, just tell me.
 
@@ -112,11 +116,11 @@ Each block is complete. Copy it, replace `[TIME]`, send. Do not send two people 
 
 > Hey ritesh — the SQL practice thing is ready.
 >
-> Session 1 is Tue 22 Sep at [TIME], about 45-60 minutes. From your own laptop, nothing to install.
+> Session 1 is today, Wed 23 Sep, at [TIME], about 45-60 minutes. From your own laptop, nothing to install.
 >
 > Your link: https://tranquil-starlight-f0129e.netlify.app/index.html?p=efkxn
 >
-> Don't open it until your slot on Tuesday — the session starts the moment the page loads.
+> Don't open it until your slot — the session starts the moment the page loads.
 >
 > That link is tagged to you so your work comes back matched to your name. Please don't share it or use anyone else's.
 >
@@ -127,7 +131,7 @@ Each block is complete. Copy it, replace `[TIME]`, send. Do not send two people 
 >
 > At the end there's a "Copy my log" button. Press it and paste the result back to me here. That's the whole handover.
 >
-> Session 2 is Sun 27 Sep, about 30 minutes, no tools at all. That one is the actual point of the exercise.
+> Session 2 is Mon 28 Sep, at the same time as today's slot or later, about 30 minutes, no tools at all. That one is the actual point of the exercise.
 >
 > Completely voluntary — pulling out at any stage costs you nothing, just tell me.
 
@@ -135,11 +139,11 @@ Each block is complete. Copy it, replace `[TIME]`, send. Do not send two people 
 
 > Hey anuj — the SQL practice thing is ready.
 >
-> Session 1 is Tue 22 Sep at [TIME], about 45-60 minutes. From your own laptop, nothing to install.
+> Session 1 is today, Wed 23 Sep, at [TIME], about 45-60 minutes. From your own laptop, nothing to install.
 >
 > Your link: https://tranquil-starlight-f0129e.netlify.app/index.html?p=gnas5
 >
-> Don't open it until your slot on Tuesday — the session starts the moment the page loads.
+> Don't open it until your slot — the session starts the moment the page loads.
 >
 > That link is tagged to you so your work comes back matched to your name. Please don't share it or use anyone else's.
 >
@@ -150,7 +154,7 @@ Each block is complete. Copy it, replace `[TIME]`, send. Do not send two people 
 >
 > At the end there's a "Copy my log" button. Press it and paste the result back to me here. That's the whole handover.
 >
-> Session 2 is Sun 27 Sep, about 30 minutes, no tools at all. That one is the actual point of the exercise.
+> Session 2 is Mon 28 Sep, at the same time as today's slot or later, about 30 minutes, no tools at all. That one is the actual point of the exercise.
 >
 > Completely voluntary — pulling out at any stage costs you nothing, just tell me.
 
@@ -158,11 +162,11 @@ Each block is complete. Copy it, replace `[TIME]`, send. Do not send two people 
 
 > Hey manish — the SQL practice thing is ready.
 >
-> Session 1 is Tue 22 Sep at [TIME], about 45-60 minutes. From your own laptop, nothing to install.
+> Session 1 is today, Wed 23 Sep, at [TIME], about 45-60 minutes. From your own laptop, nothing to install.
 >
 > Your link: https://tranquil-starlight-f0129e.netlify.app/index.html?p=rqkkx
 >
-> Don't open it until your slot on Tuesday — the session starts the moment the page loads.
+> Don't open it until your slot — the session starts the moment the page loads.
 >
 > That link is tagged to you so your work comes back matched to your name. Please don't share it or use anyone else's.
 >
@@ -173,7 +177,7 @@ Each block is complete. Copy it, replace `[TIME]`, send. Do not send two people 
 >
 > At the end there's a "Copy my log" button. Press it and paste the result back to me here. That's the whole handover.
 >
-> Session 2 is Sun 27 Sep, about 30 minutes, no tools at all. That one is the actual point of the exercise.
+> Session 2 is Mon 28 Sep, at the same time as today's slot or later, about 30 minutes, no tools at all. That one is the actual point of the exercise.
 >
 > Completely voluntary — pulling out at any stage costs you nothing, just tell me.
 
@@ -181,11 +185,11 @@ Each block is complete. Copy it, replace `[TIME]`, send. Do not send two people 
 
 > Hey rishabh — the SQL practice thing is ready.
 >
-> Session 1 is Tue 22 Sep at [TIME], about 45-60 minutes. From your own laptop, nothing to install.
+> Session 1 is today, Wed 23 Sep, at [TIME], about 45-60 minutes. From your own laptop, nothing to install.
 >
 > Your link: https://tranquil-starlight-f0129e.netlify.app/index.html?p=3b3xe
 >
-> Don't open it until your slot on Tuesday — the session starts the moment the page loads.
+> Don't open it until your slot — the session starts the moment the page loads.
 >
 > That link is tagged to you so your work comes back matched to your name. Please don't share it or use anyone else's.
 >
@@ -196,7 +200,7 @@ Each block is complete. Copy it, replace `[TIME]`, send. Do not send two people 
 >
 > At the end there's a "Copy my log" button. Press it and paste the result back to me here. That's the whole handover.
 >
-> Session 2 is Sun 27 Sep, about 30 minutes, no tools at all. That one is the actual point of the exercise.
+> Session 2 is Mon 28 Sep, at the same time as today's slot or later, about 30 minutes, no tools at all. That one is the actual point of the exercise.
 >
 > Completely voluntary — pulling out at any stage costs you nothing, just tell me.
 
@@ -204,11 +208,11 @@ Each block is complete. Copy it, replace `[TIME]`, send. Do not send two people 
 
 > Hey vikash — the SQL practice thing is ready.
 >
-> Session 1 is Tue 22 Sep at [TIME], about 45-60 minutes. From your own laptop, nothing to install.
+> Session 1 is today, Wed 23 Sep, at [TIME], about 45-60 minutes. From your own laptop, nothing to install.
 >
 > Your link: https://tranquil-starlight-f0129e.netlify.app/index.html?p=s6nqb
 >
-> Don't open it until your slot on Tuesday — the session starts the moment the page loads.
+> Don't open it until your slot — the session starts the moment the page loads.
 >
 > That link is tagged to you so your work comes back matched to your name. Please don't share it or use anyone else's.
 >
@@ -219,15 +223,15 @@ Each block is complete. Copy it, replace `[TIME]`, send. Do not send two people 
 >
 > At the end there's a "Copy my log" button. Press it and paste the result back to me here. That's the whole handover.
 >
-> Session 2 is Sun 27 Sep, about 30 minutes, no tools at all. That one is the actual point of the exercise.
+> Session 2 is Mon 28 Sep, at the same time as today's slot or later, about 30 minutes, no tools at all. That one is the actual point of the exercise.
 >
 > Completely voluntary — pulling out at any stage costs you nothing, just tell me.
 
 ---
 
-## 5. Reminder message — send the morning of 22 Sep
+## 5. Reminder message — send an hour before each slot on 23 Sep
 
-> Morning — today's the practice session, your slot is [TIME]. Link is in the message above. Ping me here when you're done and paste the log.
+> Quick reminder — your SQL practice slot is at [TIME] today. Link is in the message above. Ping me here when you're done and paste the log.
 
 ---
 
@@ -235,7 +239,7 @@ Each block is complete. Copy it, replace `[TIME]`, send. Do not send two people 
 
 1. Save it as `learning-os-log-<their code>.json` in the round-3 directory. The code, not the name.
 2. Tick `log received` in section 3.
-3. Tick `practice 22 Sep` in the attendance table in `../participant-links.md`. That table is how
+3. Tick `practice 23 Sep` in the attendance table in `../participant-links.md`. That table is how
    differential dropout gets detected, and it cannot be reconstructed later.
 
 If someone's log is missing `finished`, they closed the tab before pressing the button. Ask them

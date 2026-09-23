@@ -106,6 +106,11 @@ the 28-29 Sep analysis window puts the ceiling at 27. So the removal test is **2
 **There is no slack left.** If the practice session slips to 23 Sep, the gap rule and the analysis
 window cannot both be satisfied, and one of them has to be broken and written up as a limitation.
 
+**Note, 23 Sep — supersedes the note above.** The practice session slipped to **23 Sep**, the case
+this section warned about. The gap rule was kept and the analysis window was cut instead: the removal
+test is **Mon 28 Sep**, and each person's slot must be at or after their 23 Sep clock time, because
+check 0b measures the real gap. Analysis is 28 evening and 29 Sep.
+
 ## 7. The pitch, if more people are needed
 
 > I'm building a SQL tutor for my capstone and I need people who *can't* write SQL yet. That's
