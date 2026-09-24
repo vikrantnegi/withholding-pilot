@@ -4,7 +4,8 @@ A submission is CORRECT only if all three hold:
 
 1. it runs,
 2. it is valid grouped SQL — every non-aggregated column it selects or filters
-   on in HAVING also appears in GROUP BY,
+   on in HAVING also appears in GROUP BY. An alias of a valid SELECT item is a
+   group value (amended 24 Sep, LEARNING-LOG.md L21), unless it shadows a column,
 3. its rows equal the reference's rows, in the order the prompt asked for,
    with numbers compared to 1 decimal place.
 
@@ -55,6 +56,28 @@ def _clause(sql, name, stops):
     m = re.search(rf'\b{name}\b(.*?)(?=\b(?:{"|".join(stops)})\b|$)', sql, re.I | re.S)
     return m.group(1) if m else None
 
+AGG_NAMES = {'count','sum','avg','min','max','total','group_concat'}
+
+def _alias_of(part):
+    """The alias a SELECT item names, or None. `COUNT(*) AS n` and `COUNT(*) n`
+    both name n. `DISTINCT city` and `a + b` name nothing."""
+    t = part.strip()
+    m = re.search(r'([\w)])\s+(as\s+)?([A-Za-z_][A-Za-z_0-9]*)$', t, re.I)
+    if not m: return None
+    name = m.group(3).lower()
+    if name in KEYWORDS: return None
+    if not m.group(2):
+        before = re.search(r'([A-Za-z_][A-Za-z_0-9]*)$', t[:m.start() + 1])
+        if before and before.group(1).lower() in KEYWORDS: return None
+    return name
+
+def _all_words(s):
+    """Every word, minus keywords and aggregate names. An alias that is one of
+    these, in its own SELECT list, shadows a real column: in HAVING, SQLite reads
+    `fare` in `SUM(fare) AS fare ... HAVING fare > 500` as the ROW column."""
+    return {w.lower() for w in re.findall(r'\b[a-zA-Z_][a-zA-Z_0-9]*\b', s)
+            if w.lower() not in KEYWORDS and w.lower() not in AGG_NAMES}
+
 def validity(sql):
     """Returns None if valid, or a reason string."""
     s = _strip_literals(sql)
@@ -65,13 +88,21 @@ def validity(sql):
     for part in _split_top(gb):
         group_cols |= _identifiers(part)
     sel = _clause(s, 'SELECT', ['FROM'])
+    aliases, exprs = set(), []
     for part in _split_top(sel or ''):
+        a = _alias_of(part)
+        t = part.strip()
+        exprs.append(t[:len(t) - len(a)] if a else t)
+        if a: aliases.add(a)
         if AGG.search(part): continue
-        bare = _identifiers(part) - group_cols
+        bare = _identifiers(part) - group_cols - ({a} if a else set())
         if bare: return f"selects {', '.join(sorted(bare))} without grouping by it"
+    # A SELECT item that passed the check above is a group value, so its alias
+    # is one too, unless the alias shadows a column it was built from.
+    group_vals = group_cols | (aliases - _all_words(' '.join(exprs)))
     hv = _clause(s, 'HAVING', ['ORDER BY', 'LIMIT'])
     if hv:
-        bare = _identifiers(hv) - group_cols
+        bare = _identifiers(hv) - group_vals
         if bare: return f"filters groups on {', '.join(sorted(bare))}, which is a row value, not a group value"
     return None
 
