@@ -39,6 +39,25 @@ check('the column inside an aggregate does not need grouping',
 check('a string literal cannot smuggle in an identifier',
   GRADE.validity('SELECT service, COUNT(*) FROM deploys GROUP BY service HAVING COUNT(*) > 6 AND service <> \'env\''), null);
 
+console.log('\nCLAUSE 2 — aliases in HAVING, amended 24 Sep (LEARNING-LOG.md L21)');
+check('vikash, P14: HAVING on an alias of COUNT(*) is valid',
+  GRADE.validity('select service,count(*) deploy_count from deploys group by service having deploy_count>6 order by service ASC'), null);
+check('nabin, P16: HAVING on an AS alias of SUM is valid',
+  GRADE.validity('SELECT team, SUM(hours_to_close) as total_hours FROM tickets GROUP BY team HAVING total_hours > 300 ORDER BY team ASC'), null);
+check('an alias that shadows its own column is still a row value',
+  GRADE.validity('SELECT city, SUM(fare) AS fare FROM rides GROUP BY city HAVING fare > 500'),
+  'filters groups on fare, which is a row value, not a group value');
+check('an alias named after the aggregate is not a shadow',
+  GRADE.validity('SELECT service, COUNT(*) AS count FROM deploys GROUP BY service HAVING count > 6'), null);
+check('an alias does not excuse a real row value beside it',
+  GRADE.validity('SELECT service, COUNT(*) AS n FROM deploys GROUP BY service HAVING n > 6 AND env = \'prod\''),
+  'filters groups on env, which is a row value, not a group value');
+check('an alias of a grouped column is valid in SELECT',
+  GRADE.validity('SELECT service AS s, COUNT(*) FROM deploys GROUP BY service'), null);
+check('DISTINCT is not an alias',
+  GRADE.validity('SELECT DISTINCT env, COUNT(*) FROM deploys GROUP BY service'),
+  'selects env without grouping by it');
+
 console.log('\nONE DECIMAL PLACE, TIES AWAY FROM ZERO — DECISIONS.md section 4');
 check('194.45 rounds up, the way SQLite does it', GRADE.round1(194.45), 194.5);
 check('194.4666 rounds up', GRADE.round1(194.4666), 194.5);

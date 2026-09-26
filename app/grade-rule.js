@@ -21,7 +21,8 @@
  * A submission is CORRECT only if all three hold:
  *   1. it runs,
  *   2. every non-aggregated column it selects, or filters on in HAVING, also
- *      appears in GROUP BY,
+ *      appears in GROUP BY. An alias of a valid SELECT item is a group value
+ *      (amended 24 Sep, LEARNING-LOG.md L21), unless it shadows a column,
  *   3. its rows equal the reference's rows, in the order the prompt asked for,
  *      with numbers compared to 1 decimal place.
  *
@@ -89,6 +90,29 @@ const GRADE = (() => {
 
   const minus = (a, b) => [...a].filter(x => !b.has(x));
 
+  /* The alias a SELECT item names, or null. `COUNT(*) AS n` and `COUNT(*) n`
+   * both name n. `DISTINCT city` and `a + b` name nothing: the word before an
+   * implicit alias must end an expression, not be a keyword or an operator. */
+  function aliasOf(part) {
+    const t = part.trim();
+    const m = t.match(/([\w)])\s+(as\s+)?([A-Za-z_][A-Za-z_0-9]*)$/i);
+    if (!m) return null;
+    const name = m[3].toLowerCase();
+    if (KEYWORDS.has(name)) return null;
+    if (!m[2]) {
+      const before = t.slice(0, m.index + 1).match(/([A-Za-z_][A-Za-z_0-9]*)$/);
+      if (before && KEYWORDS.has(before[1].toLowerCase())) return null;
+    }
+    return name;
+  }
+
+  /* Every word in the SELECT list, minus keywords. An alias that is also one of
+   * these shadows a real column: in HAVING, SQLite reads `fare` in
+   * `SUM(fare) AS fare ... HAVING fare > 500` as the ROW column, not the sum. */
+  const allWords = s => new Set((s.match(/\b[a-zA-Z_][a-zA-Z_0-9]*\b/g) || [])
+    .map(w => w.toLowerCase()).filter(w => !KEYWORDS.has(w) && !AGG_NAMES.has(w)));
+  const AGG_NAMES = new Set(['count','sum','avg','min','max','total','group_concat']);
+
   /* null when the SQL is valid grouped SQL, otherwise the reason it is not. */
   function validity(sql) {
     const s = stripLiterals(sql);
@@ -99,15 +123,29 @@ const GRADE = (() => {
     for (const part of splitTop(gb)) for (const id of identifiers(part)) groupCols.add(id);
 
     const sel = clause(s, 'SELECT', ['FROM']);
+    const aliases = new Set();
     for (const part of splitTop(sel || '')) {
+      const a = aliasOf(part);
+      if (a) aliases.add(a);
       if (AGG.test(part)) continue;
-      const bare = minus(identifiers(part), groupCols);
+      const bare = minus(identifiers(part), new Set([...groupCols, ...(a ? [a] : [])]));
       if (bare.length) return `selects ${bare.sort().join(', ')} without grouping by it`;
     }
 
+    /* A SELECT item that passed the check above is a group value, so its alias
+     * is one too — unless the alias shadows a column it was built from. */
+    const expr = [];
+    for (const part of splitTop(sel || '')) {
+      const a = aliasOf(part);
+      const t = part.trim();
+      expr.push(a ? t.slice(0, t.length - a.length) : t);
+    }
+    const shadowed = allWords(expr.join(' '));
+    const groupVals = new Set([...groupCols, ...[...aliases].filter(a => !shadowed.has(a))]);
+
     const hv = clause(s, 'HAVING', ['ORDER BY', 'LIMIT']);
     if (hv) {
-      const bare = minus(identifiers(hv), groupCols);
+      const bare = minus(identifiers(hv), groupVals);
       if (bare.length) {
         return `filters groups on ${bare.sort().join(', ')}, ` +
                'which is a row value, not a group value';
