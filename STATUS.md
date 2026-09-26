@@ -1,4 +1,10 @@
-# Status — as of 23 Sep 2026
+# Status — as of 25 Sep 2026
+
+> **25 Sep:** all 7 practice logs are in. ritesh practised on **25 Sep** (not 24), finishing
+> 22:35 IST, so his removal test is **Wed 30 Sep after 22:35 IST, or Thu 1 Oct**. 29 Sep would be
+> 4 days, and check 0b would exclude him. **The analysis window extends to 1–2 Oct** for his data.
+> The other six still run 28–29 Sep. Submission is still 7 Oct. Grader fix (aliases in HAVING)
+> is on branch `grader-alias-having`, not merged; a double-quoted-string fix is still owed.
 
 > **23 Sep:** practice session runs **today**, removal test moved to **Mon 28 Sep** (5 days; each
 > person's 28 Sep slot at or after their 23 Sep clock time, or check 0b excludes them). Analysis

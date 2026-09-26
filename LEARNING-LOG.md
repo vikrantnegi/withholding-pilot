@@ -671,3 +671,48 @@ was sitting in the harness with a comment explaining it, and nobody read it as a
 **So what:** a per-element assertion cannot catch a bug about what is on screen *together*.
 The new block in `verify-app.mjs` checks the box after a *different* action, which is the only
 way this class of fault shows up. 88 checks now, and the new one fails on the pre-fix page.
+
+## L21 — 24 Sep 2026. Clause 2 of the scoring rule catches the mistake it names
+
+**What broke.** Vikash, on P14, wrote
+`SELECT service, COUNT(*) deploy_count FROM deploys GROUP BY service HAVING deploy_count > 6`.
+It returns the right rows. The grader called it invalid: "filters groups on deploy_count, which
+is a row value, not a group value". That is false. `deploy_count` is his name for `COUNT(*)`,
+and a count is a group value.
+
+**How often.** 10 "row value" verdicts across the 6 round-3 logs in so far. All 10 are this
+alias case: 9 from nabin on P14 and P16, 1 from Vikash on P14. The mistake the clause exists to
+catch, a HAVING on a real column like `HAVING status = 'failed'`, appears 0 times.
+
+**The assumption.** That any word in HAVING that is not in GROUP BY is a column. The rule never
+considered that a learner would name an aggregate and then filter on the name.
+
+**Why it is not cosmetic.**
+- It teaches the wrong thing. Vikash dropped the alias and wrote `count()` in HAVING. He changed
+  his SQL to satisfy the grader, not because his mental model was wrong.
+- It hits Arm A harder. nabin is Arm A. A false "invalid" counts as an attempt and moves him up
+  the help ladder, so his hints on P14 were partly the grader's doing.
+- It would carry into the score. `grade_rule.py` has the same logic, so the removal test would
+  mark a correct alias query wrong.
+
+**Caught by.** A person reading one log. Not the conformance run: its 75 queries are 28
+references and 47 wrong models I wrote, and none of the 47 uses an alias.
+
+**The fix, on branch `grader-alias-having`, not merged.** An alias of a SELECT item that
+passed the SELECT check is a group value. One exception is kept on purpose: an alias that
+shadows its own column. In `SUM(fare) AS fare ... HAVING fare > 500`, SQLite reads `fare` as
+the row column, checked in sqlite3, so that stays invalid. Tests: 30 of 30 JS, 0 problems in
+Python, 75 of 75 conformance. Over all 307 logged attempts from rounds 2 and 3, the two graders
+agree on every one, and exactly 9 verdicts change. The 10th alias case puts HAVING inside the
+SELECT list and stays invalid.
+
+**When to merge.** After ritesh's practice session, so all 7 practice sessions ran on one
+grader. Before the removal test is scored. The practice verdicts already logged stand as the
+learners saw them.
+
+**Is this a DURING-box decision?** The evidence came from practice logs. But the change fixes
+a grader error that is visible from SQLite's own behaviour, applies to both arms the same way,
+and is made before any removal-test data exists. It picks no person, arm or threshold.
+
+**So what:** the wrong models I write test the rule against my imagination. Learner logs test
+it against learners. Read the logs for grader verdicts, not only for learner behaviour.
