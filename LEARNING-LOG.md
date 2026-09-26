@@ -716,3 +716,32 @@ and is made before any removal-test data exists. It picks no person, arm or thre
 
 **So what:** the wrong models I write test the rule against my imagination. Learner logs test
 it against learners. Read the logs for grader verdicts, not only for learner behaviour.
+
+## L22 — 26 Sep 2026. A double-quoted string was read as a column
+
+**What broke.** ritesh, on P16, wrote `HAVING sum(hours_to_close) > 300 and status is "closed"`.
+The grader said it "filters groups on closed, status". The verdict was right, because `status`
+is a row value. The reason was wrong: `closed` is not a column. SQLite reads `"closed"` as the
+string `'closed'`, because no column has that name.
+
+**Why it matters, even though no verdict moved.** The same bug marks a correct query invalid.
+`HAVING team = "platform"` is valid grouped SQL, and the old grader called `platform` a row
+value. Nobody wrote that shape in practice. Someone could on the removal test, where a false
+"invalid" is a lost point.
+
+**The assumption.** That only single quotes make a string. MySQL habits say otherwise, and 42 of
+382 round-3 attempts (7 people x their attempts) used double quotes.
+
+**The fix, 26 Sep, in both graders.** SQLite's own rule, copied: a double-quoted word is a column
+if a column with that name exists, and a string otherwise. Both graders now carry the 15 column
+names from `study-questions/schema.sql`, and both test suites fail if that list drifts from the
+schema. No data value in the schema equals a column name, so the rule is unambiguous here.
+
+**Effect on logged data.** Regraded all 382 round-3 attempts: 0 verdicts change, 1 reason
+changes (the one above). JS 37 of 37, Python problems 0, conformance 0 drift.
+
+**Is this a DURING-box decision?** No more than L21. It copies SQLite's behaviour, applies to
+both arms the same way, and lands before any removal-test data exists.
+
+**So what:** the grader has to resolve names the way the database does. Every gap between the
+two is a place where a learner can be right and be marked wrong.

@@ -22,7 +22,9 @@
  *   1. it runs,
  *   2. every non-aggregated column it selects, or filters on in HAVING, also
  *      appears in GROUP BY. An alias of a valid SELECT item is a group value
- *      (amended 24 Sep, LEARNING-LOG.md L21), unless it shadows a column,
+ *      (amended 24 Sep, LEARNING-LOG.md L21), unless it shadows a column.
+ *      A double-quoted word is a column only if that column exists, else a
+ *      string, as in SQLite (amended 26 Sep, LEARNING-LOG.md L22),
  *   3. its rows equal the reference's rows, in the order the prompt asked for,
  *      with numbers compared to 1 decimal place.
  *
@@ -41,7 +43,22 @@ const GRADE = (() => {
     'is','in','like','between','on','join','left','inner','outer','cast','coalesce',
   ]);
 
-  const stripLiterals = sql => String(sql).replace(/'[^']*'/g, "''");
+  /* Every column in schema.sql. grade-rule.test.js fails if this drifts from it. */
+  const COLUMNS = new Set([
+    'deploy_id','service','env','status','duration_sec',
+    'ticket_id','team','priority','hours_to_close',
+    'ride_id','city','driver','fare','distance_km','rating',
+  ]);
+
+  /* Blank out string literals, so a word inside one is never read as a column.
+   * Single quotes are always a string. Double quotes follow SQLite's own rule
+   * (amended 26 Sep): "status" is the column status, because that column
+   * exists, but "closed" is the string 'closed', because no column is called
+   * closed. Without this, `HAVING team = "platform"` reads platform as a row
+   * value. */
+  const stripLiterals = sql => String(sql)
+    .replace(/'[^']*'/g, "''")
+    .replace(/"([^"]*)"/g, (_, w) => (COLUMNS.has(w.toLowerCase()) ? w : "''"));
 
   /* Split on commas that are not inside brackets. */
   function splitTop(s) {
@@ -194,7 +211,7 @@ const GRADE = (() => {
     return { verdict: 'wrong', reason: `${g.length} rows returned, ${w.length} expected` };
   }
 
-  return { grade, validity, round1, normRows, KEYWORDS };
+  return { grade, validity, round1, normRows, KEYWORDS, COLUMNS };
 })();
 
 if (typeof module !== 'undefined' && module.exports) module.exports = GRADE;

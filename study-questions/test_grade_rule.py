@@ -31,4 +31,22 @@ alias_cases = [
 for q, want in alias_cases:
     got = validity(q)
     if got != want: fail += 1; print("FIX alias case:", q, "->", got)
+# double-quoted words, amended 26 Sep (LEARNING-LOG.md L22)
+dq_cases = [
+    ('SELECT team, COUNT(*) FROM tickets GROUP BY team HAVING team = "platform"', None),
+    ('SELECT service, COUNT(*) FROM deploys WHERE status = "failed" GROUP BY service', None),
+    ('select team, sum(hours_to_close) from tickets group by team having sum(hours_to_close) > 300 and status is "closed"',
+     "filters groups on status, which is a row value, not a group value"),
+    ('SELECT service, COUNT(*) FROM deploys GROUP BY service HAVING "status" = \'failed\'',
+     "filters groups on status, which is a row value, not a group value"),
+    ('SELECT "service", COUNT(*) FROM deploys GROUP BY "service"', None),
+    ('SELECT "env", COUNT(*) FROM deploys GROUP BY service', "selects env without grouping by it"),
+]
+for q, want in dq_cases:
+    got = validity(q)
+    if got != want: fail += 1; print("FIX double-quote case:", q, "->", got)
+# the column list the double-quote rule depends on must be the schema's
+from grade_rule import COLUMNS
+schema_cols = {r[1].lower() for t in ('deploys','tickets','rides') for r in c.execute(f'pragma table_info({t})')}
+if COLUMNS != schema_cols: fail += 1; print("FIX COLUMNS drifted from schema.sql:", COLUMNS ^ schema_cols)
 print("problems:", fail)

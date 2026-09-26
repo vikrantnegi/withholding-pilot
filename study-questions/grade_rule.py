@@ -5,7 +5,9 @@ A submission is CORRECT only if all three hold:
 1. it runs,
 2. it is valid grouped SQL — every non-aggregated column it selects or filters
    on in HAVING also appears in GROUP BY. An alias of a valid SELECT item is a
-   group value (amended 24 Sep, LEARNING-LOG.md L21), unless it shadows a column,
+   group value (amended 24 Sep, LEARNING-LOG.md L21), unless it shadows a column.
+   A double-quoted word is a column only if that column exists, else a string,
+   as in SQLite (amended 26 Sep, LEARNING-LOG.md L22),
 3. its rows equal the reference's rows, in the order the prompt asked for,
    with numbers compared to 1 decimal place.
 
@@ -22,8 +24,21 @@ KEYWORDS = {'select','from','where','group','by','having','order','asc','desc','
             'as','distinct','case','when','then','else','end','limit','offset','round','null',
             'is','in','like','between','on','join','left','inner','outer','cast','coalesce'}
 
+# Every column in schema.sql. test_grade_rule.py fails if this drifts from it.
+COLUMNS = {'deploy_id','service','env','status','duration_sec',
+           'ticket_id','team','priority','hours_to_close',
+           'ride_id','city','driver','fare','distance_km','rating'}
+
 def _strip_literals(sql):
-    return re.sub(r"'[^']*'", "''", sql)
+    """Blank out string literals, so a word inside one is never read as a column.
+
+    Single quotes are always a string. Double quotes follow SQLite's own rule
+    (amended 26 Sep): "status" is the column status, because that column exists,
+    but "closed" is the string 'closed', because no column is called closed.
+    Without this, `HAVING team = "platform"` reads platform as a row value."""
+    s = re.sub(r"'[^']*'", "''", sql)
+    return re.sub(r'"([^"]*)"',
+                  lambda m: m.group(1) if m.group(1).lower() in COLUMNS else "''", s)
 
 def _split_top(s):
     out, depth, cur = [], 0, ''

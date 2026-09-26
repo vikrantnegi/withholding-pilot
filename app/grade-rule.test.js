@@ -102,5 +102,32 @@ check('an invalid query that also fails to run grades invalid, not error',
   GRADE.grade({ sql: 'SELECT city, env FROM rides GROUP BY city HAVING',
                 error: 'incomplete input', want }).verdict, 'invalid');
 
+console.log('\nDOUBLE QUOTES — a column if that column exists, else a string, as in SQLite (26 Sep)');
+check('a double-quoted value compared to a group column is valid',
+  GRADE.validity('SELECT team, COUNT(*) FROM tickets GROUP BY team HAVING team = "platform"'), null);
+check('a double-quoted value in WHERE is never a column',
+  GRADE.validity('SELECT service, COUNT(*) FROM deploys WHERE status = "failed" GROUP BY service'), null);
+check('the row column is still named, and the string is not',
+  GRADE.validity('select team, sum(hours_to_close) from tickets group by team having sum(hours_to_close) > 300 and status is "closed"'),
+  'filters groups on status, which is a row value, not a group value');
+check('a double-quoted column is still a column',
+  GRADE.validity('SELECT service, COUNT(*) FROM deploys GROUP BY service HAVING "status" = \'failed\''),
+  'filters groups on status, which is a row value, not a group value');
+check('double-quoted columns in SELECT and GROUP BY match each other',
+  GRADE.validity('SELECT "service", COUNT(*) FROM deploys GROUP BY "service"'), null);
+check('a double-quoted bare column in SELECT is still caught',
+  GRADE.validity('SELECT "env", COUNT(*) FROM deploys GROUP BY service'),
+  'selects env without grouping by it');
+
+{
+  const fs = require('fs'), path = require('path');
+  const ddl = fs.readFileSync(path.join(__dirname, '..', 'study-questions', 'schema.sql'), 'utf8');
+  const cols = new Set();
+  for (const m of ddl.matchAll(/CREATE TABLE \w+ \(([^)]*)\)/g))
+    for (const c of m[1].split(',')) cols.add(c.trim().split(/\s+/)[0].toLowerCase());
+  check('COLUMNS is exactly the columns in schema.sql',
+    [...GRADE.COLUMNS].sort(), [...cols].sort());
+}
+
 console.log(`\n${pass} passed, ${fail} failed\n`);
 process.exit(fail ? 1 : 0);
