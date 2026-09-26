@@ -1,4 +1,14 @@
-# Status — as of 25 Sep 2026
+# Status — as of 26 Sep 2026
+
+> **26 Sep:** the removal test is **built and verified, not hosted.** `app/removal.html` is
+> generated from the practice page by `study-questions/mkremoval.py`: the 12 held-out items, no
+> Help for either arm, three optional 1-5 questions logged as `survey`. Scored as correct on any
+> attempt, denominator 12, decided today before any removal data. `evals/verify-removal.mjs`:
+> 16 of 16 headless. Both grader fixes are merged (L21 aliases, L22 double quotes), JS 37 of 37,
+> conformance 0 drift. **Still owed before Mon 28 Sep 11:58 IST:** host `app/dist-removal` as a
+> new Netlify Drop site, take the practice site down, send ritesh his date change.
+> `screener/round-4-removal/SEND-SHEET.md` has every window and message. The body of this file
+> below is still as of 20 Sep.
 
 > **25 Sep:** all 7 practice logs are in. ritesh practised on **25 Sep** (not 24), finishing
 > 22:35 IST, so his removal test is **Wed 30 Sep after 22:35 IST, or Thu 1 Oct**. 29 Sep would be

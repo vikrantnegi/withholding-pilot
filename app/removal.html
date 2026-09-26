@@ -1,0 +1,826 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SQL practice — GROUP BY and HAVING</title>
+<style>
+  :root{
+    --bg:#faf9f7; --panel:#fff; --ink:#1c1c1a; --muted:#6b6b66; --line:#e3e1dc;
+    --accent:#2f6f4f; --accent-soft:#e8f1ec; --bad:#a4342a; --bad-soft:#fbeceb;
+    --warn:#8a6312; --warn-soft:#fbf3e2; --code:#f3f1ed;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --bg:#17171a; --panel:#1f1f23; --ink:#eceae6; --muted:#9b9a95; --line:#33333a;
+      --accent:#7dbd9a; --accent-soft:#1d2f26; --bad:#e58a80; --bad-soft:#2e1e1c;
+      --warn:#d9b368; --warn-soft:#2d2617; --code:#26262b;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);overflow-x:hidden;
+    font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}
+  h1{font-size:21px;margin:0 0 4px;letter-spacing:-.2px}
+  .sub{color:var(--muted);margin:0;font-size:13.5px}
+
+  /* ---- masthead ---- */
+  .top{border-bottom:1px solid var(--line);background:var(--panel)}
+  .top-in{max-width:1320px;margin:0 auto;padding:16px 24px}
+
+  /* ---- three columns: where you are / the question / the schema ----
+   * The schema column is the point of this layout. In the single-scroll version it
+   * was collapsed at the top of the page, so by question 12 the column names were
+   * a long scroll away — in a task that is entirely about naming columns. */
+  .app{max-width:1320px;margin:0 auto;padding:22px 24px 56px;
+    display:grid;grid-template-columns:176px minmax(0,1fr) 372px;gap:20px;align-items:start}
+  /* A grid item's automatic minimum is its content, so one wide table or one long
+   * schema line pushes the whole column past the viewport. min-width:0 lets each
+   * column shrink and keeps the overflow inside .scroll, where it belongs. */
+  .rail,.stage,.ref{min-width:0}
+  .rail,.ref{position:sticky;top:22px}
+
+  /* ---- the rail: all 16, their state, jump to any ---- */
+  .rail{font-size:13px}
+  .progress{font-size:12px;color:var(--muted);margin:0 0 10px;padding-left:2px}
+  .progress b{color:var(--ink)}
+  .bar{height:4px;border-radius:3px;background:var(--line);overflow:hidden;margin:0 0 14px}
+  .bar span{display:block;height:100%;background:var(--accent);width:0;transition:width .25s}
+  .raillist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1px}
+  .raillist button{width:100%;text-align:left;border:0;background:none;padding:6px 9px;
+    border-radius:6px;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px;
+    cursor:pointer;line-height:1.35}
+  .raillist button:hover{background:var(--code);color:var(--ink)}
+  .raillist button[aria-current="true"]{background:var(--code);color:var(--ink);font-weight:600}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--line);flex:none}
+  .dot.tried{background:var(--warn)}
+  .dot.done{background:var(--accent)}
+  .rlabel{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .railsep{margin:10px 0 6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--muted);padding-left:9px}
+
+  /* ---- the stage: exactly one screen at a time ---- */
+  .screen[hidden]{display:none}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px 24px}
+  .intro{font-size:14.5px}
+  .intro p{margin:0 0 11px}
+  .intro p:last-child{margin-bottom:0}
+  .intro h2{font-size:17px;margin:0 0 12px}
+
+  .qhead{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+    flex-wrap:wrap;margin-bottom:12px}
+  .qnum{font-size:11.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+  .pill{font-size:11.5px;padding:3px 9px;border-radius:20px;background:var(--code);color:var(--muted);white-space:nowrap}
+  .pill.ok{background:var(--accent-soft);color:var(--accent);font-weight:600}
+
+  /* The question itself is the thing being read, so it gets the largest type on
+   * the page and a measure short enough to scan without losing the line. */
+  .ask{margin:0 0 18px;font-size:17px;line-height:1.55;max-width:62ch}
+  .ask b{font-weight:600}
+  .lbl{font-size:11.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--muted);display:block;margin-bottom:7px}
+
+  textarea{width:100%;min-height:132px;resize:vertical;padding:13px;border-radius:9px;
+    border:1px solid var(--line);background:var(--code);color:var(--ink);
+    font:13.5px/1.65 ui-monospace,SFMono-Regular,Menlo,monospace;tab-size:2}
+  textarea:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .row{display:flex;gap:10px;align-items:center;margin-top:11px;flex-wrap:wrap}
+  button{font:inherit;font-size:14px;padding:8px 16px;border-radius:8px;cursor:pointer;
+    border:1px solid var(--line);background:var(--panel);color:var(--ink)}
+  button.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+  button:disabled{opacity:.45;cursor:not-allowed}
+  .hint{font-size:12.5px;color:var(--muted)}
+  .grow{flex:1}
+
+  .out{margin-top:16px;font-size:13.5px}
+  .out:empty{margin-top:0}
+  .verdict{padding:11px 14px;border-radius:8px;font-size:13.5px;margin-bottom:10px}
+  .v-ok{background:var(--accent-soft);color:var(--accent);font-weight:600}
+  .v-err{background:var(--bad-soft);color:var(--bad)}
+  .v-warn{background:var(--warn-soft);color:var(--warn)}
+  .v-err code{font-family:ui-monospace,Menlo,monospace;font-size:12.5px}
+  .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{border-collapse:collapse;font-size:13px;min-width:100%}
+  th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;white-space:nowrap}
+  th{background:var(--code);font-weight:600;font-size:12px}
+
+  /* prev / next, so the rail is never the only way to move */
+  .nav{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
+
+  /* ---- the schema reference ---- */
+  .ref details{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .ref summary{cursor:pointer;font-weight:600;font-size:13px;list-style:none}
+  .ref summary::-webkit-details-marker{display:none}
+  .ref summary::after{content:" ▾";color:var(--muted)}
+  .ref details[open] summary::after{content:" ▴"}
+  .schema{display:grid;gap:14px;margin-top:13px}
+
+  /* Each table is its own bordered block with a filled header bar. Before this the
+   * three names were 12px green text in the same column as everything else, with a
+   * gap between them, and the whole panel read as one long list of 16 columns. The
+   * border is what says "this is where deploys ends and tickets begins". */
+  .tbl{border:1px solid var(--line);border-radius:9px;overflow:hidden;background:var(--panel)}
+  .tbl h4{margin:0;padding:9px 11px;background:var(--accent-soft);
+    border-bottom:1px solid var(--line);font-size:14px;font-weight:700;color:var(--accent);
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:-.1px;
+    display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+  /* The grain — "one row per deploy". What a row IS, is the first thing GROUP BY needs. */
+  .tbl h4 span{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    font-size:10.5px;font-weight:500;color:var(--muted);letter-spacing:0;text-transform:none;
+    white-space:nowrap}
+
+  /* Each table is drawn AS a table: one row per column, so the shape of the
+   * thing being queried is visible at a glance. It replaced three bullet lists,
+   * which buried the column name in a sentence and did not line anything up. */
+  .cols{width:100%;border-collapse:collapse;table-layout:fixed;font-size:12px}
+  .cols col.c1{width:36%} .cols col.c2{width:17%} .cols col.c3{width:47%}
+  .cols th{text-align:left;font-weight:600;font-size:9.5px;letter-spacing:.07em;
+    text-transform:uppercase;color:var(--muted);background:none;border:0;
+    border-bottom:1px solid var(--line);padding:7px 6px 4px 0;white-space:nowrap}
+  .cols td{border:0;border-bottom:1px solid var(--line);padding:5px 6px 5px 0;
+    vertical-align:top;white-space:normal;color:var(--muted);line-height:1.4}
+  .cols tr:last-child td{border-bottom:0}
+  /* The table now runs edge to edge inside its card, so the padding lives on the cells. */
+  .cols th:first-child,.cols td:first-child{padding-left:11px}
+  .cols th:last-child,.cols td:last-child{padding-right:11px}
+  .cols code{font-size:11.5px;color:var(--ink);word-break:break-word}
+  /* Values are chips rather than a comma list: at this width a comma list wraps to
+   * one value per line and makes the panel twice as tall as the viewport. */
+  .cols .vals{line-height:1.75}
+  .cols .vals code{color:var(--muted);background:var(--code);border:1px solid var(--line);
+    border-radius:4px;padding:0 4px;margin:0 2px 0 0;font-size:11px;display:inline-block}
+  .cols .none{opacity:.4}
+
+  /* Sixteen columns over three tables is taller than a laptop viewport, and the
+   * panel is sticky — so it scrolls inside itself rather than running off. */
+  .ref details{max-height:calc(100vh - 44px);overflow:auto}
+
+  .send{background:var(--accent-soft);border-color:var(--accent)}
+  .send h2{margin:0 0 8px;font-size:17px}
+  .send p{margin:0 0 12px;font-size:14px}
+  #logbox{width:100%;min-height:90px;font-size:11px;margin-top:10px;display:none}
+  .tiny{font-size:12px;color:var(--muted);margin-top:10px}
+  .boot{padding:14px;border-radius:9px;background:var(--warn-soft);color:var(--warn);font-size:14px}
+
+  /* ---- narrow: the rail becomes a strip, the schema a tap away in place ----
+   * The schema sits directly above the editor here rather than at the top of the
+   * page, so it is never more than one tap from the box you are typing in. */
+  @media (max-width:1040px){
+    .app{grid-template-columns:minmax(0,1fr);gap:16px;padding:16px 16px 48px}
+    .rail,.ref{position:static}
+    /* Static here, so let the page scroll rather than trapping a scrollbar inside. */
+    .ref details{max-height:none;overflow:visible}
+    .rail{order:1} .ref{order:2} .stage{order:3}  /* schema above the editor */
+    .raillist{flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:4px;
+      -webkit-overflow-scrolling:touch;scrollbar-width:thin;max-width:100%}
+    .raillist button{width:auto;padding:6px 11px;border:1px solid var(--line);white-space:nowrap}
+    .rlabel{max-width:none}
+    .railsep{display:none}
+    .schema{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+    .ask{font-size:16px}
+    .card{padding:18px 17px}
+  }
+  @media (max-width:640px){
+    .nav button{flex:1}
+  }
+.survey .likert{border:1px solid var(--line);border-radius:8px;margin:10px 0;padding:8px 12px}
+.survey legend{padding:0 4px;font-weight:600}
+.survey label{display:inline-block;margin:4px 14px 4px 0;cursor:pointer}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <h1>SQL — session 2</h1>
+    <p class="sub">Session 2. 12 questions, about 30 minutes. On your own this time.</p>
+  </div>
+</header>
+
+<div class="app">
+
+  <nav class="rail" aria-label="Where you are">
+    <p class="progress" id="progress">Not started</p>
+    <div class="bar"><span id="barfill"></span></div>
+    <ol class="raillist" id="rail"></ol>
+  </nav>
+
+  <main class="stage">
+
+    <section class="screen card intro" id="screen-intro">
+      <h2>Before you start</h2>
+    <p><b>Same page as last time, minus the Help button.</b> There's no Help for anyone
+    today. Write a query, run it, see what comes back, fix it, run it again. You'll still
+    see whether each one is right.</p>
+    <p><b>On your own</b>: no Google, no ChatGPT/Claude, no asking a colleague, and no
+    looking back at anything from session 1. Do it in one sitting.</p>
+    <p><b>These are new questions</b> on the same three tables. If one won't crack, move on;
+    skipping is fine, and you can come back to it. About 30 minutes, but there's no timer.</p>
+    <p>When you're done, answer three quick questions at the end and send me the log.</p>
+      <div class="nav">
+        <span></span>
+        <button class="primary" id="startBtn">Start with question 1 →</button>
+      </div>
+    </section>
+
+    <div id="boot" class="boot">Loading the database…</div>
+
+    <div id="questions" hidden></div>
+
+    <section class="screen card send" id="screen-send">
+      <h2>Three quick questions, then send it back</h2>
+      <p>About <b>session 1</b>, the practice session. Optional, and there are no right
+      answers. 1 = strongly disagree, 5 = strongly agree.</p>
+      <div class="survey" id="survey"></div>
+      <h2 style="margin-top:22px">Send it back</h2>
+      <p>Click copy, then paste into our chat. It's a record of the queries you ran — no
+      personal data in it.</p>
+      <div class="row">
+        <button class="primary" id="copy">Copy my log</button>
+        <button id="dl">Download instead</button>
+        <button id="show">Show me what it says</button>
+      </div>
+      <textarea id="logbox" readonly></textarea>
+      <p class="tiny">Thanks. Genuinely useful either way.</p>
+    </section>
+
+  </main>
+
+  <aside class="ref">
+    <details open id="schemaBox">
+      <summary>The database — three tables</summary>
+      <div class="schema">
+        <div class="tbl"><h4>deploys <span>one row per deploy</span></h4>
+          <table class="cols">
+            <colgroup><col class="c1"><col class="c2"><col class="c3"></colgroup>
+            <thead><tr><th>column</th><th>type</th><th>values</th></tr></thead>
+            <tbody>
+              <tr><td><code>deploy_id</code></td><td>integer</td><td class="vals"><span class="none">—</span></td></tr>
+              <tr><td><code>service</code></td><td>text</td><td class="vals"><code>auth</code> <code>billing</code> <code>notify</code> <code>payments</code> <code>search</code></td></tr>
+              <tr><td><code>env</code></td><td>text</td><td class="vals"><code>prod</code> <code>staging</code></td></tr>
+              <tr><td><code>status</code></td><td>text</td><td class="vals"><code>success</code> <code>failed</code></td></tr>
+              <tr><td><code>duration_sec</code></td><td>integer</td><td class="vals"><span class="none">—</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tbl"><h4>tickets <span>one row per ticket</span></h4>
+          <table class="cols">
+            <colgroup><col class="c1"><col class="c2"><col class="c3"></colgroup>
+            <thead><tr><th>column</th><th>type</th><th>values</th></tr></thead>
+            <tbody>
+              <tr><td><code>ticket_id</code></td><td>integer</td><td class="vals"><span class="none">—</span></td></tr>
+              <tr><td><code>team</code></td><td>text</td><td class="vals"><code>data</code> <code>mobile</code> <code>platform</code> <code>web</code></td></tr>
+              <tr><td><code>priority</code></td><td>text</td><td class="vals"><code>P1</code> <code>P2</code> <code>P3</code></td></tr>
+              <tr><td><code>status</code></td><td>text</td><td class="vals"><code>open</code> <code>closed</code></td></tr>
+              <tr><td><code>hours_to_close</code></td><td>integer</td><td class="vals"><span class="none">—</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tbl"><h4>rides <span>one row per ride</span></h4>
+          <table class="cols">
+            <colgroup><col class="c1"><col class="c2"><col class="c3"></colgroup>
+            <thead><tr><th>column</th><th>type</th><th>values</th></tr></thead>
+            <tbody>
+              <tr><td><code>ride_id</code></td><td>integer</td><td class="vals"><span class="none">—</span></td></tr>
+              <tr><td><code>city</code></td><td>text</td><td class="vals"><code>Delhi</code> <code>Indore</code> <code>Jaipur</code> <code>Kochi</code> <code>Pune</code></td></tr>
+              <tr><td><code>driver</code></td><td>text</td><td class="vals"><span class="none">—</span></td></tr>
+              <tr><td><code>fare</code></td><td>integer</td><td class="vals"><span class="none">—</span></td></tr>
+              <tr><td><code>distance_km</code></td><td>number</td><td class="vals"><span class="none">—</span></td></tr>
+              <tr><td><code>rating</code></td><td>integer</td><td class="vals">3 to 5</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="tiny">Nothing here joins to anything. Every question is answerable from one table.</p>
+    </details>
+  </aside>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
+
+<!-- The grader. The same file practice used. No help modules on this page. -->
+<script src="grade-rule.js"></script>
+
+<script>
+/* The study schema. Generated from study-questions/schema.sql — keep the two identical,
+ * then re-run node study-questions/validate-substance-bar.js. */
+const SCHEMA = `
+CREATE TABLE deploys (deploy_id INTEGER PRIMARY KEY, service TEXT, env TEXT, status TEXT, duration_sec INTEGER);
+CREATE TABLE tickets (ticket_id INTEGER PRIMARY KEY, team TEXT, priority TEXT, status TEXT, hours_to_close INTEGER);
+CREATE TABLE rides (ride_id INTEGER PRIMARY KEY, city TEXT, driver TEXT, fare INTEGER, distance_km REAL, rating INTEGER);
+INSERT INTO deploys VALUES (1, 'search', 'staging', 'success', 64);
+INSERT INTO deploys VALUES (2, 'auth', 'staging', 'success', 69);
+INSERT INTO deploys VALUES (3, 'payments', 'staging', 'failed', 262);
+INSERT INTO deploys VALUES (4, 'notify', 'staging', 'failed', 322);
+INSERT INTO deploys VALUES (5, 'notify', 'staging', 'success', 103);
+INSERT INTO deploys VALUES (6, 'billing', 'staging', 'success', 243);
+INSERT INTO deploys VALUES (7, 'auth', 'staging', 'failed', 108);
+INSERT INTO deploys VALUES (8, 'search', 'prod', 'failed', 100);
+INSERT INTO deploys VALUES (9, 'payments', 'prod', 'success', 389);
+INSERT INTO deploys VALUES (10, 'billing', 'staging', 'success', 367);
+INSERT INTO deploys VALUES (11, 'billing', 'prod', 'failed', 72);
+INSERT INTO deploys VALUES (12, 'payments', 'staging', 'success', 294);
+INSERT INTO deploys VALUES (13, 'payments', 'prod', 'success', 278);
+INSERT INTO deploys VALUES (14, 'payments', 'prod', 'success', 167);
+INSERT INTO deploys VALUES (15, 'billing', 'staging', 'failed', 193);
+INSERT INTO deploys VALUES (16, 'payments', 'prod', 'success', 269);
+INSERT INTO deploys VALUES (17, 'auth', 'staging', 'failed', 254);
+INSERT INTO deploys VALUES (18, 'billing', 'prod', 'failed', 290);
+INSERT INTO deploys VALUES (19, 'notify', 'staging', 'success', 79);
+INSERT INTO deploys VALUES (20, 'payments', 'prod', 'success', 219);
+INSERT INTO deploys VALUES (21, 'payments', 'prod', 'success', 273);
+INSERT INTO deploys VALUES (22, 'auth', 'staging', 'success', 282);
+INSERT INTO deploys VALUES (23, 'auth', 'staging', 'success', 198);
+INSERT INTO deploys VALUES (24, 'payments', 'prod', 'failed', 237);
+INSERT INTO deploys VALUES (25, 'search', 'staging', 'success', 221);
+INSERT INTO deploys VALUES (26, 'billing', 'staging', 'success', 151);
+INSERT INTO deploys VALUES (27, 'search', 'staging', 'success', 243);
+INSERT INTO deploys VALUES (28, 'notify', 'prod', 'failed', 269);
+INSERT INTO deploys VALUES (29, 'notify', 'prod', 'success', 260);
+INSERT INTO deploys VALUES (30, 'payments', 'prod', 'success', 223);
+INSERT INTO deploys VALUES (31, 'notify', 'staging', 'failed', 130);
+INSERT INTO deploys VALUES (32, 'billing', 'staging', 'success', 46);
+INSERT INTO deploys VALUES (33, 'notify', 'staging', 'failed', 42);
+INSERT INTO deploys VALUES (34, 'billing', 'prod', 'success', 352);
+INSERT INTO deploys VALUES (35, 'payments', 'prod', 'success', 393);
+INSERT INTO deploys VALUES (36, 'payments', 'staging', 'success', 388);
+INSERT INTO deploys VALUES (37, 'payments', 'prod', 'success', 241);
+INSERT INTO deploys VALUES (38, 'auth', 'prod', 'success', 71);
+INSERT INTO deploys VALUES (39, 'billing', 'staging', 'success', 265);
+INSERT INTO deploys VALUES (40, 'billing', 'staging', 'success', 66);
+INSERT INTO tickets VALUES (1, 'mobile', 'P1', 'closed', 69);
+INSERT INTO tickets VALUES (2, 'mobile', 'P2', 'open', 10);
+INSERT INTO tickets VALUES (3, 'web', 'P3', 'closed', 82);
+INSERT INTO tickets VALUES (4, 'platform', 'P2', 'open', 61);
+INSERT INTO tickets VALUES (5, 'mobile', 'P1', 'open', 60);
+INSERT INTO tickets VALUES (6, 'data', 'P2', 'closed', 19);
+INSERT INTO tickets VALUES (7, 'mobile', 'P3', 'closed', 34);
+INSERT INTO tickets VALUES (8, 'data', 'P3', 'closed', 3);
+INSERT INTO tickets VALUES (9, 'web', 'P3', 'closed', 89);
+INSERT INTO tickets VALUES (10, 'mobile', 'P3', 'closed', 83);
+INSERT INTO tickets VALUES (11, 'mobile', 'P3', 'open', 67);
+INSERT INTO tickets VALUES (12, 'platform', 'P1', 'closed', 29);
+INSERT INTO tickets VALUES (13, 'platform', 'P3', 'closed', 25);
+INSERT INTO tickets VALUES (14, 'web', 'P2', 'open', 30);
+INSERT INTO tickets VALUES (15, 'web', 'P3', 'closed', 4);
+INSERT INTO tickets VALUES (16, 'mobile', 'P2', 'closed', 25);
+INSERT INTO tickets VALUES (17, 'platform', 'P2', 'open', 45);
+INSERT INTO tickets VALUES (18, 'platform', 'P1', 'closed', 30);
+INSERT INTO tickets VALUES (19, 'data', 'P1', 'closed', 62);
+INSERT INTO tickets VALUES (20, 'mobile', 'P2', 'open', 45);
+INSERT INTO tickets VALUES (21, 'mobile', 'P3', 'closed', 50);
+INSERT INTO tickets VALUES (22, 'web', 'P2', 'open', 56);
+INSERT INTO tickets VALUES (23, 'platform', 'P1', 'open', 51);
+INSERT INTO tickets VALUES (24, 'data', 'P2', 'open', 11);
+INSERT INTO tickets VALUES (25, 'web', 'P1', 'open', 4);
+INSERT INTO tickets VALUES (26, 'web', 'P3', 'open', 84);
+INSERT INTO tickets VALUES (27, 'web', 'P3', 'open', 61);
+INSERT INTO tickets VALUES (28, 'platform', 'P1', 'closed', 17);
+INSERT INTO tickets VALUES (29, 'mobile', 'P1', 'open', 84);
+INSERT INTO tickets VALUES (30, 'mobile', 'P3', 'open', 18);
+INSERT INTO tickets VALUES (31, 'data', 'P1', 'open', 28);
+INSERT INTO tickets VALUES (32, 'mobile', 'P2', 'closed', 65);
+INSERT INTO tickets VALUES (33, 'web', 'P3', 'closed', 70);
+INSERT INTO tickets VALUES (34, 'data', 'P1', 'closed', 46);
+INSERT INTO tickets VALUES (35, 'data', 'P3', 'closed', 67);
+INSERT INTO tickets VALUES (36, 'data', 'P3', 'closed', 20);
+INSERT INTO rides VALUES (1, 'Delhi', 'Divya', 219, 13.3, 5);
+INSERT INTO rides VALUES (2, 'Indore', 'Bela', 50, 1.6, 5);
+INSERT INTO rides VALUES (3, 'Delhi', 'Farhan', 232, 15.4, 4);
+INSERT INTO rides VALUES (4, 'Indore', 'Farhan', 307, 16.9, 3);
+INSERT INTO rides VALUES (5, 'Delhi', 'Bela', 333, 21.4, 4);
+INSERT INTO rides VALUES (6, 'Delhi', 'Farhan', 100, 2.4, 5);
+INSERT INTO rides VALUES (7, 'Delhi', 'Divya', 80, 2.1, 5);
+INSERT INTO rides VALUES (8, 'Indore', 'Farhan', 362, 23.4, 4);
+INSERT INTO rides VALUES (9, 'Indore', 'Divya', 237, 11.7, 4);
+INSERT INTO rides VALUES (10, 'Jaipur', 'Farhan', 275, 17.2, 5);
+INSERT INTO rides VALUES (11, 'Delhi', 'Divya', 130, 4.6, 4);
+INSERT INTO rides VALUES (12, 'Pune', 'Divya', 62, 3.1, 4);
+INSERT INTO rides VALUES (13, 'Delhi', 'Bela', 324, 16.6, 4);
+INSERT INTO rides VALUES (14, 'Pune', 'Divya', 103, 4.7, 3);
+INSERT INTO rides VALUES (15, 'Kochi', 'Bela', 242, 10.5, 4);
+INSERT INTO rides VALUES (16, 'Kochi', 'Farhan', 132, 5.1, 4);
+INSERT INTO rides VALUES (17, 'Jaipur', 'Chetan', 175, 11.0, 4);
+INSERT INTO rides VALUES (18, 'Indore', 'Divya', 92, 1.9, 3);
+INSERT INTO rides VALUES (19, 'Indore', 'Farhan', 188, 10.1, 5);
+INSERT INTO rides VALUES (20, 'Delhi', 'Bela', 346, 23.1, 3);
+INSERT INTO rides VALUES (21, 'Delhi', 'Bela', 149, 7.5, 4);
+INSERT INTO rides VALUES (22, 'Jaipur', 'Divya', 307, 19.9, 5);
+INSERT INTO rides VALUES (23, 'Indore', 'Divya', 409, 22.2, 4);
+INSERT INTO rides VALUES (24, 'Delhi', 'Gita', 82, 3.5, 5);
+INSERT INTO rides VALUES (25, 'Jaipur', 'Amit', 393, 21.6, 3);
+INSERT INTO rides VALUES (26, 'Delhi', 'Farhan', 311, 19.5, 3);
+INSERT INTO rides VALUES (27, 'Delhi', 'Divya', 116, 7.5, 4);
+INSERT INTO rides VALUES (28, 'Jaipur', 'Chetan', 423, 23.9, 4);
+INSERT INTO rides VALUES (29, 'Pune', 'Amit', 65, 2.5, 4);
+INSERT INTO rides VALUES (30, 'Pune', 'Chetan', 126, 2.6, 4);
+INSERT INTO rides VALUES (31, 'Pune', 'Chetan', 254, 13.4, 5);
+INSERT INTO rides VALUES (32, 'Jaipur', 'Chetan', 244, 16.6, 4);
+INSERT INTO rides VALUES (33, 'Delhi', 'Gita', 106, 2.3, 5);
+INSERT INTO rides VALUES (34, 'Indore', 'Divya', 370, 23.5, 5);
+INSERT INTO rides VALUES (35, 'Kochi', 'Gita', 127, 3.9, 5);
+INSERT INTO rides VALUES (36, 'Kochi', 'Farhan', 333, 20.3, 4);
+INSERT INTO rides VALUES (37, 'Jaipur', 'Bela', 430, 23.6, 4);
+INSERT INTO rides VALUES (38, 'Jaipur', 'Amit', 174, 10.6, 3);
+INSERT INTO rides VALUES (39, 'Jaipur', 'Divya', 73, 3.1, 3);
+INSERT INTO rides VALUES (40, 'Kochi', 'Farhan', 142, 3.4, 4);
+INSERT INTO rides VALUES (41, 'Jaipur', 'Amit', 278, 15.0, 4);
+INSERT INTO rides VALUES (42, 'Kochi', 'Amit', 113, 5.0, 4);
+`;
+
+
+/*
+ * Derive the schema's table and column names from SCHEMA, once, and hand them
+ * to the policy. They are the second half of the substance bar: an attempt must
+ * contain a SQL keyword AND a name from this schema before it counts toward the
+ * gate. See policy.js. Deriving them here rather than hard-coding a list means
+ * a schema change cannot leave the bar pointing at the old tables.
+ */
+const SCHEMA_IDENTIFIERS = (() => {
+  const names = new Set();
+  const RESERVED = new Set(['primary','foreign','unique','check','constraint','references','not','null','default','create','table','drop','if','exists','insert','into','values']);
+  for (const [, table, body] of SCHEMA.matchAll(/CREATE TABLE\s+(\w+)\s*\(([\s\S]*?)\)\s*;/gi)) {
+    names.add(table.toLowerCase());
+    for (const line of body.split('\n')) {
+      const col = line.match(/^\s*([a-z_][a-z0-9_]*)\s+/i);
+      if (col && !RESERVED.has(col[1].toLowerCase())) names.add(col[1].toLowerCase());
+    }
+  }
+  return [...names];
+})();
+/* =======================================================================
+ * THE STUDY QUESTION SET. Generated — do not hand-edit.
+ *
+ * Source: study-questions/items.py (prompts, references) and hints.py
+ * (fallback hints). Regenerate with:
+ *     python3 study-questions/mkappquestions.py --splice
+ *
+ * REMOVAL TEST. The 12 held-out items, generated by study-questions/mkremoval.py.
+ * Never host this page anywhere a tester can see before their session 2.
+ *
+ * EXPECTED is base64 so the answers are not plain text in the source.
+ * ======================================================================= */
+
+/* ---- who is this, and which arm ----
+ *
+ * Each participant gets a link ending ?p=<code>. The code does two jobs: it picks
+ * the arm, and it is written into the log so every log says who produced it.
+ *
+ * It replaced ?arm=B, which had two problems on a pool of seven workplace
+ * colleagues who talk to each other. Arm B's link visibly differed from Arm A's,
+ * and anyone could edit it. A code leaks neither — the table below holds codes
+ * and arms, no names, so reading the source tells you nothing without the
+ * mapping in screener/participant-links.md, which is never sent to anyone.
+ *
+ * An unknown code STOPS the app. The old default was Arm A, which meant a typo in
+ * a link produced a real-looking session, silently logged as the wrong arm.
+ *
+ * ?arm= still works when no ?p= is given. That is the path the test suites and
+ * evals/verify-app.mjs use; participants are never sent one. */
+const PARTICIPANTS = {
+  "gnas5": "B",
+  "geu2z": "A",
+  "rqkkx": "B",
+  "4cwkq": "A",
+  "3b3xe": "B",
+  "efkxn": "A",
+  "s6nqb": "B"
+};
+
+const PID = new URLSearchParams(location.search).get('p');
+const ARM = PID
+  ? PARTICIPANTS[PID]
+  : (new URLSearchParams(location.search).get('arm') === 'B' ? 'B' : 'A');
+
+const QUESTIONS = [
+  { id:"H01", ask:"The ops lead wants ride volume by city. List each city with its number of rides (city, ride_count), busiest city first." },
+  { id:"H02", ask:"Is staging slower than prod? Show each env with its average deploy duration in seconds, rounded to 1 decimal (env, avg_seconds), sorted by env name, A to Z." },
+  { id:"H03", ask:"What is the single highest fare each driver has earned? Show driver and top_fare, sorted by driver name, A to Z." },
+  { id:"H04", ask:"How many tickets are still open for each team? Show team and open_tickets, most open first." },
+  { id:"H05", ask:"When deploys fail, how long do they run? Using failed deploys only, show each service with its average duration rounded to 1 decimal (service, avg_seconds), sorted by service name, A to Z." },
+  { id:"H06", ask:"Total fare per city, counting only rides rated 5. Show city and fare_total, sorted by city name, A to Z." },
+  { id:"H07", ask:"List the teams that have raised more than 8 tickets, with how many (team, ticket_count), sorted by team name, A to Z." },
+  { id:"H08", ask:"Which services average more than 175 seconds per deploy? Show service and avg_seconds rounded to 1 decimal, sorted by service name, A to Z." },
+  { id:"H09", ask:"Which drivers have earned more than 1500 in total fares? Show driver and total_fare, highest earner first." },
+  { id:"H10", ask:"Looking at prod deploys only, which services have at least 3 of them? Show service and prod_deploys, most first." },
+  { id:"H11", ask:"For rides longer than 5 km, which cities average a fare above 250? Show city and avg_fare rounded to 1 decimal, highest average first." },
+  { id:"H12", ask:"Among closed tickets, which teams take more than 35 hours to close on average? Show team and avg_hours rounded to 1 decimal, slowest first." },
+];
+const Q = Object.fromEntries(QUESTIONS.map(q => [q.id, q]));
+const EXPECTED = JSON.parse(atob("eyJIMDEiOiBbWyJEZWxoaSIsIDEzXSwgWyJKYWlwdXIiLCAxMF0sIFsiSW5kb3JlIiwgOF0sIFsiS29jaGkiLCA2XSwgWyJQdW5lIiwgNV1dLCAiSDAyIjogW1sicHJvZCIsIDI0MS40XSwgWyJzdGFnaW5nIiwgMTkwLjldXSwgIkgwMyI6IFtbIkFtaXQiLCAzOTNdLCBbIkJlbGEiLCA0MzBdLCBbIkNoZXRhbiIsIDQyM10sIFsiRGl2eWEiLCA0MDldLCBbIkZhcmhhbiIsIDM2Ml0sIFsiR2l0YSIsIDEyN11dLCAiSDA0IjogW1sibW9iaWxlIiwgNl0sIFsid2ViIiwgNV0sIFsicGxhdGZvcm0iLCAzXSwgWyJkYXRhIiwgMl1dLCAiSDA1IjogW1siYXV0aCIsIDE4MS4wXSwgWyJiaWxsaW5nIiwgMTg1LjBdLCBbIm5vdGlmeSIsIDE5MC44XSwgWyJwYXltZW50cyIsIDI0OS41XSwgWyJzZWFyY2giLCAxMDAuMF1dLCAiSDA2IjogW1siRGVsaGkiLCA1ODddLCBbIkluZG9yZSIsIDYwOF0sIFsiSmFpcHVyIiwgNTgyXSwgWyJLb2NoaSIsIDEyN10sIFsiUHVuZSIsIDI1NF1dLCAiSDA3IjogW1sibW9iaWxlIiwgMTJdLCBbIndlYiIsIDldXSwgIkgwOCI6IFtbImJpbGxpbmciLCAyMDQuNV0sIFsicGF5bWVudHMiLCAyNzkuNV1dLCAiSDA5IjogW1siRmFyaGFuIiwgMjM4Ml0sIFsiRGl2eWEiLCAyMTk4XSwgWyJCZWxhIiwgMTg3NF1dLCAiSDEwIjogW1sicGF5bWVudHMiLCAxMF0sIFsiYmlsbGluZyIsIDNdXSwgIkgxMSI6IFtbIkluZG9yZSIsIDMxMi4yXSwgWyJKYWlwdXIiLCAyOTkuOV0sIFsiUHVuZSIsIDI1NC4wXSwgWyJEZWxoaSIsIDI1My44XV0sICJIMTIiOiBbWyJ3ZWIiLCA2MS4zXSwgWyJtb2JpbGUiLCA1NC4zXSwgWyJkYXRhIiwgMzYuMl1dfQ=="));
+
+/* The event log. Same shape as practice. On this page only `attempt` events
+ * are written: there is no help to decide or deliver. */
+const LOG = { version:"removal-1", session:"removal", participant:PID || null, arm:ARM,
+              started:new Date().toISOString(), events:[] };
+let db = null;
+
+/* No hint writer on this page: removal test, no help for either arm. */
+
+/* ---- result-set comparison: unchanged from the round-2 screener ----
+ * Rounds to 2 decimal places. grade_rule.py, the frozen analysis-time rule,
+ * rounds to 1. See the note in study-questions/DECISIONS.md. ---- */
+function norm(v){
+  if (v === null || v === undefined) return "∅";
+  if (typeof v === "number") return String(Math.round(v*100)/100);
+  const s = String(v).trim();
+  if (s !== "" && !isNaN(Number(s))) return String(Math.round(Number(s)*100)/100);
+  return s;
+}
+const normRows = rows => rows.map(r => r.map(norm));
+const eqOrdered = (a,b) => JSON.stringify(a) === JSON.stringify(b);
+const eqUnordered = (a,b) =>
+  a.length===b.length &&
+  JSON.stringify([...a].map(r=>r.join("")).sort()) ===
+  JSON.stringify([...b].map(r=>r.join("")).sort());
+function table(rows, cols){
+  if (!rows.length) return `<p class="hint">Query ran, returned 0 rows.</p>`;
+  const head = cols.map(c => `<th>${c}</th>`).join("");
+  const body = rows.slice(0,25).map(r =>
+    `<tr>${r.map(v => `<td>${v===null?"NULL":String(v)}</td>`).join("")}</tr>`).join("");
+  const more = rows.length > 25 ? `<p class="hint">…and ${rows.length-25} more rows.</p>` : "";
+  return `<div class="scroll"><table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>${more}`;
+}
+const esc = s => String(s).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+
+const state = {};
+QUESTIONS.forEach(q => state[q.id] = { attempts:0, solved:false });
+
+/* ---- the stage: every question is built once, one is shown at a time ----
+ *
+ * All 16 are in the DOM from the start, and navigating flips which is visible.
+ * Built this way on purpose rather than rendering on demand: a learner who leaves
+ * a half-written query, goes to another question and comes back finds it still
+ * there, because the textarea was never destroyed.
+ *
+ * Only the layout changed on 19 Sep. Nothing a learner is TOLD changed — the
+ * verdicts, the error text, the hint and the reveal are all byte-identical, and
+ * they have to be: the error message is Arm B's whole condition, and the help
+ * text is the treatment. `PRD-v1.md` §1 — the two arms differ in the help policy
+ * and in nothing else, including look and feel.
+ */
+const SCREENS = ["intro", ...QUESTIONS.map(q => q.id), "send"];
+let current = "intro";
+
+const screenEl = key =>
+  document.getElementById(key === "intro" ? "screen-intro"
+                        : key === "send"  ? "screen-send"
+                        : `screen-${key}`);
+
+function show(key){
+  if (!SCREENS.includes(key)) return;
+  current = key;
+  SCREENS.forEach(k => { const el = screenEl(k); if (el) el.hidden = k !== key; });
+  paintRail();
+  window.scrollTo({ top: 0, behavior: "instant" });
+  const box = document.getElementById(`sql-${key}`);
+  if (box) box.focus({ preventScroll: true });
+}
+
+const step = n => {
+  const i = SCREENS.indexOf(current);
+  const next = SCREENS[i + n];
+  if (next) show(next);
+};
+
+function render(){
+  const host = document.getElementById("questions");
+  QUESTIONS.forEach((q,i) => {
+    const el = document.createElement("section");
+    el.className = "screen card";
+    el.id = `screen-${q.id}`;
+    el.hidden = true;
+    el.innerHTML = `
+      <div class="qhead">
+        <span class="qnum">Question ${i+1} of ${QUESTIONS.length}</span>
+        <span class="pill" id="pill-${q.id}">not started</span>
+      </div>
+      <p class="ask">${q.ask}</p>
+      <label class="lbl" for="sql-${q.id}">Your query</label>
+      <textarea id="sql-${q.id}" spellcheck="false" autocomplete="off"
+        autocapitalize="off" placeholder="SELECT ..."></textarea>
+      <div class="row">
+        <button class="primary" id="run-${q.id}">Run</button>
+        <span class="hint grow" id="cnt-${q.id}">Ctrl/Cmd + Enter also runs it.</span>
+      </div>
+      <div class="out" id="out-${q.id}"></div>
+      <div class="nav">
+        <button id="prev-${q.id}">← Back</button>
+        <button id="next-${q.id}">${i === QUESTIONS.length-1 ? "Finish →" : "Next question →"}</button>
+      </div>`;
+    host.appendChild(el);
+    document.getElementById(`run-${q.id}`).onclick  = () => runQ(q.id);
+    document.getElementById(`prev-${q.id}`).onclick = () => step(-1);
+    document.getElementById(`next-${q.id}`).onclick = () => step(1);
+    document.getElementById(`sql-${q.id}`).addEventListener("keydown", e => {
+      if ((e.metaKey||e.ctrlKey) && e.key === "Enter") { e.preventDefault(); runQ(q.id); }
+    });
+  });
+
+  /* The rail. Skipping has to stay free — the brief tells them to move on when an
+   * item will not crack, so nothing here gates on solving anything. */
+  const rail = document.getElementById("rail");
+  rail.innerHTML = "";
+  QUESTIONS.forEach((q,i) => {
+    const li = document.createElement("li");
+    li.innerHTML = `<button id="rail-${q.id}" type="button">
+      <span class="dot" id="dot-${q.id}"></span>
+      <span class="rlabel">Question ${i+1}</span></button>`;
+    rail.appendChild(li);
+    li.querySelector("button").onclick = () => show(q.id);
+  });
+  const sep = document.createElement("li");
+  sep.innerHTML = `<p class="railsep">When you're done</p>
+    <button id="rail-send" type="button"><span class="dot"></span>
+    <span class="rlabel">Send your log</span></button>`;
+  rail.appendChild(sep);
+  sep.querySelector("button").onclick = () => show("send");
+
+  document.getElementById("startBtn").onclick = () => show(QUESTIONS[0].id);
+
+  host.hidden = false;
+}
+
+function paintRail(){
+  QUESTIONS.forEach(q => {
+    const btn = document.getElementById(`rail-${q.id}`);
+    if (btn) btn.setAttribute("aria-current", String(current === q.id));
+  });
+  const send = document.getElementById("rail-send");
+  if (send) send.setAttribute("aria-current", String(current === "send"));
+}
+
+/* Progress is an aggregate of feedback the learner already has, question by
+ * question, and it is identical in both arms. It is not new information. */
+function paintProgress(){
+  const solved = QUESTIONS.filter(q => state[q.id].solved).length;
+  const touched = QUESTIONS.filter(q => state[q.id].attempts > 0).length;
+  const el = document.getElementById("progress");
+  el.innerHTML = solved || touched
+    ? `<b>${solved}</b> of ${QUESTIONS.length} solved`
+    : "Not started";
+  document.getElementById("barfill").style.width =
+    `${Math.round(100 * solved / QUESTIONS.length)}%`;
+}
+
+function counts(id){
+  const s = state[id], pill = document.getElementById(`pill-${id}`);
+  const dot = document.getElementById(`dot-${id}`);
+  if (s.solved)        { pill.textContent = `solved in ${s.attempts}`; pill.className = "pill ok"; }
+  else if (s.attempts) { pill.textContent = `${s.attempts} attempt${s.attempts>1?"s":""}`; pill.className = "pill"; }
+  else                 { pill.textContent = "not started"; pill.className = "pill"; }
+  if (dot) dot.className = "dot" + (s.solved ? " done" : s.attempts ? " tried" : "");
+  // Once an item is solved, pull them forward rather than leaving them on it.
+  const nxt = document.getElementById(`next-${id}`);
+  if (nxt) nxt.className = s.solved ? "primary" : "";
+  paintProgress();
+}
+
+/* ---- RUN ---- writes one `attempt` event, in the shape policy.js reads ----
+ *
+ * Right and wrong are decided by the frozen rule in grade-rule.js, which is the
+ * same rule as study-questions/grade_rule.py. Before 19 Sep this function had a
+ * rule of its own — result rows at 2 decimal places, no look at the SQL — and it
+ * disagreed with the scoring rule in both directions. DECISIONS.md section 5.
+ *
+ * Two fields come out of a run and they are not the same thing:
+ *   ev.grade    the frozen verdict: correct | invalid | error | wrong
+ *   ev.outcome  what policy.js reads. Unchanged vocabulary, so the gate and the
+ *               escalation behave exactly as their 34 tests say.
+ * An `invalid` query that ran is an ordinary wrong attempt to the policy.
+ *
+ * ev.gradeReason is written to the log and NEVER rendered. Clause 2's reason names
+ * the learner's mistake, which is a hint; showing it would hand both arms help from
+ * outside the policy and change what Arm B's condition is (open decision 5).
+ */
+function runQ(id){
+  const sql = document.getElementById(`sql-${id}`).value.trim();
+  const out = document.getElementById(`out-${id}`);
+  if (!sql) { out.innerHTML = `<div class="verdict v-warn">Nothing to run — the box is empty.</div>`; return; }
+
+
+  const s = state[id]; s.attempts++;
+  const ev = { type:"attempt", q:id, arm:ARM, sql, at:new Date().toISOString() };
+  const want = EXPECTED[id];
+
+  let res = null, error = null;
+  try { res = db.exec(sql); }
+  catch (err) { error = String(err.message || err); }
+
+  const cols = res && res.length ? res[0].columns : [];
+  const raw  = res && res.length ? res[0].values  : [];
+
+  const g = GRADE.grade({ sql, got: error ? null : raw, error, want });
+  ev.grade = g.verdict;
+  ev.gradeReason = g.reason;
+
+  if (error) {
+    ev.outcome = "error"; ev.error = error;
+    LOG.events.push(ev); counts(id);
+    out.innerHTML = `<div class="verdict v-err">Didn't run: <code>${esc(error)}</code></div>`;
+    return;
+  }
+
+  ev.rows = normRows(raw);                       // policy.js compares result sets on this
+
+  if (g.verdict === "correct") {
+    ev.outcome = "correct"; s.solved = true;
+    LOG.events.push(ev); counts(id);
+    out.innerHTML = `<div class="verdict v-ok">Correct. That's the one.</div>` + table(raw, cols);
+    return;
+  }
+
+  // Every remaining case reads the same to the learner. Only the log knows why.
+  const width = want[0] ? want[0].length : 0;
+  ev.outcome = g.verdict === "wrong" && g.reason === "right rows, wrong order"
+                 ? "right_rows_wrong_order"
+             : g.verdict === "wrong" && cols.length !== width
+                 ? "wrong_columns"
+                 : "wrong";
+  LOG.events.push(ev); counts(id);
+
+  const msg = ev.outcome === "right_rows_wrong_order"
+      ? "Right rows, wrong order — check your ORDER BY."
+    : ev.outcome === "wrong_columns"
+      ? `Not right yet — you returned ${cols.length} column${cols.length===1?"":"s"}, the question asks for ${width}.`
+      : "Not right yet. Here's what your query returned — compare it against what the question asked for.";
+  out.innerHTML = `<div class="verdict v-warn">${msg}</div>` + table(raw, cols);
+}
+
+
+
+/* ---- three optional 1-5 questions, written into the log as `survey` ----
+ * PRD-v1.md: satisfaction and perceived learning are predicted to favour Arm B
+ * while retention favours Arm A (ANALYSIS-PLAN.md, secondary measures). The
+ * wording is identical for both arms and names neither arm's help. Unanswered
+ * stays null; nothing here blocks sending the log. */
+const SURVEY_ITEMS = [
+  ["enjoyed",   "I enjoyed using the practice tool in session 1."],
+  ["learned",   "The practice tool in session 1 helped me learn how to group and filter groups."],
+  ["confident", "Today I felt confident writing these queries on my own."],
+];
+LOG.survey = Object.fromEntries(SURVEY_ITEMS.map(([k]) => [k, null]));
+function renderSurvey(){
+  const host = document.getElementById("survey");
+  host.innerHTML = SURVEY_ITEMS.map(([k, text]) => `
+    <fieldset class="likert"><legend>${text}</legend>
+      ${[1,2,3,4,5].map(n => `<label><input type="radio" name="sv-${k}" value="${n}"> ${n}</label>`).join("")}
+    </fieldset>`).join("");
+  host.addEventListener("change", e => {
+    const m = e.target.name && e.target.name.match(/^sv-(\w+)$/);
+    if (m) LOG.survey[m[1]] = Number(e.target.value);
+  });
+}
+
+/* ---- the log the learner sends back ---- */
+function payload(){
+  LOG.finished = new Date().toISOString();
+  return JSON.stringify(LOG, null, 1);
+}
+document.getElementById("copy").onclick = async () => {
+  const btn = document.getElementById("copy");
+  try { await navigator.clipboard.writeText(payload()); btn.textContent = "Copied ✓"; }
+  catch { const b = document.getElementById("logbox"); b.style.display="block"; b.value = payload(); b.select(); btn.textContent = "Select it all and copy"; }
+  setTimeout(() => btn.textContent = "Copy my log", 2500);
+};
+document.getElementById("dl").onclick = () => {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([payload()], {type:"application/json"}));
+  a.download = `learning-os-removal-log-${PID || "arm" + ARM}.json`; a.click();
+};
+document.getElementById("show").onclick = () => {
+  const b = document.getElementById("logbox");
+  b.style.display = b.style.display === "block" ? "none" : "block";
+  b.value = payload();
+};
+
+initSqlJs({ locateFile: f => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${f}` })
+  .then(SQL => {
+    if (PID && !PARTICIPANTS[PID]) {
+      document.getElementById("boot").innerHTML =
+        "That link doesn't look right. Send me a message and I'll get you a new one — " +
+        "nothing you do here will be lost.";
+      return;
+    }
+    db = new SQL.Database(); db.run(SCHEMA);
+    document.getElementById("boot").remove();
+    render();
+    renderSurvey();
+    QUESTIONS.forEach(q => counts(q.id));
+    /* On a narrow screen the schema is stacked above the editor, and left open it
+     * fills the first screen and pushes the question below the fold. Collapsed, it
+     * is one tap away and still directly above the box being typed in. Set once at
+     * boot, never again, so a learner who opens it keeps it open. */
+    if (window.matchMedia("(max-width:1040px)").matches) {
+      document.getElementById("schemaBox").open = false;
+    }
+    show("intro");
+    window.__READY = true;
+  })
+  .catch(e => {
+    document.getElementById("boot").innerHTML =
+      `Couldn't load the database engine (needs internet the first time). Error: ${e}.`;
+  });
+</script>
+</body>
+</html>
