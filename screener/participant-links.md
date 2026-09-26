@@ -57,10 +57,10 @@ it cannot be reconstructed afterwards.
 
 | person | arm | practice 23 Sep | removal test 28 Sep |
 |---|---|---|---|
-| gaurav | A | | |
-| nabin | A | | |
-| ritesh | A | | |
-| anuj | B | | |
-| manish | B | | |
-| rishabh | B | | |
-| vikash | B | | |
+| gaurav | A | yes, 15:18-15:36 IST, stopped after 7 of 16 | |
+| nabin | A | yes, 10:58-11:58 IST | |
+| ritesh | A | yes, 25 Sep 21:36-22:35 IST, 16 of 16 (practised a day late) | |
+| anuj | B | yes, 20:00-20:29 IST | |
+| manish | B | yes, 17:46-22:43 IST (4h20m gap), flagged | |
+| rishabh | B | yes, 22:12-23:01 IST | |
+| vikash | B | yes, 24 Sep 21:17-21:42 IST, 16 of 16 | |

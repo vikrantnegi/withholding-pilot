@@ -1,0 +1,1658 @@
+{
+ "version": "slice-1",
+ "participant": "4cwkq",
+ "arm": "A",
+ "started": "2026-09-23T05:28:13.452Z",
+ "events": [
+  {
+   "type": "help_decided",
+   "q": "P02",
+   "arm": "A",
+   "action": "refuse_gate",
+   "counted": 0,
+   "sinceHelp": null,
+   "at": "2026-09-23T05:31:12.378Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P02",
+   "arm": "A",
+   "sql": "SELECT city, AVG(*) as avg_fare\nFROM rides\nGROUP BY city\nORDER BY city ASC",
+   "at": "2026-09-23T05:32:09.477Z",
+   "grade": "error",
+   "gradeReason": "wrong number of arguments to function AVG()",
+   "outcome": "error",
+   "error": "wrong number of arguments to function AVG()"
+  },
+  {
+   "type": "attempt",
+   "q": "P02",
+   "arm": "A",
+   "sql": "SELECT city, AVG(fare) as avg_fare\nFROM rides\nGROUP BY city\nORDER BY city ASC",
+   "at": "2026-09-23T05:32:33.926Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "Delhi",
+     "194.46"
+    ],
+    [
+     "Indore",
+     "251.88"
+    ],
+    [
+     "Jaipur",
+     "277.2"
+    ],
+    [
+     "Kochi",
+     "181.5"
+    ],
+    [
+     "Pune",
+     "122"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P04",
+   "arm": "A",
+   "sql": "SELECT driver, SUM(distance_km) as totalDistance\nFROM rides\nORDER BY totalDistance DESC",
+   "at": "2026-09-23T05:34:02.694Z",
+   "grade": "wrong",
+   "gradeReason": "1 rows returned, 6 expected",
+   "rows": [
+    [
+     "Divya",
+     "487.5"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "help_decided",
+   "q": "P04",
+   "arm": "A",
+   "action": "hint",
+   "counted": 1,
+   "sinceHelp": null,
+   "at": "2026-09-23T05:34:19.311Z"
+  },
+  {
+   "type": "help_delivered",
+   "q": "P04",
+   "arm": "A",
+   "action": "hint",
+   "source": "model",
+   "modelAttempts": 1,
+   "rejections": [],
+   "at": "2026-09-23T05:34:20.323Z",
+   "model": "openai/gpt-oss-120b",
+   "temperature": 0.3
+  },
+  {
+   "type": "attempt",
+   "q": "P04",
+   "arm": "A",
+   "sql": "SELECT driver, SUM(distance_km) as totalDistance\nFROM rides\nGROUP BY driver\nORDER BY totalDistance DESC",
+   "at": "2026-09-23T05:34:56.328Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "Farhan",
+     "133.7"
+    ],
+    [
+     "Divya",
+     "117.6"
+    ],
+    [
+     "Bela",
+     "104.3"
+    ],
+    [
+     "Chetan",
+     "67.5"
+    ],
+    [
+     "Amit",
+     "54.7"
+    ],
+    [
+     "Gita",
+     "9.7"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P04",
+   "arm": "A",
+   "sql": "SELECT driver, ROUND(SUM(distance_km)) as totalDistance\nFROM rides\nGROUP BY driver\nORDER BY totalDistance DESC",
+   "at": "2026-09-23T05:35:37.367Z",
+   "grade": "wrong",
+   "gradeReason": "6 rows returned, 6 expected",
+   "rows": [
+    [
+     "Farhan",
+     "134"
+    ],
+    [
+     "Divya",
+     "118"
+    ],
+    [
+     "Bela",
+     "104"
+    ],
+    [
+     "Chetan",
+     "68"
+    ],
+    [
+     "Amit",
+     "55"
+    ],
+    [
+     "Gita",
+     "10"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P04",
+   "arm": "A",
+   "sql": "SELECT driver, ROUND(SUM(distance_km),1) as totalDistance\nFROM rides\nGROUP BY driver\nORDER BY totalDistance DESC",
+   "at": "2026-09-23T05:35:46.731Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "Farhan",
+     "133.7"
+    ],
+    [
+     "Divya",
+     "117.6"
+    ],
+    [
+     "Bela",
+     "104.3"
+    ],
+    [
+     "Chetan",
+     "67.5"
+    ],
+    [
+     "Amit",
+     "54.7"
+    ],
+    [
+     "Gita",
+     "9.7"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "A",
+   "sql": "SELECT service, env, COUNT(*) as deploy_count\nFROM deploys\nGROUP BY env\nORDER BY service ASC, env ASC",
+   "at": "2026-09-23T05:38:56.325Z",
+   "grade": "invalid",
+   "gradeReason": "selects service without grouping by it",
+   "rows": [
+    [
+     "search",
+     "prod",
+     "17"
+    ],
+    [
+     "search",
+     "staging",
+     "23"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "help_decided",
+   "q": "P05",
+   "arm": "A",
+   "action": "hint",
+   "counted": 1,
+   "sinceHelp": null,
+   "at": "2026-09-23T05:39:34.859Z"
+  },
+  {
+   "type": "help_delivered",
+   "q": "P05",
+   "arm": "A",
+   "action": "hint",
+   "source": "model",
+   "modelAttempts": 1,
+   "rejections": [],
+   "at": "2026-09-23T05:39:35.909Z",
+   "model": "openai/gpt-oss-120b",
+   "temperature": 0.3
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "A",
+   "sql": "SELECT service, env, COUNT(*) as deploy_count\nFROM deploys\nGROUP BY env, deploy_count\nORDER BY service ASC, env ASC",
+   "at": "2026-09-23T05:40:13.156Z",
+   "grade": "invalid",
+   "gradeReason": "selects service without grouping by it",
+   "outcome": "error",
+   "error": "aggregate functions are not allowed in the GROUP BY clause"
+  },
+  {
+   "type": "help_decided",
+   "q": "P05",
+   "arm": "A",
+   "action": "refuse_retry",
+   "counted": 2,
+   "sinceHelp": 1,
+   "at": "2026-09-23T05:40:15.926Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "A",
+   "sql": "SELECT service, env, COUNT(*) as deploy_count\nFROM deploys\nGROUP BY env, service\nORDER BY service ASC, env ASC",
+   "at": "2026-09-23T05:40:50.576Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "auth",
+     "prod",
+     "1"
+    ],
+    [
+     "auth",
+     "staging",
+     "5"
+    ],
+    [
+     "billing",
+     "prod",
+     "3"
+    ],
+    [
+     "billing",
+     "staging",
+     "7"
+    ],
+    [
+     "notify",
+     "prod",
+     "2"
+    ],
+    [
+     "notify",
+     "staging",
+     "5"
+    ],
+    [
+     "payments",
+     "prod",
+     "10"
+    ],
+    [
+     "payments",
+     "staging",
+     "3"
+    ],
+    [
+     "search",
+     "prod",
+     "1"
+    ],
+    [
+     "search",
+     "staging",
+     "3"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P07",
+   "arm": "A",
+   "sql": "SELECT service, COUNT(*) as failed_count\nFROM deploys\nWHERE status = failed\nORDER BY service ASC",
+   "at": "2026-09-23T05:42:31.165Z",
+   "grade": "error",
+   "gradeReason": "no such column: failed",
+   "outcome": "error",
+   "error": "no such column: failed"
+  },
+  {
+   "type": "attempt",
+   "q": "P07",
+   "arm": "A",
+   "sql": "SELECT service, COUNT(*) as failed_count\nFROM deploys\nWHERE status = failed\nGROUP BY service\nORDER BY service ASC",
+   "at": "2026-09-23T05:43:20.539Z",
+   "grade": "error",
+   "gradeReason": "no such column: failed",
+   "outcome": "error",
+   "error": "no such column: failed"
+  },
+  {
+   "type": "help_decided",
+   "q": "P07",
+   "arm": "A",
+   "action": "hint",
+   "counted": 2,
+   "sinceHelp": null,
+   "at": "2026-09-23T05:43:21.665Z"
+  },
+  {
+   "type": "help_delivered",
+   "q": "P07",
+   "arm": "A",
+   "action": "hint",
+   "source": "model",
+   "modelAttempts": 1,
+   "rejections": [],
+   "at": "2026-09-23T05:43:22.705Z",
+   "model": "openai/gpt-oss-120b",
+   "temperature": 0.3
+  },
+  {
+   "type": "attempt",
+   "q": "P07",
+   "arm": "A",
+   "sql": "SELECT service, COUNT(*) as failed_count\nFROM deploys\nWHERE status = \"failed\"\nGROUP BY service\nORDER BY service ASC",
+   "at": "2026-09-23T05:43:42.352Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "auth",
+     "2"
+    ],
+    [
+     "billing",
+     "3"
+    ],
+    [
+     "notify",
+     "4"
+    ],
+    [
+     "payments",
+     "2"
+    ],
+    [
+     "search",
+     "1"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P08",
+   "arm": "A",
+   "sql": "SELECT city, ROUND(AVG(fare),1) as avg_fare\nFROM rides\nWHERE distance_km > 10\nGROUP BY city\nORDER BY city ASC",
+   "at": "2026-09-23T05:46:13.058Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "Delhi",
+     "294.2"
+    ],
+    [
+     "Indore",
+     "312.2"
+    ],
+    [
+     "Jaipur",
+     "299.9"
+    ],
+    [
+     "Kochi",
+     "287.5"
+    ],
+    [
+     "Pune",
+     "254"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P09",
+   "arm": "A",
+   "sql": "SELECT team, COUNT(*) as closed_p1\nFROM tickets\nWHERE status = \"closed\" AND priority = \"P1\"\nGROUP BY team\nORDER BY team ASC",
+   "at": "2026-09-23T05:48:24.807Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "data",
+     "2"
+    ],
+    [
+     "mobile",
+     "1"
+    ],
+    [
+     "platform",
+     "3"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P10",
+   "arm": "A",
+   "sql": "SELECT service, ROUND(AVG(duration_sec),1) as avg_duration\nFROM deploys\nWHERE env = \"prod\"\nGROUP BY service\nORDER BY avg_duration ASC",
+   "at": "2026-09-23T05:51:31.657Z",
+   "grade": "wrong",
+   "gradeReason": "right rows, wrong order",
+   "rows": [
+    [
+     "auth",
+     "71"
+    ],
+    [
+     "search",
+     "100"
+    ],
+    [
+     "billing",
+     "238"
+    ],
+    [
+     "notify",
+     "264.5"
+    ],
+    [
+     "payments",
+     "268.9"
+    ]
+   ],
+   "outcome": "right_rows_wrong_order"
+  },
+  {
+   "type": "attempt",
+   "q": "P10",
+   "arm": "A",
+   "sql": "SELECT service, ROUND(AVG(duration_sec),1) as avg_duration\nFROM deploys\nWHERE env = \"prod\"\nGROUP BY service\nORDER BY avg_duration DESC",
+   "at": "2026-09-23T05:51:43.913Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "payments",
+     "268.9"
+    ],
+    [
+     "notify",
+     "264.5"
+    ],
+    [
+     "billing",
+     "238"
+    ],
+    [
+     "search",
+     "100"
+    ],
+    [
+     "auth",
+     "71"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P12",
+   "arm": "A",
+   "sql": "SELECT priority, MAX(hours_to_close)\nFROM tickets\nWHERE status = \"closed\"\nGROUP BY priority\nORDER BY priority ASC",
+   "at": "2026-09-23T05:53:59.257Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "P1",
+     "69"
+    ],
+    [
+     "P2",
+     "65"
+    ],
+    [
+     "P3",
+     "89"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "A",
+   "sql": "SELECT env, COUNT(*) as success_count\nFROM deploys\nWHERE service != \"AUTH\"\nORDER BY env ASC",
+   "at": "2026-09-23T05:55:22.141Z",
+   "grade": "wrong",
+   "gradeReason": "1 rows returned, 2 expected",
+   "rows": [
+    [
+     "staging",
+     "40"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "help_decided",
+   "q": "P13",
+   "arm": "A",
+   "action": "hint",
+   "counted": 1,
+   "sinceHelp": null,
+   "at": "2026-09-23T05:55:27.933Z"
+  },
+  {
+   "type": "help_delivered",
+   "q": "P13",
+   "arm": "A",
+   "action": "hint",
+   "source": "model",
+   "modelAttempts": 1,
+   "rejections": [],
+   "at": "2026-09-23T05:55:29.656Z",
+   "model": "openai/gpt-oss-120b",
+   "temperature": 0.3
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "A",
+   "sql": "SELECT env, COUNT(*) as success_count\nFROM deploys\nWHERE service != \"AUTH\"\nGROUP BY env\nORDER BY env ASC",
+   "at": "2026-09-23T05:55:55.660Z",
+   "grade": "wrong",
+   "gradeReason": "2 rows returned, 2 expected",
+   "rows": [
+    [
+     "prod",
+     "17"
+    ],
+    [
+     "staging",
+     "23"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "help_decided",
+   "q": "P13",
+   "arm": "A",
+   "action": "refuse_retry",
+   "counted": 2,
+   "sinceHelp": 1,
+   "at": "2026-09-23T05:57:19.696Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "A",
+   "sql": "SELECT env, COUNT(*) as success_count\nFROM deploys\nGROUP BY env\nWHERE service != \"AUTH\"\n\nORDER BY env ASC",
+   "at": "2026-09-23T05:57:40.372Z",
+   "grade": "error",
+   "gradeReason": "near \"WHERE\": syntax error",
+   "outcome": "error",
+   "error": "near \"WHERE\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "A",
+   "sql": "SELECT env, COUNT(*) as success_count\nFROM deploys\nGROUP BY env\nWHERE service != \"AUTH\"\nORDER BY env ASC",
+   "at": "2026-09-23T05:57:49.255Z",
+   "grade": "error",
+   "gradeReason": "near \"WHERE\": syntax error",
+   "outcome": "error",
+   "error": "near \"WHERE\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "A",
+   "sql": "SELECT env, COUNT(*) as success_count\nFROM deploys\nWHERE service != \"AUTH\"\nGROUP BY env\nORDER BY env ASC",
+   "at": "2026-09-23T05:58:09.688Z",
+   "grade": "wrong",
+   "gradeReason": "2 rows returned, 2 expected",
+   "rows": [
+    [
+     "prod",
+     "17"
+    ],
+    [
+     "staging",
+     "23"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "help_decided",
+   "q": "P13",
+   "arm": "A",
+   "action": "reveal",
+   "counted": 4,
+   "sinceHelp": 3,
+   "at": "2026-09-23T05:58:16.596Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "A",
+   "sql": "SELECT env, COUNT(*) as success_count\nFROM deploys\nWHERE status = \"success\"\nWHERE service != \"AUTH\"\nGROUP BY env\nORDER BY env ASC",
+   "at": "2026-09-23T05:58:52.009Z",
+   "grade": "error",
+   "gradeReason": "near \"WHERE\": syntax error",
+   "outcome": "error",
+   "error": "near \"WHERE\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "A",
+   "sql": "SELECT env, COUNT(*) as success_count\nFROM deploys\nWHERE status = \"success\"\nAND service != \"AUTH\"\nGROUP BY env\nORDER BY env ASC",
+   "at": "2026-09-23T05:59:00.662Z",
+   "grade": "wrong",
+   "gradeReason": "2 rows returned, 2 expected",
+   "rows": [
+    [
+     "prod",
+     "12"
+    ],
+    [
+     "staging",
+     "16"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "A",
+   "sql": "SELECT env, COUNT(*) as success_count\nFROM deploys\nWHERE status = \"success\"\nAND service <> \"AUTH\"\nGROUP BY env\nORDER BY env ASC",
+   "at": "2026-09-23T05:59:12.693Z",
+   "grade": "wrong",
+   "gradeReason": "2 rows returned, 2 expected",
+   "rows": [
+    [
+     "prod",
+     "12"
+    ],
+    [
+     "staging",
+     "16"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "A",
+   "sql": "SELECT env, COUNT(*) as success_count\nFROM deploys\nWHERE status = \"success\"\nAND service <> \"AUTH\"\nGROUP BY env\nORDER BY env ASC",
+   "at": "2026-09-23T05:59:13.975Z",
+   "grade": "wrong",
+   "gradeReason": "2 rows returned, 2 expected",
+   "rows": [
+    [
+     "prod",
+     "12"
+    ],
+    [
+     "staging",
+     "16"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "A",
+   "sql": "SELECT env, COUNT(*) as success_count\nFROM deploys\nWHERE status = \"success\" AND service <> \"AUTH\"\nGROUP BY env\nORDER BY env ASC",
+   "at": "2026-09-23T05:59:21.417Z",
+   "grade": "wrong",
+   "gradeReason": "2 rows returned, 2 expected",
+   "rows": [
+    [
+     "prod",
+     "12"
+    ],
+    [
+     "staging",
+     "16"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "A",
+   "sql": "SELECT env, COUNT(*) as success_count\nFROM deploys\nWHERE status = 'success' AND service != \"AUTH\"\nGROUP BY env\nORDER BY env ASC",
+   "at": "2026-09-23T05:59:52.113Z",
+   "grade": "wrong",
+   "gradeReason": "2 rows returned, 2 expected",
+   "rows": [
+    [
+     "prod",
+     "12"
+    ],
+    [
+     "staging",
+     "16"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "help_decided",
+   "q": "P13",
+   "arm": "A",
+   "action": "reveal",
+   "counted": 6,
+   "sinceHelp": null,
+   "at": "2026-09-23T05:59:53.030Z"
+  },
+  {
+   "type": "help_decided",
+   "q": "P13",
+   "arm": "A",
+   "action": "reveal",
+   "counted": 6,
+   "sinceHelp": null,
+   "at": "2026-09-23T06:00:02.006Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "A",
+   "sql": "SELECT env, COUNT(*) as success_count\nFROM deploys\nWHERE status = 'success' AND service != \"AUTH\"\nGROUP BY env\nORDER BY env ASC",
+   "at": "2026-09-23T06:00:02.498Z",
+   "grade": "wrong",
+   "gradeReason": "2 rows returned, 2 expected",
+   "rows": [
+    [
+     "prod",
+     "12"
+    ],
+    [
+     "staging",
+     "16"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "A",
+   "sql": "SELECT env, COUNT(*) as success_count\nFROM deploys\nWHERE status = 'success' AND service != \"AUTH\"\nGROUP BY env\nORDER BY env",
+   "at": "2026-09-23T06:00:09.704Z",
+   "grade": "wrong",
+   "gradeReason": "2 rows returned, 2 expected",
+   "rows": [
+    [
+     "prod",
+     "12"
+    ],
+    [
+     "staging",
+     "16"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "A",
+   "sql": "SELECT env, COUNT(*) AS success_count FROM deploys WHERE status = 'success' AND service <> 'auth' GROUP BY env ORDER BY env",
+   "at": "2026-09-23T06:00:15.988Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "prod",
+     "11"
+    ],
+    [
+     "staging",
+     "13"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "A",
+   "sql": "SELECT env, COUNT(*) as success_count\nFROM deploys\nWHERE status = 'success' AND service <> \"AUTH\"\nGROUP BY env\nORDER BY env",
+   "at": "2026-09-23T06:00:33.091Z",
+   "grade": "wrong",
+   "gradeReason": "2 rows returned, 2 expected",
+   "rows": [
+    [
+     "prod",
+     "12"
+    ],
+    [
+     "staging",
+     "16"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "A",
+   "sql": "SELECT env, COUNT(*) AS success_count\nFROM deploys\nWHERE status = 'success' AND service <> \"AUTH\"\nGROUP BY env\nORDER BY env",
+   "at": "2026-09-23T06:00:42.755Z",
+   "grade": "wrong",
+   "gradeReason": "2 rows returned, 2 expected",
+   "rows": [
+    [
+     "prod",
+     "12"
+    ],
+    [
+     "staging",
+     "16"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "A",
+   "sql": "SELECT env, COUNT(*) AS success_count\nFROM deploys\nWHERE status = 'success' AND service <> \"auth\"\nGROUP BY env\nORDER BY env",
+   "at": "2026-09-23T06:02:13.447Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "prod",
+     "11"
+    ],
+    [
+     "staging",
+     "13"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "A",
+   "sql": "SELECT env, COUNT(*) AS success_count\nFROM deploys\nWHERE status = 'success' AND service != \"auth\"\nGROUP BY env\nORDER BY env",
+   "at": "2026-09-23T06:02:19.714Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "prod",
+     "11"
+    ],
+    [
+     "staging",
+     "13"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "A",
+   "sql": "SELECT env, COUNT(*) AS success_count\nFROM deploys\nWHERE status = 'success' AND service <> \"auth\"\nGROUP BY env\nORDER BY env",
+   "at": "2026-09-23T06:02:22.863Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "prod",
+     "11"
+    ],
+    [
+     "staging",
+     "13"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P14",
+   "arm": "A",
+   "sql": "SELECT servic, COUNT(*) AS deploy_count\nFROM deploys\nHAVING deploy_count > 6\nGROUP BY service\nORDER BY service ASC",
+   "at": "2026-09-23T06:03:52.015Z",
+   "grade": "invalid",
+   "gradeReason": "selects servic without grouping by it",
+   "outcome": "error",
+   "error": "near \"GROUP\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P14",
+   "arm": "A",
+   "sql": "SELECT service, COUNT(*) AS deploy_count\nFROM deploys\nHAVING deploy_count > 6\nGROUP BY service\nORDER BY service ASC",
+   "at": "2026-09-23T06:04:22.690Z",
+   "grade": "invalid",
+   "gradeReason": "filters groups on deploy_count, which is a row value, not a group value",
+   "outcome": "error",
+   "error": "near \"GROUP\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P14",
+   "arm": "A",
+   "sql": "SELECT service, COUNT(*) AS deploy_count\nFROM deploys\nHAVING deploy_count > 6\nGROUP BY service\nORDER BY service ASC",
+   "at": "2026-09-23T06:04:23.476Z",
+   "grade": "invalid",
+   "gradeReason": "filters groups on deploy_count, which is a row value, not a group value",
+   "outcome": "error",
+   "error": "near \"GROUP\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P14",
+   "arm": "A",
+   "sql": "SELECT service, COUNT(*) AS deploy_count\nFROM deploys\nHAVING deploy_count > 6\nGROUP BY service\nORDER BY service ASC",
+   "at": "2026-09-23T06:04:23.691Z",
+   "grade": "invalid",
+   "gradeReason": "filters groups on deploy_count, which is a row value, not a group value",
+   "outcome": "error",
+   "error": "near \"GROUP\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P14",
+   "arm": "A",
+   "sql": "SELECT service, COUNT(*) AS deploy_count\nFROM deploys\nGROUP BY service\nHAVING deploy_count > 6\nORDER BY service ASC",
+   "at": "2026-09-23T06:04:33.565Z",
+   "grade": "invalid",
+   "gradeReason": "filters groups on deploy_count, which is a row value, not a group value",
+   "rows": [
+    [
+     "billing",
+     "10"
+    ],
+    [
+     "notify",
+     "7"
+    ],
+    [
+     "payments",
+     "13"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "help_decided",
+   "q": "P14",
+   "arm": "A",
+   "action": "hint",
+   "counted": 3,
+   "sinceHelp": null,
+   "at": "2026-09-23T06:04:52.683Z"
+  },
+  {
+   "type": "help_delivered",
+   "q": "P14",
+   "arm": "A",
+   "action": "hint",
+   "source": "model",
+   "modelAttempts": 1,
+   "rejections": [],
+   "at": "2026-09-23T06:04:53.755Z",
+   "model": "openai/gpt-oss-120b",
+   "temperature": 0.3
+  },
+  {
+   "type": "attempt",
+   "q": "P14",
+   "arm": "A",
+   "sql": "SELECT service, COUNT(*) AS deploy_count\nFROM deploys\nHAVING deploy_count > 6\nGROUP BY service\nORDER BY service ASC",
+   "at": "2026-09-23T06:05:20.532Z",
+   "grade": "invalid",
+   "gradeReason": "filters groups on deploy_count, which is a row value, not a group value",
+   "outcome": "error",
+   "error": "near \"GROUP\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P14",
+   "arm": "A",
+   "sql": "SELECT service, COUNT(*) AS deploy_count\nFROM deploys\nGROUP BY service\nHAVING deploy_count > 6\nORDER BY service ASC",
+   "at": "2026-09-23T06:05:26.382Z",
+   "grade": "invalid",
+   "gradeReason": "filters groups on deploy_count, which is a row value, not a group value",
+   "rows": [
+    [
+     "billing",
+     "10"
+    ],
+    [
+     "notify",
+     "7"
+    ],
+    [
+     "payments",
+     "13"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P14",
+   "arm": "A",
+   "sql": "SELECT service, COUNT(*) AS deploy_count\nFROM deploys\nGROUP BY service\n\nORDER BY service ASC",
+   "at": "2026-09-23T06:05:58.291Z",
+   "grade": "wrong",
+   "gradeReason": "5 rows returned, 3 expected",
+   "rows": [
+    [
+     "auth",
+     "6"
+    ],
+    [
+     "billing",
+     "10"
+    ],
+    [
+     "notify",
+     "7"
+    ],
+    [
+     "payments",
+     "13"
+    ],
+    [
+     "search",
+     "4"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P14",
+   "arm": "A",
+   "sql": "SELECT service, COUNT(*) AS deploy_count HAVING deploy_count > 6\nFROM deploys\nGROUP BY service\nORDER BY service ASC",
+   "at": "2026-09-23T06:06:10.549Z",
+   "grade": "invalid",
+   "gradeReason": "filters groups on deploy_count, deploys, which is a row value, not a group value",
+   "outcome": "error",
+   "error": "near \"FROM\": syntax error"
+  },
+  {
+   "type": "help_decided",
+   "q": "P14",
+   "arm": "A",
+   "action": "reveal",
+   "counted": 7,
+   "sinceHelp": 4,
+   "at": "2026-09-23T06:06:13.759Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P14",
+   "arm": "A",
+   "sql": "SELECT service, COUNT(*) AS deploy_count\nFROM deploys\nGROUP BY service\nHAVING COUNT(*) > 6\nORDER BY service ASC",
+   "at": "2026-09-23T06:06:39.438Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "billing",
+     "10"
+    ],
+    [
+     "notify",
+     "7"
+    ],
+    [
+     "payments",
+     "13"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P15",
+   "arm": "A",
+   "sql": "SELECT city, ROUND(AVG(fare),1) as avg_fare\nFROM rides\nGROUP BY city\nHAVING AVG(fare) >200\nORDER BY avg_fare DESC",
+   "at": "2026-09-23T06:08:15.389Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "Jaipur",
+     "277.2"
+    ],
+    [
+     "Indore",
+     "251.9"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P16",
+   "arm": "A",
+   "sql": "SELECT team, SUM(hours_to_close) as total_hours\nFROM tickets\nHAVING total_hours >300\nGROUP BY team\nORDER BY team ASC",
+   "at": "2026-09-23T06:10:03.526Z",
+   "grade": "invalid",
+   "gradeReason": "filters groups on total_hours, which is a row value, not a group value",
+   "outcome": "error",
+   "error": "near \"GROUP\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P16",
+   "arm": "A",
+   "sql": "SELECT team, SUM(hours_to_close) as total_hours\nFROM tickets\nHAVING total_hours > 300\nGROUP BY team\nORDER BY team ASC",
+   "at": "2026-09-23T06:10:08.125Z",
+   "grade": "invalid",
+   "gradeReason": "filters groups on total_hours, which is a row value, not a group value",
+   "outcome": "error",
+   "error": "near \"GROUP\": syntax error"
+  },
+  {
+   "type": "help_decided",
+   "q": "P16",
+   "arm": "A",
+   "action": "hint",
+   "counted": 2,
+   "sinceHelp": null,
+   "at": "2026-09-23T06:10:12.693Z"
+  },
+  {
+   "type": "help_delivered",
+   "q": "P16",
+   "arm": "A",
+   "action": "hint",
+   "source": "model",
+   "modelAttempts": 1,
+   "rejections": [],
+   "at": "2026-09-23T06:10:13.691Z",
+   "model": "openai/gpt-oss-120b",
+   "temperature": 0.3
+  },
+  {
+   "type": "attempt",
+   "q": "P16",
+   "arm": "A",
+   "sql": "SELECT team, SUM(hours_to_close) as total_hours\nFROM tickets\nHAVING SUM(hours_to_close) > 300\nGROUP BY team\nORDER BY team ASC",
+   "at": "2026-09-23T06:10:26.095Z",
+   "grade": "error",
+   "gradeReason": "near \"GROUP\": syntax error",
+   "outcome": "error",
+   "error": "near \"GROUP\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P16",
+   "arm": "A",
+   "sql": "SELECT team, SUM(hours_to_close) as total_hours\nFROM tickets\nGROUP BY team\nHAVING SUM(hours_to_close) > 300\nORDER BY team ASC",
+   "at": "2026-09-23T06:10:58.934Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "mobile",
+     "610"
+    ],
+    [
+     "web",
+     "480"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P17",
+   "arm": "A",
+   "sql": "SELECT driver, COUNT(*) as ride_count\nfrom rides\nGROUP BY driver\nHAVING COUNT(*) > 7\nORDER BY ride_count DESC",
+   "at": "2026-09-23T06:12:28.168Z",
+   "grade": "wrong",
+   "gradeReason": "2 rows returned, 3 expected",
+   "rows": [
+    [
+     "Divya",
+     "12"
+    ],
+    [
+     "Farhan",
+     "10"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "help_decided",
+   "q": "P17",
+   "arm": "A",
+   "action": "hint",
+   "counted": 1,
+   "sinceHelp": null,
+   "at": "2026-09-23T06:12:44.111Z"
+  },
+  {
+   "type": "help_delivered",
+   "q": "P17",
+   "arm": "A",
+   "action": "hint",
+   "source": "model",
+   "modelAttempts": 1,
+   "rejections": [],
+   "at": "2026-09-23T06:12:44.987Z",
+   "model": "openai/gpt-oss-120b",
+   "temperature": 0.3
+  },
+  {
+   "type": "attempt",
+   "q": "P17",
+   "arm": "A",
+   "sql": "SELECT driver, COUNT(*) as ride_count\nfrom rides\nGROUP BY driver\nHAVING COUNT(*) >= 7\nORDER BY ride_count DESC",
+   "at": "2026-09-23T06:13:02.315Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "Divya",
+     "12"
+    ],
+    [
+     "Farhan",
+     "10"
+    ],
+    [
+     "Bela",
+     "7"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P18",
+   "arm": "A",
+   "sql": "SELECT service, MIN(duration_sec) as fastest_seconds\nFROM deploys\nGROUP BY service\nWHERE duration_sec > 60\nORDER BY service ASC",
+   "at": "2026-09-23T06:18:13.416Z",
+   "grade": "error",
+   "gradeReason": "near \"WHERE\": syntax error",
+   "outcome": "error",
+   "error": "near \"WHERE\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P18",
+   "arm": "A",
+   "sql": "SELECT service, MIN(duration_sec) as fastest_seconds\nFROM deploys\nWHERE duration_sec > 60\nGROUP BY service\nORDER BY service ASC",
+   "at": "2026-09-23T06:18:27.712Z",
+   "grade": "wrong",
+   "gradeReason": "5 rows returned, 3 expected",
+   "rows": [
+    [
+     "auth",
+     "69"
+    ],
+    [
+     "billing",
+     "66"
+    ],
+    [
+     "notify",
+     "79"
+    ],
+    [
+     "payments",
+     "167"
+    ],
+    [
+     "search",
+     "64"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "help_decided",
+   "q": "P18",
+   "arm": "A",
+   "action": "hint",
+   "counted": 2,
+   "sinceHelp": null,
+   "at": "2026-09-23T06:18:31.530Z"
+  },
+  {
+   "type": "help_delivered",
+   "q": "P18",
+   "arm": "A",
+   "action": "hint",
+   "source": "model",
+   "modelAttempts": 1,
+   "rejections": [],
+   "at": "2026-09-23T06:18:32.651Z",
+   "model": "openai/gpt-oss-120b",
+   "temperature": 0.3
+  },
+  {
+   "type": "attempt",
+   "q": "P18",
+   "arm": "A",
+   "sql": "SELECT service, MIN(duration_sec) as fastest_seconds\nFROM deploys\nWHERE MIN(duration_sec) >60\nGROUP BY service\nORDER BY service ASC",
+   "at": "2026-09-23T06:19:05.505Z",
+   "grade": "error",
+   "gradeReason": "misuse of aggregate: MIN()",
+   "outcome": "error",
+   "error": "misuse of aggregate: MIN()"
+  },
+  {
+   "type": "attempt",
+   "q": "P18",
+   "arm": "A",
+   "sql": "SELECT service, MIN(duration_sec) as fastest_seconds\nFROM deploys\nWHERE duration_sec > 60\nGROUP BY service\nORDER BY service ASC",
+   "at": "2026-09-23T06:19:12.455Z",
+   "grade": "wrong",
+   "gradeReason": "5 rows returned, 3 expected",
+   "rows": [
+    [
+     "auth",
+     "69"
+    ],
+    [
+     "billing",
+     "66"
+    ],
+    [
+     "notify",
+     "79"
+    ],
+    [
+     "payments",
+     "167"
+    ],
+    [
+     "search",
+     "64"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "help_decided",
+   "q": "P18",
+   "arm": "A",
+   "action": "reveal",
+   "counted": 4,
+   "sinceHelp": 2,
+   "at": "2026-09-23T06:19:13.517Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P18",
+   "arm": "A",
+   "sql": "SELECT service, MIN(duration_sec) as fastest_seconds\nFROM deploys\nWHERE duration_sec >= 60\nGROUP BY service\nORDER BY service ASC",
+   "at": "2026-09-23T06:19:27.392Z",
+   "grade": "wrong",
+   "gradeReason": "5 rows returned, 3 expected",
+   "rows": [
+    [
+     "auth",
+     "69"
+    ],
+    [
+     "billing",
+     "66"
+    ],
+    [
+     "notify",
+     "79"
+    ],
+    [
+     "payments",
+     "167"
+    ],
+    [
+     "search",
+     "64"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P18",
+   "arm": "A",
+   "sql": "SELECT service, MIN(duration_sec) as fastest_seconds\nFROM deploys\nGROUP BY service\nWHERE duration_sec >= 60\nORDER BY service ASC",
+   "at": "2026-09-23T06:19:34.779Z",
+   "grade": "error",
+   "gradeReason": "near \"WHERE\": syntax error",
+   "outcome": "error",
+   "error": "near \"WHERE\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P18",
+   "arm": "A",
+   "sql": "SELECT service, MIN(duration_sec) as fastest_seconds\nFROM deploys\nGROUP BY service\nHAVING MIN(duration_sec) >= 60\nORDER BY service ASC",
+   "at": "2026-09-23T06:19:58.746Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "auth",
+     "69"
+    ],
+    [
+     "payments",
+     "167"
+    ],
+    [
+     "search",
+     "64"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P19",
+   "arm": "A",
+   "sql": "SELECT priority, ROUND(AVG(hours_to_close),1) as avg_hours\nFROM tickets\nHAVING  AVG(hours_to_close) < 45\nORDER BY priority ASC",
+   "at": "2026-09-23T06:23:40.855Z",
+   "grade": "wrong",
+   "gradeReason": "1 rows returned, 2 expected",
+   "rows": [
+    [
+     "P1",
+     "44.6"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P19",
+   "arm": "A",
+   "sql": "SELECT priority, ROUND(AVG(hours_to_close),1) as avg_hours\nFROM tickets\nGROUP BY priority\nHAVING  AVG(hours_to_close) < 45\nORDER BY priority ASC",
+   "at": "2026-09-23T06:24:00.703Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "P1",
+     "43.6"
+    ],
+    [
+     "P2",
+     "36.7"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P20",
+   "arm": "A",
+   "sql": "SELECT city, SUM(distance_km) as total_km\nFROM rides\nGROUP BY city\nWHERE SUM(distance_km) >100",
+   "at": "2026-09-23T06:26:44.808Z",
+   "grade": "error",
+   "gradeReason": "near \"WHERE\": syntax error",
+   "outcome": "error",
+   "error": "near \"WHERE\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P20",
+   "arm": "A",
+   "sql": "SELECT city, SUM(distance_km) as total_km\nFROM rides\nGROUP BY city\nWHERE SUM(distance_km) >100\nORDER BY total_km DESC",
+   "at": "2026-09-23T06:27:10.379Z",
+   "grade": "error",
+   "gradeReason": "near \"WHERE\": syntax error",
+   "outcome": "error",
+   "error": "near \"WHERE\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P20",
+   "arm": "A",
+   "sql": "SELECT city, SUM(distance_km) as total_km\nFROM rides\nWHERE SUM(distance_km) >100\nGROUP BY city\nORDER BY total_km DESC",
+   "at": "2026-09-23T06:27:19.809Z",
+   "grade": "error",
+   "gradeReason": "misuse of aggregate: SUM()",
+   "outcome": "error",
+   "error": "misuse of aggregate: SUM()"
+  },
+  {
+   "type": "attempt",
+   "q": "P20",
+   "arm": "A",
+   "sql": "SELECT city, SUM(distance_km) as total_km\nFROM rides\nHAVING SUM(distance_km) >100\nGROUP BY city\nORDER BY total_km DESC",
+   "at": "2026-09-23T06:27:26.660Z",
+   "grade": "error",
+   "gradeReason": "near \"GROUP\": syntax error",
+   "outcome": "error",
+   "error": "near \"GROUP\": syntax error"
+  },
+  {
+   "type": "help_decided",
+   "q": "P20",
+   "arm": "A",
+   "action": "hint",
+   "counted": 4,
+   "sinceHelp": null,
+   "at": "2026-09-23T06:27:36.218Z"
+  },
+  {
+   "type": "help_delivered",
+   "q": "P20",
+   "arm": "A",
+   "action": "hint",
+   "source": "model",
+   "modelAttempts": 1,
+   "rejections": [],
+   "at": "2026-09-23T06:27:37.384Z",
+   "model": "openai/gpt-oss-120b",
+   "temperature": 0.3
+  },
+  {
+   "type": "attempt",
+   "q": "P20",
+   "arm": "A",
+   "sql": "SELECT city, SUM(distance_km) as total_km\nFROM rides\nGROUP BY city\nHAVING SUM(distance_km) >100\nORDER BY total_km DESC",
+   "at": "2026-09-23T06:27:46.241Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "Jaipur",
+     "162.5"
+    ],
+    [
+     "Delhi",
+     "139.2"
+    ],
+    [
+     "Indore",
+     "111.3"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P20",
+   "arm": "A",
+   "sql": "SELECT city, ROUND(SUM(distance_km),1) as total_km\nFROM rides\nGROUP BY city\nHAVING SUM(distance_km) >100\nORDER BY total_km DESC",
+   "at": "2026-09-23T06:28:01.275Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "Jaipur",
+     "162.5"
+    ],
+    [
+     "Delhi",
+     "139.2"
+    ],
+    [
+     "Indore",
+     "111.3"
+    ]
+   ],
+   "outcome": "correct"
+  }
+ ],
+ "finished": "2026-09-23T06:28:21.673Z",
+ "summary": {
+  "byAction": {
+   "A:refuse_gate": 1,
+   "A:hint": 9,
+   "A:refuse_retry": 2,
+   "A:reveal": 5
+  },
+  "hintsDelivered": 9,
+  "fallbacks": 0,
+  "fallbackRate": 0
+ }
+}

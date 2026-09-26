@@ -1,0 +1,412 @@
+{
+  "version": "slice-1",
+  "participant": "rqkkx",
+  "arm": "B",
+  "started": "2026-09-23T12:16:33.396Z",
+  "events": [
+    {
+      "type": "attempt",
+      "q": "P02",
+      "arm": "B",
+      "sql": "SELECT\n    city,\n    ROUND(AVG(fare), 1) AS avg_fare\nFROM trips\nGROUP BY city\nORDER BY city ASC;",
+      "at": "2026-09-23T12:18:40.139Z",
+      "grade": "error",
+      "gradeReason": "no such table: trips",
+      "outcome": "error",
+      "error": "no such table: trips"
+    },
+    {
+      "type": "attempt",
+      "q": "P02",
+      "arm": "B",
+      "sql": "SELECT\n    city,\n    ROUND(AVG(fare), 1) AS avg_fare\nFROM rides\nGROUP BY city\nORDER BY city ASC;",
+      "at": "2026-09-23T12:18:53.395Z",
+      "grade": "correct",
+      "gradeReason": "",
+      "rows": [
+        ["Delhi", "194.5"],
+        ["Indore", "251.9"],
+        ["Jaipur", "277.2"],
+        ["Kochi", "181.5"],
+        ["Pune", "122"]
+      ],
+      "outcome": "correct"
+    },
+    {
+      "type": "attempt",
+      "q": "P04",
+      "arm": "B",
+      "sql": "SELECT\n    driver,\n    ROUND(SUM(distance_km), 1) AS total_km\nFROM trips\nGROUP BY driver\nORDER BY total_km DESC;",
+      "at": "2026-09-23T16:40:02.459Z",
+      "grade": "error",
+      "gradeReason": "no such table: trips",
+      "outcome": "error",
+      "error": "no such table: trips"
+    },
+    {
+      "type": "attempt",
+      "q": "P04",
+      "arm": "B",
+      "sql": "SELECT\n    driver,\n    ROUND(SUM(distance_km), 1) AS total_km\nFROM rides\nGROUP BY driver\nORDER BY total_km DESC;",
+      "at": "2026-09-23T16:40:10.496Z",
+      "grade": "correct",
+      "gradeReason": "",
+      "rows": [
+        ["Farhan", "133.7"],
+        ["Divya", "117.6"],
+        ["Bela", "104.3"],
+        ["Chetan", "67.5"],
+        ["Amit", "54.7"],
+        ["Gita", "9.7"]
+      ],
+      "outcome": "correct"
+    },
+    {
+      "type": "attempt",
+      "q": "P05",
+      "arm": "B",
+      "sql": "SELECT\n    service,\n    env,\n    COUNT(*) AS deploy_count\nFROM deploys\nGROUP BY service, env\nORDER BY service ASC, env ASC;",
+      "at": "2026-09-23T16:40:44.683Z",
+      "grade": "correct",
+      "gradeReason": "",
+      "rows": [
+        ["auth", "prod", "1"],
+        ["auth", "staging", "5"],
+        ["billing", "prod", "3"],
+        ["billing", "staging", "7"],
+        ["notify", "prod", "2"],
+        ["notify", "staging", "5"],
+        ["payments", "prod", "10"],
+        ["payments", "staging", "3"],
+        ["search", "prod", "1"],
+        ["search", "staging", "3"]
+      ],
+      "outcome": "correct"
+    },
+    {
+      "type": "attempt",
+      "q": "P07",
+      "arm": "B",
+      "sql": "SELECT\n    service,\n    COUNT(*) AS failed_count\nFROM deploys\nWHERE status = 'failed'\nGROUP BY service\nORDER BY service ASC;",
+      "at": "2026-09-23T16:41:13.450Z",
+      "grade": "correct",
+      "gradeReason": "",
+      "rows": [
+        ["auth", "2"],
+        ["billing", "3"],
+        ["notify", "4"],
+        ["payments", "2"],
+        ["search", "1"]
+      ],
+      "outcome": "correct"
+    },
+    {
+      "type": "attempt",
+      "q": "P08",
+      "arm": "B",
+      "sql": "SELECT\n    city,\n    ROUND(AVG(fare), 1) AS avg_fare\nFROM rides\nWHERE distance_km > 10\nGROUP BY city\nORDER BY city ASC;",
+      "at": "2026-09-23T16:41:41.566Z",
+      "grade": "correct",
+      "gradeReason": "",
+      "rows": [
+        ["Delhi", "294.2"],
+        ["Indore", "312.2"],
+        ["Jaipur", "299.9"],
+        ["Kochi", "287.5"],
+        ["Pune", "254"]
+      ],
+      "outcome": "correct"
+    },
+    {
+      "type": "attempt",
+      "q": "P09",
+      "arm": "B",
+      "sql": "SELECT\n    team,\n    COUNT(*) AS closed_p1\nFROM tickets\nWHERE priority = 'P1'\n  AND status = 'closed'\nGROUP BY team\nORDER BY team ASC;",
+      "at": "2026-09-23T16:41:58.724Z",
+      "grade": "correct",
+      "gradeReason": "",
+      "rows": [
+        ["data", "2"],
+        ["mobile", "1"],
+        ["platform", "3"]
+      ],
+      "outcome": "correct"
+    },
+    {
+      "type": "attempt",
+      "q": "P10",
+      "arm": "B",
+      "sql": "SELECT\n    service,\n    ROUND(AVG(duration_seconds), 1) AS avg_seconds\nFROM deploys\nWHERE env = 'prod'\nGROUP BY service\nORDER BY avg_seconds DESC;",
+      "at": "2026-09-23T16:42:19.332Z",
+      "grade": "error",
+      "gradeReason": "no such column: duration_seconds",
+      "outcome": "error",
+      "error": "no such column: duration_seconds"
+    },
+    {
+      "type": "attempt",
+      "q": "P10",
+      "arm": "B",
+      "sql": "SELECT\n    service,\n    ROUND(AVG(deploys), 1) AS avg_seconds\nFROM deploys\nWHERE env = 'prod'\nGROUP BY service\nORDER BY avg_seconds DESC;",
+      "at": "2026-09-23T16:42:33.482Z",
+      "grade": "error",
+      "gradeReason": "no such column: deploys",
+      "outcome": "error",
+      "error": "no such column: deploys"
+    },
+    {
+      "type": "attempt",
+      "q": "P10",
+      "arm": "B",
+      "sql": "SELECT\n    service,\n    ROUND(AVG(VALUES), 1) AS avg_seconds\nFROM deploys\nWHERE env = 'prod'\nGROUP BY service\nORDER BY avg_seconds DESC;",
+      "at": "2026-09-23T16:43:08.224Z",
+      "grade": "error",
+      "gradeReason": "near \"VALUES\": syntax error",
+      "outcome": "error",
+      "error": "near \"VALUES\": syntax error"
+    },
+    {
+      "type": "attempt",
+      "q": "P10",
+      "arm": "B",
+      "sql": "SELECT\n    service,\n    ROUND(AVG('VALUES'), 1) AS avg_seconds\nFROM deploys\nWHERE env = 'prod'\nGROUP BY service\nORDER BY avg_seconds DESC;",
+      "at": "2026-09-23T16:43:21.853Z",
+      "grade": "wrong",
+      "gradeReason": "5 rows returned, 5 expected",
+      "rows": [
+        ["search", "0"],
+        ["payments", "0"],
+        ["notify", "0"],
+        ["billing", "0"],
+        ["auth", "0"]
+      ],
+      "outcome": "wrong"
+    },
+    {
+      "type": "attempt",
+      "q": "P12",
+      "arm": "B",
+      "sql": "SELECT\n    priority,\n    MAX(close_hours) AS longest_hours\nFROM tickets\nWHERE status = 'closed'\nGROUP BY priority\nORDER BY\n    CASE priority\n        WHEN 'P1' THEN 1\n        WHEN 'P2' THEN 2\n        WHEN 'P3' THEN 3\n        WHEN 'P4' THEN 4\n        ELSE 5\n    END;",
+      "at": "2026-09-23T16:43:47.249Z",
+      "grade": "error",
+      "gradeReason": "no such column: close_hours",
+      "outcome": "error",
+      "error": "no such column: close_hours"
+    },
+    {
+      "type": "attempt",
+      "q": "P12",
+      "arm": "B",
+      "sql": "SELECT\n    priority,\n    MAX(hours_to_close) AS longest_hours\nFROM tickets\nWHERE status = 'closed'\nGROUP BY priority\nORDER BY\n    CASE priority\n        WHEN 'P1' THEN 1\n        WHEN 'P2' THEN 2\n        WHEN 'P3' THEN 3\n        WHEN 'P4' THEN 4\n        ELSE 5\n    END;",
+      "at": "2026-09-23T16:44:11.828Z",
+      "grade": "correct",
+      "gradeReason": "",
+      "rows": [
+        ["P1", "69"],
+        ["P2", "65"],
+        ["P3", "89"]
+      ],
+      "outcome": "correct"
+    },
+    {
+      "type": "attempt",
+      "q": "P13",
+      "arm": "B",
+      "sql": "SELECT\n    env,\n    COUNT(*) AS success_count\nFROM deploys\nWHERE status = 'success'\n  AND service <> 'auth'\nGROUP BY env\nORDER BY env ASC;",
+      "at": "2026-09-23T16:44:29.865Z",
+      "grade": "correct",
+      "gradeReason": "",
+      "rows": [
+        ["prod", "11"],
+        ["staging", "13"]
+      ],
+      "outcome": "correct"
+    },
+    {
+      "type": "attempt",
+      "q": "P14",
+      "arm": "B",
+      "sql": "SELECT\n    service,\n    COUNT(*) AS deploy_count\nFROM deploys\nGROUP BY service\nHAVING COUNT(*) > 6\nORDER BY service ASC;",
+      "at": "2026-09-23T16:44:47.169Z",
+      "grade": "correct",
+      "gradeReason": "",
+      "rows": [
+        ["billing", "10"],
+        ["notify", "7"],
+        ["payments", "13"]
+      ],
+      "outcome": "correct"
+    },
+    {
+      "type": "attempt",
+      "q": "P15",
+      "arm": "B",
+      "sql": "SELECT\n    city,\n    ROUND(AVG(fare), 1) AS avg_fare\nFROM rides\nGROUP BY city\nHAVING AVG(fare) > 200\nORDER BY avg_fare DESC;",
+      "at": "2026-09-23T16:45:02.361Z",
+      "grade": "correct",
+      "gradeReason": "",
+      "rows": [
+        ["Jaipur", "277.2"],
+        ["Indore", "251.9"]
+      ],
+      "outcome": "correct"
+    },
+    {
+      "type": "attempt",
+      "q": "P16",
+      "arm": "B",
+      "sql": "SELECT\n    team,\n    SUM(close_hours) AS total_hours\nFROM tickets\nGROUP BY team\nHAVING SUM(close_hours) > 300\nORDER BY team ASC;",
+      "at": "2026-09-23T17:11:08.680Z",
+      "grade": "error",
+      "gradeReason": "no such column: close_hours",
+      "outcome": "error",
+      "error": "no such column: close_hours"
+    },
+    {
+      "type": "attempt",
+      "q": "P16",
+      "arm": "B",
+      "sql": "SELECT\n    team,\n    SUM(hours_to_close) AS total_hours\nFROM tickets\nGROUP BY team\nHAVING SUM(close_hours) > 300\nORDER BY team ASC;",
+      "at": "2026-09-23T17:11:15.759Z",
+      "grade": "error",
+      "gradeReason": "no such column: close_hours",
+      "outcome": "error",
+      "error": "no such column: close_hours"
+    },
+    {
+      "type": "attempt",
+      "q": "P16",
+      "arm": "B",
+      "sql": "SELECT\n    team,\n    SUM(hours_to_close) AS total_hours\nFROM tickets\nGROUP BY team\nHAVING SUM(close_hours) > 300\nORDER BY team ASC;",
+      "at": "2026-09-23T17:11:16.995Z",
+      "grade": "error",
+      "gradeReason": "no such column: close_hours",
+      "outcome": "error",
+      "error": "no such column: close_hours"
+    },
+    {
+      "type": "attempt",
+      "q": "P16",
+      "arm": "B",
+      "sql": "SELECT\n    team,\n    SUM(hours_to_close) AS total_hours\nFROM tickets\nGROUP BY team\nHAVING SUM(hours_to_close) > 300\nORDER BY team ASC;",
+      "at": "2026-09-23T17:11:21.218Z",
+      "grade": "correct",
+      "gradeReason": "",
+      "rows": [
+        ["mobile", "610"],
+        ["web", "480"]
+      ],
+      "outcome": "correct"
+    },
+    {
+      "type": "attempt",
+      "q": "P17",
+      "arm": "B",
+      "sql": "SELECT\n    driver,\n    COUNT(*) AS ride_count\nFROM rides\nGROUP BY driver\nHAVING COUNT(*) >= 7\nORDER BY ride_count DESC;",
+      "at": "2026-09-23T17:11:41.651Z",
+      "grade": "correct",
+      "gradeReason": "",
+      "rows": [
+        ["Divya", "12"],
+        ["Farhan", "10"],
+        ["Bela", "7"]
+      ],
+      "outcome": "correct"
+    },
+    {
+      "type": "attempt",
+      "q": "P18",
+      "arm": "B",
+      "sql": "SELECT\n    service,\n    MIN(duration_seconds) AS fastest_seconds\nFROM deploys\nGROUP BY service\nHAVING MIN(duration_seconds) >= 60\nORDER BY service ASC;",
+      "at": "2026-09-23T17:11:59.880Z",
+      "grade": "error",
+      "gradeReason": "no such column: duration_seconds",
+      "outcome": "error",
+      "error": "no such column: duration_seconds"
+    },
+    {
+      "type": "attempt",
+      "q": "P18",
+      "arm": "B",
+      "sql": "SELECT\n    service,\n    MIN(duration_sec) AS fastest_seconds\nFROM deploys\nGROUP BY service\nHAVING MIN(duration_seconds) >= 60\nORDER BY service ASC;",
+      "at": "2026-09-23T17:12:09.584Z",
+      "grade": "error",
+      "gradeReason": "no such column: duration_seconds",
+      "outcome": "error",
+      "error": "no such column: duration_seconds"
+    },
+    {
+      "type": "attempt",
+      "q": "P18",
+      "arm": "B",
+      "sql": "SELECT\n    service,\n    MIN(duration_sec) AS fastest_seconds\nFROM deploys\nGROUP BY service\nHAVING MIN(duration_seconds) >= 60\nORDER BY service ASC;",
+      "at": "2026-09-23T17:12:10.451Z",
+      "grade": "error",
+      "gradeReason": "no such column: duration_seconds",
+      "outcome": "error",
+      "error": "no such column: duration_seconds"
+    },
+    {
+      "type": "attempt",
+      "q": "P18",
+      "arm": "B",
+      "sql": "SELECT\n    service,\n    MIN(duration_sec) AS fastest_seconds\nFROM deploys\nGROUP BY service\nHAVING MIN(duration_sec) >= 60\nORDER BY service ASC;",
+      "at": "2026-09-23T17:12:20.134Z",
+      "grade": "correct",
+      "gradeReason": "",
+      "rows": [
+        ["auth", "69"],
+        ["payments", "167"],
+        ["search", "64"]
+      ],
+      "outcome": "correct"
+    },
+    {
+      "type": "attempt",
+      "q": "P19",
+      "arm": "B",
+      "sql": "SELECT\n    priority,\n    ROUND(AVG(close_hours), 1) AS avg_hours\nFROM tickets\nGROUP BY priority\nHAVING AVG(close_hours) < 45\nORDER BY\n    CASE priority\n        WHEN 'P1' THEN 1\n        WHEN 'P2' THEN 2\n        WHEN 'P3' THEN 3\n        WHEN 'P4' THEN 4\n        ELSE 5\n    END;",
+      "at": "2026-09-23T17:12:39.317Z",
+      "grade": "error",
+      "gradeReason": "no such column: close_hours",
+      "outcome": "error",
+      "error": "no such column: close_hours"
+    },
+    {
+      "type": "attempt",
+      "q": "P19",
+      "arm": "B",
+      "sql": "SELECT\n    priority,\n    ROUND(AVG(hours_to_close), 1) AS avg_hours\nFROM tickets\nGROUP BY priority\nHAVING AVG(hours_to_close) < 45\nORDER BY\n    CASE priority\n        WHEN 'P1' THEN 1\n        WHEN 'P2' THEN 2\n        WHEN 'P3' THEN 3\n        WHEN 'P4' THEN 4\n        ELSE 5\n    END;",
+      "at": "2026-09-23T17:12:51.609Z",
+      "grade": "correct",
+      "gradeReason": "",
+      "rows": [
+        ["P1", "43.6"],
+        ["P2", "36.7"]
+      ],
+      "outcome": "correct"
+    },
+    {
+      "type": "attempt",
+      "q": "P20",
+      "arm": "B",
+      "sql": "SELECT\n    city,\n    ROUND(SUM(distance_km), 1) AS total_km\nFROM rides\nGROUP BY city\nHAVING SUM(distance_km) > 100\nORDER BY total_km DESC;",
+      "at": "2026-09-23T17:13:06.138Z",
+      "grade": "correct",
+      "gradeReason": "",
+      "rows": [
+        ["Jaipur", "162.5"],
+        ["Delhi", "139.2"],
+        ["Indore", "111.3"]
+      ],
+      "outcome": "correct"
+    }
+  ],
+  "finished": "2026-09-23T17:13:09.943Z",
+  "summary": {
+    "byAction": {},
+    "hintsDelivered": 0,
+    "fallbacks": 0,
+    "fallbackRate": null
+  }
+}

@@ -1,0 +1,1649 @@
+{
+ "version": "slice-1",
+ "participant": "3b3xe",
+ "arm": "B",
+ "started": "2026-09-23T16:42:14.380Z",
+ "events": [
+  {
+   "type": "attempt",
+   "q": "P02",
+   "arm": "B",
+   "sql": "SELECT city, ROUND(AVG(fare),1) avg_fare FROM rides GROUP BY city ORDER BY city ASC",
+   "at": "2026-09-23T16:44:44.637Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "Delhi",
+     "194.5"
+    ],
+    [
+     "Indore",
+     "251.9"
+    ],
+    [
+     "Jaipur",
+     "277.2"
+    ],
+    [
+     "Kochi",
+     "181.5"
+    ],
+    [
+     "Pune",
+     "122"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P04",
+   "arm": "B",
+   "sql": "SELECT driver,ROUND(SUM(distance_km),1) total_km FROM rides GROUP BY driver ORDER BY total_km DESC",
+   "at": "2026-09-23T16:47:22.872Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "Farhan",
+     "133.7"
+    ],
+    [
+     "Divya",
+     "117.6"
+    ],
+    [
+     "Bela",
+     "104.3"
+    ],
+    [
+     "Chetan",
+     "67.5"
+    ],
+    [
+     "Amit",
+     "54.7"
+    ],
+    [
+     "Gita",
+     "9.7"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys ORDER BY service, env ASC",
+   "at": "2026-09-23T16:50:20.890Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "help_decided",
+   "q": "P05",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 1,
+   "sinceHelp": null,
+   "at": "2026-09-23T16:50:24.233Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service ,env ORDER BY service, env ASC",
+   "at": "2026-09-23T16:51:49.664Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service ,env ORDER BY service, env ASC",
+   "at": "2026-09-23T16:51:50.755Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service ,env ORDER BY service, env ASC",
+   "at": "2026-09-23T16:51:51.674Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service ,env ORDER BY service, env ASC",
+   "at": "2026-09-23T16:51:52.163Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service ,env ORDER BY service, env ASC",
+   "at": "2026-09-23T16:51:52.396Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service ,env ORDER BY service, env ASC",
+   "at": "2026-09-23T16:51:52.613Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service ,env ORDER BY service, env ASC",
+   "at": "2026-09-23T16:51:52.813Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service ,env ORDER BY service, env ASC",
+   "at": "2026-09-23T16:51:53.020Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "help_decided",
+   "q": "P05",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 2,
+   "sinceHelp": null,
+   "at": "2026-09-23T16:51:53.565Z"
+  },
+  {
+   "type": "help_decided",
+   "q": "P05",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 2,
+   "sinceHelp": null,
+   "at": "2026-09-23T16:51:54.382Z"
+  },
+  {
+   "type": "help_decided",
+   "q": "P05",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 2,
+   "sinceHelp": null,
+   "at": "2026-09-23T16:51:54.863Z"
+  },
+  {
+   "type": "help_decided",
+   "q": "P05",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 2,
+   "sinceHelp": null,
+   "at": "2026-09-23T16:51:55.621Z"
+  },
+  {
+   "type": "help_decided",
+   "q": "P05",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 2,
+   "sinceHelp": null,
+   "at": "2026-09-23T16:51:56.206Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service ,env ORDER BY service, env ASC",
+   "at": "2026-09-23T16:51:56.913Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service ,env ORDER BY service, env ASC",
+   "at": "2026-09-23T16:51:57.129Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service ,env ORDER BY service, env ASC",
+   "at": "2026-09-23T16:51:57.321Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service ,env ORDER BY service, env ASC",
+   "at": "2026-09-23T16:51:57.521Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service ,env ORDER BY service, env ASC",
+   "at": "2026-09-23T16:51:57.781Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service ,env ORDER BY service ASC, env ASC",
+   "at": "2026-09-23T16:52:14.730Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service ,env ORDER BY service ASC, env ASC",
+   "at": "2026-09-23T16:52:15.371Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service ,env ORDER BY service ASC, env ASC",
+   "at": "2026-09-23T16:52:15.856Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service ,env ORDER BY service ASC, env ASC",
+   "at": "2026-09-23T16:52:16.048Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service ,env ORDER BY service ASC, env ASC",
+   "at": "2026-09-23T16:52:16.246Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service ,env ORDER BY service ASC, env ASC",
+   "at": "2026-09-23T16:52:16.471Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "help_decided",
+   "q": "P05",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 3,
+   "sinceHelp": null,
+   "at": "2026-09-23T16:52:34.829Z"
+  },
+  {
+   "type": "help_decided",
+   "q": "P05",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 3,
+   "sinceHelp": null,
+   "at": "2026-09-23T16:52:35.305Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service ,env ORDER BY service ASC, env ASC",
+   "at": "2026-09-23T16:52:44.104Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service ,env ORDER BY service ASC, env ASC",
+   "at": "2026-09-23T16:52:44.356Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service ,env ORDER BY service ASC, env ASC",
+   "at": "2026-09-23T16:52:44.580Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service ,env ORDER BY service ASC, env ASC",
+   "at": "2026-09-23T16:52:44.830Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service,env ORDER BY service ASC, env ASC",
+   "at": "2026-09-23T16:52:47.581Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service,env ORDER BY service ASC, env ASC",
+   "at": "2026-09-23T16:52:47.789Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service,env ORDER BY service ASC, env ASC",
+   "at": "2026-09-23T16:52:48.255Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service,env ORDER BY service ASC, env ASC",
+   "at": "2026-09-23T16:52:48.471Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "help_decided",
+   "q": "P05",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 4,
+   "sinceHelp": null,
+   "at": "2026-09-23T16:52:49.080Z"
+  },
+  {
+   "type": "help_decided",
+   "q": "P05",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 4,
+   "sinceHelp": null,
+   "at": "2026-09-23T16:52:49.582Z"
+  },
+  {
+   "type": "help_decided",
+   "q": "P05",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 4,
+   "sinceHelp": null,
+   "at": "2026-09-23T16:52:49.822Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service,env ORDER BY service ASC, env ASC",
+   "at": "2026-09-23T16:52:52.821Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service,env ORDER BY service ASC, env ASC",
+   "at": "2026-09-23T16:52:53.321Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service,env ORDER BY service ASC, env ASC",
+   "at": "2026-09-23T16:52:53.529Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service,env ORDER BY service ASC, env ASC",
+   "at": "2026-09-23T16:52:53.738Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service,env ORDER BY service ASC, env ASC",
+   "at": "2026-09-23T16:52:53.955Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service,env ORDER BY service ASC, env ASC",
+   "at": "2026-09-23T16:52:54.170Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service,env ORDER BY service ASC, env ASC",
+   "at": "2026-09-23T16:52:54.396Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service,env ORDER BY service ASC, env ASC",
+   "at": "2026-09-23T16:53:30.297Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service,env ORDER BY service ASC, env ASC",
+   "at": "2026-09-23T16:53:30.546Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "B",
+   "sql": "SELECT service, env COUNT(*) AS deploy_count FROM deploys  GROUP BY service,env ORDER BY service ASC, env ASC",
+   "at": "2026-09-23T16:53:31.296Z",
+   "grade": "error",
+   "gradeReason": "near \"(\": syntax error",
+   "outcome": "error",
+   "error": "near \"(\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P07",
+   "arm": "B",
+   "sql": "SELECT service,COUNT(*) failed_count FROM deploys WHERE status='failed' GROUP BY service ORDER BY service ASC",
+   "at": "2026-09-23T16:55:49.163Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "auth",
+     "2"
+    ],
+    [
+     "billing",
+     "3"
+    ],
+    [
+     "notify",
+     "4"
+    ],
+    [
+     "payments",
+     "2"
+    ],
+    [
+     "search",
+     "1"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P07",
+   "arm": "B",
+   "sql": "SELECT service,COUNT(*) failed_count FROM deploys WHERE status='failed' GROUP BY service ORDER BY service ASC",
+   "at": "2026-09-23T16:55:54.587Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "auth",
+     "2"
+    ],
+    [
+     "billing",
+     "3"
+    ],
+    [
+     "notify",
+     "4"
+    ],
+    [
+     "payments",
+     "2"
+    ],
+    [
+     "search",
+     "1"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P08",
+   "arm": "B",
+   "sql": "SELECT city,ROUND(AVG(fare),1) avg_fare FROM rides GROUP BY city ORDER BY city ASC",
+   "at": "2026-09-23T16:58:03.967Z",
+   "grade": "wrong",
+   "gradeReason": "5 rows returned, 5 expected",
+   "rows": [
+    [
+     "Delhi",
+     "194.5"
+    ],
+    [
+     "Indore",
+     "251.9"
+    ],
+    [
+     "Jaipur",
+     "277.2"
+    ],
+    [
+     "Kochi",
+     "181.5"
+    ],
+    [
+     "Pune",
+     "122"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P08",
+   "arm": "B",
+   "sql": "SELECT city,ROUND(AVG(fare),1) avg_fare FROM rides WHERE distance_km>10  GROUP BY city ORDER BY city ASC",
+   "at": "2026-09-23T16:58:40.568Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "Delhi",
+     "294.2"
+    ],
+    [
+     "Indore",
+     "312.2"
+    ],
+    [
+     "Jaipur",
+     "299.9"
+    ],
+    [
+     "Kochi",
+     "287.5"
+    ],
+    [
+     "Pune",
+     "254"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P09",
+   "arm": "B",
+   "sql": "SELECT team,COUNT(*)AS closed_p1 FROM tickets WHERE status ='closed' AND priority='P1' GROUP BY team ORDER BY team ASC",
+   "at": "2026-09-23T17:01:39.198Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "data",
+     "2"
+    ],
+    [
+     "mobile",
+     "1"
+    ],
+    [
+     "platform",
+     "3"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P10",
+   "arm": "B",
+   "sql": "SELECT service ,ROUND(AVG(duration_sec),1) AS avg_seconds FROM deploys GROUP BY service ORDER BY avg_seconds DESC",
+   "at": "2026-09-23T17:04:17.212Z",
+   "grade": "wrong",
+   "gradeReason": "5 rows returned, 5 expected",
+   "rows": [
+    [
+     "payments",
+     "279.5"
+    ],
+    [
+     "billing",
+     "204.5"
+    ],
+    [
+     "notify",
+     "172.1"
+    ],
+    [
+     "auth",
+     "163.7"
+    ],
+    [
+     "search",
+     "157"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P10",
+   "arm": "B",
+   "sql": "SELECT service ,ROUND(AVG(duration_sec),1) AS avg_seconds FROM deploys WHERE env ='prod' GROUP BY service ORDER BY avg_seconds DESC",
+   "at": "2026-09-23T17:05:09.428Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "payments",
+     "268.9"
+    ],
+    [
+     "notify",
+     "264.5"
+    ],
+    [
+     "billing",
+     "238"
+    ],
+    [
+     "search",
+     "100"
+    ],
+    [
+     "auth",
+     "71"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P12",
+   "arm": "B",
+   "sql": "SELECT priority,MAX(hours_to_close) AS longest_hours FROM tickets WHERE status ='closed' GROUP BY priority ORDER BY priority CASE 'P1' THEN 1 'P2' THEN 2 'P3' THEN 3",
+   "at": "2026-09-23T17:09:06.081Z",
+   "grade": "error",
+   "gradeReason": "near \"CASE\": syntax error",
+   "outcome": "error",
+   "error": "near \"CASE\": syntax error"
+  },
+  {
+   "type": "help_decided",
+   "q": "P12",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 1,
+   "sinceHelp": null,
+   "at": "2026-09-23T17:09:07.740Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P12",
+   "arm": "B",
+   "sql": "SELECT priority,MAX(hours_to_close) AS longest_hours FROM tickets WHERE status ='closed' GROUP BY priority ORDER BY priority CASE  WHEN 'P1' THEN 1 WHEN 'P2' THEN 2 WHEN'P3' THEN 3",
+   "at": "2026-09-23T17:09:46.727Z",
+   "grade": "error",
+   "gradeReason": "near \"CASE\": syntax error",
+   "outcome": "error",
+   "error": "near \"CASE\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P12",
+   "arm": "B",
+   "sql": "SELECT priority,MAX(hours_to_close) AS longest_hours FROM tickets WHERE status ='closed' GROUP BY priority ORDER BY priority CASE  WHEN 'P1' THEN 1 WHEN 'P2' THEN 2 WHEN'P3' THEN 3",
+   "at": "2026-09-23T17:09:47.785Z",
+   "grade": "error",
+   "gradeReason": "near \"CASE\": syntax error",
+   "outcome": "error",
+   "error": "near \"CASE\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P12",
+   "arm": "B",
+   "sql": "SELECT priority,MAX(hours_to_close) AS longest_hours FROM tickets WHERE status ='closed' GROUP BY priority ORDER BY priority CASE  WHEN 'P1' THEN 1 WHEN 'P2' THEN 2 WHEN'P3' THEN 3",
+   "at": "2026-09-23T17:09:48.116Z",
+   "grade": "error",
+   "gradeReason": "near \"CASE\": syntax error",
+   "outcome": "error",
+   "error": "near \"CASE\": syntax error"
+  },
+  {
+   "type": "help_decided",
+   "q": "P12",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 2,
+   "sinceHelp": null,
+   "at": "2026-09-23T17:09:48.658Z"
+  },
+  {
+   "type": "help_decided",
+   "q": "P12",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 2,
+   "sinceHelp": null,
+   "at": "2026-09-23T17:09:49.173Z"
+  },
+  {
+   "type": "help_decided",
+   "q": "P12",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 2,
+   "sinceHelp": null,
+   "at": "2026-09-23T17:09:49.383Z"
+  },
+  {
+   "type": "help_decided",
+   "q": "P12",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 2,
+   "sinceHelp": null,
+   "at": "2026-09-23T17:09:49.574Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P12",
+   "arm": "B",
+   "sql": "SELECT priority,MAX(hours_to_close) AS longest_hours FROM tickets WHERE status ='closed' GROUP BY priority ORDER BY CASE priority WHEN 'P1' THEN 1 WHEN 'P2' THEN 2 WHEN'P3' THEN 3",
+   "at": "2026-09-23T17:10:32.394Z",
+   "grade": "error",
+   "gradeReason": "incomplete input",
+   "outcome": "error",
+   "error": "incomplete input"
+  },
+  {
+   "type": "help_decided",
+   "q": "P12",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 3,
+   "sinceHelp": null,
+   "at": "2026-09-23T17:10:35.587Z"
+  },
+  {
+   "type": "help_decided",
+   "q": "P12",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 3,
+   "sinceHelp": null,
+   "at": "2026-09-23T17:10:36.202Z"
+  },
+  {
+   "type": "help_decided",
+   "q": "P12",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 3,
+   "sinceHelp": null,
+   "at": "2026-09-23T17:10:36.696Z"
+  },
+  {
+   "type": "help_decided",
+   "q": "P12",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 3,
+   "sinceHelp": null,
+   "at": "2026-09-23T17:10:36.943Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P12",
+   "arm": "B",
+   "sql": "SELECT priority,MAX(hours_to_close) AS longest_hours FROM tickets WHERE status ='closed' GROUP BY priority ORDER BY CASE priority WHEN 'P1' THEN 1 WHEN 'P2' THEN 2 WHEN'P3' THEN 3",
+   "at": "2026-09-23T17:10:37.994Z",
+   "grade": "error",
+   "gradeReason": "incomplete input",
+   "outcome": "error",
+   "error": "incomplete input"
+  },
+  {
+   "type": "attempt",
+   "q": "P12",
+   "arm": "B",
+   "sql": "SELECT priority,MAX(hours_to_close) AS longest_hours FROM tickets WHERE status ='closed' GROUP BY priority ORDER BY CASE priority WHEN 'P1' THEN 1 WHEN 'P2' THEN 2 WHEN'P3' THEN 3",
+   "at": "2026-09-23T17:10:38.203Z",
+   "grade": "error",
+   "gradeReason": "incomplete input",
+   "outcome": "error",
+   "error": "incomplete input"
+  },
+  {
+   "type": "attempt",
+   "q": "P12",
+   "arm": "B",
+   "sql": "SELECT priority,MAX(hours_to_close) AS longest_hours FROM tickets WHERE status ='closed' GROUP BY priority ORDER BY CASE priority WHEN 'P1' THEN 1 WHEN 'P2' THEN 2 WHEN'P3' THEN 3",
+   "at": "2026-09-23T17:10:43.918Z",
+   "grade": "error",
+   "gradeReason": "incomplete input",
+   "outcome": "error",
+   "error": "incomplete input"
+  },
+  {
+   "type": "attempt",
+   "q": "P12",
+   "arm": "B",
+   "sql": "SELECT priority,MAX(hours_to_close) AS longest_hours FROM tickets WHERE status ='closed' GROUP BY priority ORDER BY CASE priority WHEN 'P1' THEN 1 WHEN 'P2' THEN 2 WHEN'P3' THEN 3",
+   "at": "2026-09-23T17:10:44.414Z",
+   "grade": "error",
+   "gradeReason": "incomplete input",
+   "outcome": "error",
+   "error": "incomplete input"
+  },
+  {
+   "type": "attempt",
+   "q": "P12",
+   "arm": "B",
+   "sql": "SELECT priority,MAX(hours_to_close) AS longest_hours FROM tickets WHERE status ='closed' GROUP BY priority ORDER BY CASE priority WHEN 'P1' THEN 1 WHEN 'P2' THEN 2 WHEN'P3' THEN 3",
+   "at": "2026-09-23T17:10:44.648Z",
+   "grade": "error",
+   "gradeReason": "incomplete input",
+   "outcome": "error",
+   "error": "incomplete input"
+  },
+  {
+   "type": "attempt",
+   "q": "P12",
+   "arm": "B",
+   "sql": "SELECT priority,MAX(hours_to_close) AS longest_hours FROM tickets WHERE status ='closed' GROUP BY priority ORDER BY CASE priority WHEN 'P1' THEN 1 WHEN 'P2' THEN 2 WHEN'P3' THEN 3",
+   "at": "2026-09-23T17:10:44.889Z",
+   "grade": "error",
+   "gradeReason": "incomplete input",
+   "outcome": "error",
+   "error": "incomplete input"
+  },
+  {
+   "type": "attempt",
+   "q": "P12",
+   "arm": "B",
+   "sql": "SELECT priority,MAX(hours_to_close) AS longest_hours FROM tickets WHERE status ='closed' GROUP BY priority ORDER BY CASE priority WHEN 'P1' THEN 1 WHEN 'P2' THEN 2 WHEN'P3' THEN 3",
+   "at": "2026-09-23T17:10:45.131Z",
+   "grade": "error",
+   "gradeReason": "incomplete input",
+   "outcome": "error",
+   "error": "incomplete input"
+  },
+  {
+   "type": "attempt",
+   "q": "P12",
+   "arm": "B",
+   "sql": "SELECT priority,MAX(hours_to_close) AS longest_hours FROM tickets WHERE status ='closed' GROUP BY priority ORDER BY CASE priority WHEN 'P1' THEN 1 WHEN 'P2' THEN 2 WHEN'P3' THEN 3",
+   "at": "2026-09-23T17:10:45.424Z",
+   "grade": "error",
+   "gradeReason": "incomplete input",
+   "outcome": "error",
+   "error": "incomplete input"
+  },
+  {
+   "type": "help_decided",
+   "q": "P13",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 0,
+   "sinceHelp": null,
+   "at": "2026-09-23T17:13:01.291Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "B",
+   "sql": "SELECT evn,COUNT(*)AS success_count FROM deploys WHERE status='success' and service <> 'auth' GROUP BY env ORDER BY env",
+   "at": "2026-09-23T17:13:14.723Z",
+   "grade": "invalid",
+   "gradeReason": "selects evn without grouping by it",
+   "outcome": "error",
+   "error": "no such column: evn"
+  },
+  {
+   "type": "help_decided",
+   "q": "P13",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 1,
+   "sinceHelp": null,
+   "at": "2026-09-23T17:13:24.261Z"
+  },
+  {
+   "type": "help_decided",
+   "q": "P13",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 1,
+   "sinceHelp": null,
+   "at": "2026-09-23T17:13:26.058Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "B",
+   "sql": "SELECT evn,COUNT(*)AS success_count FROM deploys WHERE status='success' and service <> 'auth' GROUP BY env ORDER BY env ASC",
+   "at": "2026-09-23T17:13:39.453Z",
+   "grade": "invalid",
+   "gradeReason": "selects evn without grouping by it",
+   "outcome": "error",
+   "error": "no such column: evn"
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "B",
+   "sql": "SELECT evn,COUNT(*)AS success_count FROM deploys WHERE status='success' and service <> 'auth' GROUP BY env ORDER BY env ASC",
+   "at": "2026-09-23T17:13:40.219Z",
+   "grade": "invalid",
+   "gradeReason": "selects evn without grouping by it",
+   "outcome": "error",
+   "error": "no such column: evn"
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "B",
+   "sql": "SELECT evn,COUNT(*)AS success_count FROM deploys WHERE status='success' and service <> 'auth' GROUP BY env ORDER BY env ASC",
+   "at": "2026-09-23T17:13:40.494Z",
+   "grade": "invalid",
+   "gradeReason": "selects evn without grouping by it",
+   "outcome": "error",
+   "error": "no such column: evn"
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "B",
+   "sql": "SELECT evn,COUNT(*)AS success_count FROM deploys WHERE status='success' and service <> 'auth' GROUP BY env ORDER BY env ASC",
+   "at": "2026-09-23T17:13:40.671Z",
+   "grade": "invalid",
+   "gradeReason": "selects evn without grouping by it",
+   "outcome": "error",
+   "error": "no such column: evn"
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "B",
+   "sql": "SELECT evn,COUNT(*)AS success_count FROM deploys WHERE status='success' and service <> 'auth' GROUP BY env ORDER BY env ASC",
+   "at": "2026-09-23T17:13:40.887Z",
+   "grade": "invalid",
+   "gradeReason": "selects evn without grouping by it",
+   "outcome": "error",
+   "error": "no such column: evn"
+  },
+  {
+   "type": "help_decided",
+   "q": "P13",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 2,
+   "sinceHelp": null,
+   "at": "2026-09-23T17:13:42.003Z"
+  },
+  {
+   "type": "help_decided",
+   "q": "P13",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 2,
+   "sinceHelp": null,
+   "at": "2026-09-23T17:13:42.195Z"
+  },
+  {
+   "type": "help_decided",
+   "q": "P13",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 2,
+   "sinceHelp": null,
+   "at": "2026-09-23T17:13:42.396Z"
+  },
+  {
+   "type": "help_decided",
+   "q": "P13",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 2,
+   "sinceHelp": null,
+   "at": "2026-09-23T17:13:42.587Z"
+  },
+  {
+   "type": "help_decided",
+   "q": "P13",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 2,
+   "sinceHelp": null,
+   "at": "2026-09-23T17:13:42.796Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "B",
+   "sql": "SELECT evn,COUNT(*)AS success_count FROM deploys WHERE status='success' and service <> 'auth' GROUP BY env ORDER BY env ASC",
+   "at": "2026-09-23T17:13:43.398Z",
+   "grade": "invalid",
+   "gradeReason": "selects evn without grouping by it",
+   "outcome": "error",
+   "error": "no such column: evn"
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "B",
+   "sql": "SELECT evn,COUNT(*)AS success_count FROM deploys WHERE status='success' and service <> 'auth' GROUP BY env ORDER BY env ASC",
+   "at": "2026-09-23T17:13:43.589Z",
+   "grade": "invalid",
+   "gradeReason": "selects evn without grouping by it",
+   "outcome": "error",
+   "error": "no such column: evn"
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "B",
+   "sql": "SELECT evn,COUNT(*)AS success_count FROM deploys WHERE status='success' and service <> 'auth' GROUP BY env ORDER BY env ASC",
+   "at": "2026-09-23T17:13:43.795Z",
+   "grade": "invalid",
+   "gradeReason": "selects evn without grouping by it",
+   "outcome": "error",
+   "error": "no such column: evn"
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "B",
+   "sql": "SELECT evn,COUNT(*)AS success_count FROM deploys WHERE status='success' and service <> 'auth' GROUP BY env ORDER BY env ASC",
+   "at": "2026-09-23T17:13:44.012Z",
+   "grade": "invalid",
+   "gradeReason": "selects evn without grouping by it",
+   "outcome": "error",
+   "error": "no such column: evn"
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "B",
+   "sql": "SELECT evn,COUNT(*)AS success_count FROM deploys WHERE status='success' and service <> 'auth' GROUP BY env ORDER BY env ASC",
+   "at": "2026-09-23T17:13:44.255Z",
+   "grade": "invalid",
+   "gradeReason": "selects evn without grouping by it",
+   "outcome": "error",
+   "error": "no such column: evn"
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "B",
+   "sql": "SELECT evn,COUNT(*)AS success_count FROM deploys WHERE status='success' and service <> 'auth' GROUP BY env ORDER BY env ASC",
+   "at": "2026-09-23T17:13:44.562Z",
+   "grade": "invalid",
+   "gradeReason": "selects evn without grouping by it",
+   "outcome": "error",
+   "error": "no such column: evn"
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "B",
+   "sql": "SELECT evn,COUNT(*)AS success_count FROM deploys WHERE status='success' and service <> 'auth' GROUP BY env ORDER BY env ASC",
+   "at": "2026-09-23T17:13:44.922Z",
+   "grade": "invalid",
+   "gradeReason": "selects evn without grouping by it",
+   "outcome": "error",
+   "error": "no such column: evn"
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "B",
+   "sql": "SELECT evn,COUNT(*)AS success_count FROM deploys WHERE status='success' and service <> 'auth' GROUP BY env ORDER BY env ASC",
+   "at": "2026-09-23T17:13:45.613Z",
+   "grade": "invalid",
+   "gradeReason": "selects evn without grouping by it",
+   "outcome": "error",
+   "error": "no such column: evn"
+  },
+  {
+   "type": "help_decided",
+   "q": "P14",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 0,
+   "sinceHelp": null,
+   "at": "2026-09-23T17:15:11.964Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P14",
+   "arm": "B",
+   "sql": "SELECT service,COUNT(*) deploy_count FROM deploys GROUP BY service HAVING COUNT(*) > 6 ORDER BY service ASC",
+   "at": "2026-09-23T17:15:30.347Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "billing",
+     "10"
+    ],
+    [
+     "notify",
+     "7"
+    ],
+    [
+     "payments",
+     "13"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P15",
+   "arm": "B",
+   "sql": "SELECT city,ROUND(AVG(fare),1) AS avg_fare FROM rides WHERE avg_fare>200 GROUP BY city ORDER BY avg_fare desc",
+   "at": "2026-09-23T17:17:50.195Z",
+   "grade": "error",
+   "gradeReason": "misuse of aggregate: AVG()",
+   "outcome": "error",
+   "error": "misuse of aggregate: AVG()"
+  },
+  {
+   "type": "help_decided",
+   "q": "P15",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 1,
+   "sinceHelp": null,
+   "at": "2026-09-23T17:17:54.560Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P15",
+   "arm": "B",
+   "sql": "SELECT city,ROUND(AVG(fare),1) AS avg_fare FROM rides GROUP BY city HAVING AVG(fare)>200 ORDER BY avg_fare DESC",
+   "at": "2026-09-23T17:18:51.707Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "Jaipur",
+     "277.2"
+    ],
+    [
+     "Indore",
+     "251.9"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "help_decided",
+   "q": "P16",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 0,
+   "sinceHelp": null,
+   "at": "2026-09-23T17:21:34.317Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P16",
+   "arm": "B",
+   "sql": "SELECT team,SUM(hours_to_close) AS total_hours FROM tickets GROUP BY team HAVING SUM(hours_to_close)>300 ORDER BY team ASC",
+   "at": "2026-09-23T17:22:04.198Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "mobile",
+     "610"
+    ],
+    [
+     "web",
+     "480"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "help_decided",
+   "q": "P17",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 0,
+   "sinceHelp": null,
+   "at": "2026-09-23T17:22:54.246Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P17",
+   "arm": "B",
+   "sql": "SELECT driver,COUNT(*) AS ride_count FROM rides GROUP BY driver HAVING COUNT(*)>=7 ORDER BY ride_count DESC",
+   "at": "2026-09-23T17:24:09.990Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "Divya",
+     "12"
+    ],
+    [
+     "Farhan",
+     "10"
+    ],
+    [
+     "Bela",
+     "7"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "help_decided",
+   "q": "P18",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 0,
+   "sinceHelp": null,
+   "at": "2026-09-23T17:25:21.478Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P18",
+   "arm": "B",
+   "sql": "SELECT service, MIN(duration_sec) AS fastest_seconds FROM deploys GROUP BY service HAVING MIN(duration_sec)>=60 ORDER BY service ASC",
+   "at": "2026-09-23T17:26:18.491Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "auth",
+     "69"
+    ],
+    [
+     "payments",
+     "167"
+    ],
+    [
+     "search",
+     "64"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "help_decided",
+   "q": "P19",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 0,
+   "sinceHelp": null,
+   "at": "2026-09-23T17:28:01.961Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P19",
+   "arm": "B",
+   "sql": "SELECT priority, ROUND(AVG(hours_to_close),1) AS avg_hours FROM tickets GROUP BY priority HAVING AVG(hours_to_close)<45 ORDER BY CASE priority WHEN 'P1' THEN 1 WHEN 'P2' THEN 2 WHEN'P3' THEN 3",
+   "at": "2026-09-23T17:30:00.925Z",
+   "grade": "error",
+   "gradeReason": "incomplete input",
+   "outcome": "error",
+   "error": "incomplete input"
+  },
+  {
+   "type": "help_decided",
+   "q": "P19",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 1,
+   "sinceHelp": null,
+   "at": "2026-09-23T17:30:03.374Z"
+  },
+  {
+   "type": "help_decided",
+   "q": "P19",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 1,
+   "sinceHelp": null,
+   "at": "2026-09-23T17:30:04.045Z"
+  },
+  {
+   "type": "help_decided",
+   "q": "P19",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 1,
+   "sinceHelp": null,
+   "at": "2026-09-23T17:30:04.289Z"
+  },
+  {
+   "type": "help_decided",
+   "q": "P19",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 1,
+   "sinceHelp": null,
+   "at": "2026-09-23T17:30:04.553Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P19",
+   "arm": "B",
+   "sql": "SELECT priority, ROUND(AVG(hours_to_close),1) AS avg_hours FROM tickets GROUP BY priority HAVING AVG(hours_to_close)<45 ORDER BY CASE priority WHEN 'P1' THEN 1 WHEN 'P2' THEN 2 WHEN'P3' THEN 3",
+   "at": "2026-09-23T17:30:05.230Z",
+   "grade": "error",
+   "gradeReason": "incomplete input",
+   "outcome": "error",
+   "error": "incomplete input"
+  },
+  {
+   "type": "attempt",
+   "q": "P19",
+   "arm": "B",
+   "sql": "SELECT priority, ROUND(AVG(hours_to_close),1) AS avg_hours FROM tickets GROUP BY priority HAVING AVG(hours_to_close)<45 ORDER BY CASE priority WHEN 'P1' THEN 1 WHEN 'P2' THEN 2 WHEN'P3' THEN 3",
+   "at": "2026-09-23T17:30:05.445Z",
+   "grade": "error",
+   "gradeReason": "incomplete input",
+   "outcome": "error",
+   "error": "incomplete input"
+  },
+  {
+   "type": "attempt",
+   "q": "P19",
+   "arm": "B",
+   "sql": "SELECT priority, ROUND(AVG(hours_to_close),1) AS avg_hours FROM tickets GROUP BY priority HAVING AVG(hours_to_close)<45 ORDER BY CASE priority WHEN 'P1' THEN 1 WHEN 'P2' THEN 2 WHEN'P3' THEN 3",
+   "at": "2026-09-23T17:30:05.630Z",
+   "grade": "error",
+   "gradeReason": "incomplete input",
+   "outcome": "error",
+   "error": "incomplete input"
+  },
+  {
+   "type": "attempt",
+   "q": "P19",
+   "arm": "B",
+   "sql": "SELECT priority, ROUND(AVG(hours_to_close),1) AS avg_hours FROM tickets GROUP BY priority HAVING AVG(hours_to_close)<45 ORDER BY CASE priority WHEN 'P1' THEN 1 WHEN 'P2' THEN 2 WHEN'P3' THEN 3",
+   "at": "2026-09-23T17:30:05.839Z",
+   "grade": "error",
+   "gradeReason": "incomplete input",
+   "outcome": "error",
+   "error": "incomplete input"
+  },
+  {
+   "type": "help_decided",
+   "q": "P19",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 1,
+   "sinceHelp": null,
+   "at": "2026-09-23T17:30:06.464Z"
+  },
+  {
+   "type": "help_decided",
+   "q": "P19",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 1,
+   "sinceHelp": null,
+   "at": "2026-09-23T17:30:06.664Z"
+  },
+  {
+   "type": "help_decided",
+   "q": "P19",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 1,
+   "sinceHelp": null,
+   "at": "2026-09-23T17:30:06.863Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P19",
+   "arm": "B",
+   "sql": "SELECT priority, ROUND(AVG(hours_to_close),1) AS avg_hours FROM tickets GROUP BY priority HAVING AVG(hours_to_close)<45 ORDER BY CASE priority WHEN 'P1' THEN 1 WHEN 'P2' THEN 2 WHEN'P3' THEN 3",
+   "at": "2026-09-23T17:30:21.392Z",
+   "grade": "error",
+   "gradeReason": "incomplete input",
+   "outcome": "error",
+   "error": "incomplete input"
+  },
+  {
+   "type": "attempt",
+   "q": "P19",
+   "arm": "B",
+   "sql": "SELECT priority, ROUND(AVG(hours_to_close),1) AS avg_hours FROM tickets GROUP BY priority HAVING AVG(hours_to_close)<45 ORDER BY CASE priority WHEN 'P1' THEN 1 WHEN 'P2' THEN 2 WHEN'P3' THEN 3",
+   "at": "2026-09-23T17:30:21.667Z",
+   "grade": "error",
+   "gradeReason": "incomplete input",
+   "outcome": "error",
+   "error": "incomplete input"
+  },
+  {
+   "type": "attempt",
+   "q": "P19",
+   "arm": "B",
+   "sql": "SELECT priority, ROUND(AVG(hours_to_close),1) AS avg_hours FROM tickets GROUP BY priority HAVING AVG(hours_to_close)<45 ORDER BY CASE priority WHEN 'P1' THEN 1 WHEN 'P2' THEN 2 WHEN'P3' THEN 3",
+   "at": "2026-09-23T17:30:22.067Z",
+   "grade": "error",
+   "gradeReason": "incomplete input",
+   "outcome": "error",
+   "error": "incomplete input"
+  },
+  {
+   "type": "help_decided",
+   "q": "P20",
+   "arm": "B",
+   "action": "reveal",
+   "counted": 0,
+   "sinceHelp": null,
+   "at": "2026-09-23T17:30:38.888Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P20",
+   "arm": "B",
+   "sql": "SELECT city, ROUND(SUM(distance_km),1) AS total_km FROM rides GROUP BY city HAVING SUM(distance_km) > 100 ORDER BY total_km DESC",
+   "at": "2026-09-23T17:30:44.008Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "Jaipur",
+     "162.5"
+    ],
+    [
+     "Delhi",
+     "139.2"
+    ],
+    [
+     "Indore",
+     "111.3"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P19",
+   "arm": "B",
+   "sql": "SELECT priority, ROUND(AVG(hours_to_close),1) AS avg_hours FROM tickets GROUP BY priority HAVING AVG(hours_to_close)<45 ORDER BY CASE priority WHEN 'P1' THEN 1 WHEN 'P2' THEN 2 WHEN'P3' THEN 3 END",
+   "at": "2026-09-23T17:31:09.495Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "P1",
+     "43.6"
+    ],
+    [
+     "P2",
+     "36.7"
+    ]
+   ],
+   "outcome": "correct"
+  }
+ ],
+ "finished": "2026-09-23T17:31:20.523Z",
+ "summary": {
+  "byAction": {
+   "B:reveal": 42
+  },
+  "hintsDelivered": 0,
+  "fallbacks": 0,
+  "fallbackRate": null
+ }
+}

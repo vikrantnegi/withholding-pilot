@@ -1,0 +1,390 @@
+{
+ "version": "slice-1",
+ "participant": "geu2z",
+ "arm": "A",
+ "started": "2026-09-23T09:48:48.928Z",
+ "events": [
+  {
+   "type": "attempt",
+   "q": "P02",
+   "arm": "A",
+   "sql": "SELECT CITY, ROUND(AVG(fare),1) AS avg_fare FROM rides GROUP BY city ORDER BY city",
+   "at": "2026-09-23T09:50:49.738Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "Delhi",
+     "194.5"
+    ],
+    [
+     "Indore",
+     "251.9"
+    ],
+    [
+     "Jaipur",
+     "277.2"
+    ],
+    [
+     "Kochi",
+     "181.5"
+    ],
+    [
+     "Pune",
+     "122"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P04",
+   "arm": "A",
+   "sql": "SELECT driver, ROUND(SUM(distance_km),1) AS total_km FROM rides GROUP BY driver ORDER BY total_km DESC;",
+   "at": "2026-09-23T09:52:32.946Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "Farhan",
+     "133.7"
+    ],
+    [
+     "Divya",
+     "117.6"
+    ],
+    [
+     "Bela",
+     "104.3"
+    ],
+    [
+     "Chetan",
+     "67.5"
+    ],
+    [
+     "Amit",
+     "54.7"
+    ],
+    [
+     "Gita",
+     "9.7"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "A",
+   "sql": "SELECT service ,env, COUNT(*) as deploy_count FROM deploys GROUP BY service ORDER BY service,env;",
+   "at": "2026-09-23T09:54:23.378Z",
+   "grade": "invalid",
+   "gradeReason": "selects env without grouping by it",
+   "rows": [
+    [
+     "auth",
+     "staging",
+     "6"
+    ],
+    [
+     "billing",
+     "staging",
+     "10"
+    ],
+    [
+     "notify",
+     "staging",
+     "7"
+    ],
+    [
+     "payments",
+     "staging",
+     "13"
+    ],
+    [
+     "search",
+     "staging",
+     "4"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "A",
+   "sql": "SELECT service ,env, COUNT(*) as deploy_count FROM deploys GROUP BY service,env ORDER BY service,env;",
+   "at": "2026-09-23T09:56:46.054Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "auth",
+     "prod",
+     "1"
+    ],
+    [
+     "auth",
+     "staging",
+     "5"
+    ],
+    [
+     "billing",
+     "prod",
+     "3"
+    ],
+    [
+     "billing",
+     "staging",
+     "7"
+    ],
+    [
+     "notify",
+     "prod",
+     "2"
+    ],
+    [
+     "notify",
+     "staging",
+     "5"
+    ],
+    [
+     "payments",
+     "prod",
+     "10"
+    ],
+    [
+     "payments",
+     "staging",
+     "3"
+    ],
+    [
+     "search",
+     "prod",
+     "1"
+    ],
+    [
+     "search",
+     "staging",
+     "3"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P07",
+   "arm": "A",
+   "sql": "SELECT service,COUNT(*) AS failed_count FROM deploys WHERE status='failed' GROUP BY service;",
+   "at": "2026-09-23T09:58:59.503Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "auth",
+     "2"
+    ],
+    [
+     "billing",
+     "3"
+    ],
+    [
+     "notify",
+     "4"
+    ],
+    [
+     "payments",
+     "2"
+    ],
+    [
+     "search",
+     "1"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P08",
+   "arm": "A",
+   "sql": "SELECT city, ROUND(AVG(fare),1) AS avg_fare FROM rides WHERE distance_km > 10 GROUP BY city",
+   "at": "2026-09-23T10:00:26.205Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "Delhi",
+     "294.2"
+    ],
+    [
+     "Indore",
+     "312.2"
+    ],
+    [
+     "Jaipur",
+     "299.9"
+    ],
+    [
+     "Kochi",
+     "287.5"
+    ],
+    [
+     "Pune",
+     "254"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P09",
+   "arm": "A",
+   "sql": "SELECT COUNT(*) AS closed_p1,team FROM tickets WHERE priority = 'P1' and status = 'closed' GROUP BY team ORDER BY team",
+   "at": "2026-09-23T10:01:53.599Z",
+   "grade": "wrong",
+   "gradeReason": "3 rows returned, 3 expected",
+   "rows": [
+    [
+     "2",
+     "data"
+    ],
+    [
+     "1",
+     "mobile"
+    ],
+    [
+     "3",
+     "platform"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P09",
+   "arm": "A",
+   "sql": "SELECT team,COUNT(*) AS closed_p1 FROM tickets WHERE priority = 'P1' and status = 'closed' GROUP BY team ORDER BY team",
+   "at": "2026-09-23T10:02:48.491Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "data",
+     "2"
+    ],
+    [
+     "mobile",
+     "1"
+    ],
+    [
+     "platform",
+     "3"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P10",
+   "arm": "A",
+   "sql": "SELECT service,ROUND(AVG(duration_sec),1) as avg_seconds FROM deploys WHERE env = 'prod' GROUP BY service ORDER BY service",
+   "at": "2026-09-23T10:04:23.020Z",
+   "grade": "wrong",
+   "gradeReason": "right rows, wrong order",
+   "rows": [
+    [
+     "auth",
+     "71"
+    ],
+    [
+     "billing",
+     "238"
+    ],
+    [
+     "notify",
+     "264.5"
+    ],
+    [
+     "payments",
+     "268.9"
+    ],
+    [
+     "search",
+     "100"
+    ]
+   ],
+   "outcome": "right_rows_wrong_order"
+  },
+  {
+   "type": "attempt",
+   "q": "P10",
+   "arm": "A",
+   "sql": "SELECT service,ROUND(AVG(duration_sec),1) as avg_seconds FROM deploys WHERE env = 'prod' GROUP BY service ORDER BY avg_seconds",
+   "at": "2026-09-23T10:04:33.703Z",
+   "grade": "wrong",
+   "gradeReason": "right rows, wrong order",
+   "rows": [
+    [
+     "auth",
+     "71"
+    ],
+    [
+     "search",
+     "100"
+    ],
+    [
+     "billing",
+     "238"
+    ],
+    [
+     "notify",
+     "264.5"
+    ],
+    [
+     "payments",
+     "268.9"
+    ]
+   ],
+   "outcome": "right_rows_wrong_order"
+  },
+  {
+   "type": "attempt",
+   "q": "P10",
+   "arm": "A",
+   "sql": "SELECT service,ROUND(AVG(duration_sec),1) as avg_seconds FROM deploys WHERE env = 'prod' GROUP BY service ORDER BY avg_seconds DESC",
+   "at": "2026-09-23T10:04:43.783Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "payments",
+     "268.9"
+    ],
+    [
+     "notify",
+     "264.5"
+    ],
+    [
+     "billing",
+     "238"
+    ],
+    [
+     "search",
+     "100"
+    ],
+    [
+     "auth",
+     "71"
+    ]
+   ],
+   "outcome": "correct"
+  }
+ ],
+ "finished": "2026-09-23T10:06:12.406Z",
+ "summary": {
+  "byAction": {},
+  "hintsDelivered": 0,
+  "fallbacks": 0,
+  "fallbackRate": null
+ }
+}

@@ -1,0 +1,2509 @@
+{
+ "version": "slice-1",
+ "participant": "efkxn",
+ "arm": "A",
+ "started": "2026-09-25T16:06:27.265Z",
+ "events": [
+  {
+   "type": "attempt",
+   "q": "P02",
+   "arm": "A",
+   "sql": "select avg(fare), city from rides group by city order by city",
+   "at": "2026-09-25T16:08:11.092Z",
+   "grade": "wrong",
+   "gradeReason": "5 rows returned, 5 expected",
+   "rows": [
+    [
+     "194.46",
+     "Delhi"
+    ],
+    [
+     "251.88",
+     "Indore"
+    ],
+    [
+     "277.2",
+     "Jaipur"
+    ],
+    [
+     "181.5",
+     "Kochi"
+    ],
+    [
+     "122",
+     "Pune"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P02",
+   "arm": "A",
+   "sql": "select round(avg(fare),1), city from rides group by city order by city",
+   "at": "2026-09-25T16:09:00.525Z",
+   "grade": "wrong",
+   "gradeReason": "5 rows returned, 5 expected",
+   "rows": [
+    [
+     "194.5",
+     "Delhi"
+    ],
+    [
+     "251.9",
+     "Indore"
+    ],
+    [
+     "277.2",
+     "Jaipur"
+    ],
+    [
+     "181.5",
+     "Kochi"
+    ],
+    [
+     "122",
+     "Pune"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P02",
+   "arm": "A",
+   "sql": "select round(avg(fare),1), city from rides group by city order by city desc;",
+   "at": "2026-09-25T16:09:12.177Z",
+   "grade": "wrong",
+   "gradeReason": "5 rows returned, 5 expected",
+   "rows": [
+    [
+     "122",
+     "Pune"
+    ],
+    [
+     "181.5",
+     "Kochi"
+    ],
+    [
+     "277.2",
+     "Jaipur"
+    ],
+    [
+     "251.9",
+     "Indore"
+    ],
+    [
+     "194.5",
+     "Delhi"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P02",
+   "arm": "A",
+   "sql": "select round(avg(fare),1), city from rides group by city order by city desc;",
+   "at": "2026-09-25T16:09:13.298Z",
+   "grade": "wrong",
+   "gradeReason": "5 rows returned, 5 expected",
+   "rows": [
+    [
+     "122",
+     "Pune"
+    ],
+    [
+     "181.5",
+     "Kochi"
+    ],
+    [
+     "277.2",
+     "Jaipur"
+    ],
+    [
+     "251.9",
+     "Indore"
+    ],
+    [
+     "194.5",
+     "Delhi"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P02",
+   "arm": "A",
+   "sql": "select round(avg(fare),1), city from rides group by city order by city desc;",
+   "at": "2026-09-25T16:09:13.829Z",
+   "grade": "wrong",
+   "gradeReason": "5 rows returned, 5 expected",
+   "rows": [
+    [
+     "122",
+     "Pune"
+    ],
+    [
+     "181.5",
+     "Kochi"
+    ],
+    [
+     "277.2",
+     "Jaipur"
+    ],
+    [
+     "251.9",
+     "Indore"
+    ],
+    [
+     "194.5",
+     "Delhi"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P02",
+   "arm": "A",
+   "sql": "select round(avg(fare),1), city from rides group by city order by city asc;",
+   "at": "2026-09-25T16:09:22.839Z",
+   "grade": "wrong",
+   "gradeReason": "5 rows returned, 5 expected",
+   "rows": [
+    [
+     "194.5",
+     "Delhi"
+    ],
+    [
+     "251.9",
+     "Indore"
+    ],
+    [
+     "277.2",
+     "Jaipur"
+    ],
+    [
+     "181.5",
+     "Kochi"
+    ],
+    [
+     "122",
+     "Pune"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P02",
+   "arm": "A",
+   "sql": "select city,round(avg(fare),1) as avg_fare from rides group by city order by city desc;",
+   "at": "2026-09-25T16:09:58.097Z",
+   "grade": "wrong",
+   "gradeReason": "right rows, wrong order",
+   "rows": [
+    [
+     "Pune",
+     "122"
+    ],
+    [
+     "Kochi",
+     "181.5"
+    ],
+    [
+     "Jaipur",
+     "277.2"
+    ],
+    [
+     "Indore",
+     "251.9"
+    ],
+    [
+     "Delhi",
+     "194.5"
+    ]
+   ],
+   "outcome": "right_rows_wrong_order"
+  },
+  {
+   "type": "attempt",
+   "q": "P02",
+   "arm": "A",
+   "sql": "select city,round(avg(fare),1) as avg_fare from rides group by city order by city;",
+   "at": "2026-09-25T16:10:07.315Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "Delhi",
+     "194.5"
+    ],
+    [
+     "Indore",
+     "251.9"
+    ],
+    [
+     "Jaipur",
+     "277.2"
+    ],
+    [
+     "Kochi",
+     "181.5"
+    ],
+    [
+     "Pune",
+     "122"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P04",
+   "arm": "A",
+   "sql": "select driver,round(sum(distance_km),1) as total_km from rides group by driver order by total_km;",
+   "at": "2026-09-25T16:13:25.416Z",
+   "grade": "wrong",
+   "gradeReason": "right rows, wrong order",
+   "rows": [
+    [
+     "Gita",
+     "9.7"
+    ],
+    [
+     "Amit",
+     "54.7"
+    ],
+    [
+     "Chetan",
+     "67.5"
+    ],
+    [
+     "Bela",
+     "104.3"
+    ],
+    [
+     "Divya",
+     "117.6"
+    ],
+    [
+     "Farhan",
+     "133.7"
+    ]
+   ],
+   "outcome": "right_rows_wrong_order"
+  },
+  {
+   "type": "attempt",
+   "q": "P04",
+   "arm": "A",
+   "sql": "select driver,round(sum(distance_km),1) as total_km from rides group by driver order by total_km desc;",
+   "at": "2026-09-25T16:13:31.911Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "Farhan",
+     "133.7"
+    ],
+    [
+     "Divya",
+     "117.6"
+    ],
+    [
+     "Bela",
+     "104.3"
+    ],
+    [
+     "Chetan",
+     "67.5"
+    ],
+    [
+     "Amit",
+     "54.7"
+    ],
+    [
+     "Gita",
+     "9.7"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "A",
+   "sql": "select service,env,count(*) from deploys;",
+   "at": "2026-09-25T16:15:12.576Z",
+   "grade": "wrong",
+   "gradeReason": "1 rows returned, 10 expected",
+   "rows": [
+    [
+     "search",
+     "staging",
+     "40"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "A",
+   "sql": "select service,env,count(*) from deploys group by service;",
+   "at": "2026-09-25T16:15:42.013Z",
+   "grade": "invalid",
+   "gradeReason": "selects env without grouping by it",
+   "rows": [
+    [
+     "auth",
+     "staging",
+     "6"
+    ],
+    [
+     "billing",
+     "staging",
+     "10"
+    ],
+    [
+     "notify",
+     "staging",
+     "7"
+    ],
+    [
+     "payments",
+     "staging",
+     "13"
+    ],
+    [
+     "search",
+     "staging",
+     "4"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "A",
+   "sql": "select service,env,count(*) as deploy_count from deploys group by service;",
+   "at": "2026-09-25T16:15:52.745Z",
+   "grade": "invalid",
+   "gradeReason": "selects env without grouping by it",
+   "rows": [
+    [
+     "auth",
+     "staging",
+     "6"
+    ],
+    [
+     "billing",
+     "staging",
+     "10"
+    ],
+    [
+     "notify",
+     "staging",
+     "7"
+    ],
+    [
+     "payments",
+     "staging",
+     "13"
+    ],
+    [
+     "search",
+     "staging",
+     "4"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "A",
+   "sql": "select service,env,count(*) as deploy_count from deploys group by service order by service,env;",
+   "at": "2026-09-25T16:16:10.752Z",
+   "grade": "invalid",
+   "gradeReason": "selects env without grouping by it",
+   "rows": [
+    [
+     "auth",
+     "staging",
+     "6"
+    ],
+    [
+     "billing",
+     "staging",
+     "10"
+    ],
+    [
+     "notify",
+     "staging",
+     "7"
+    ],
+    [
+     "payments",
+     "staging",
+     "13"
+    ],
+    [
+     "search",
+     "staging",
+     "4"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "A",
+   "sql": "select service,env,count(*) as deploy_count from deploys group by service order by service,env;",
+   "at": "2026-09-25T16:16:12.712Z",
+   "grade": "invalid",
+   "gradeReason": "selects env without grouping by it",
+   "rows": [
+    [
+     "auth",
+     "staging",
+     "6"
+    ],
+    [
+     "billing",
+     "staging",
+     "10"
+    ],
+    [
+     "notify",
+     "staging",
+     "7"
+    ],
+    [
+     "payments",
+     "staging",
+     "13"
+    ],
+    [
+     "search",
+     "staging",
+     "4"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "A",
+   "sql": "select service,env,count(*) as deploy_count from deploys group by service order by service,env;",
+   "at": "2026-09-25T16:16:13.606Z",
+   "grade": "invalid",
+   "gradeReason": "selects env without grouping by it",
+   "rows": [
+    [
+     "auth",
+     "staging",
+     "6"
+    ],
+    [
+     "billing",
+     "staging",
+     "10"
+    ],
+    [
+     "notify",
+     "staging",
+     "7"
+    ],
+    [
+     "payments",
+     "staging",
+     "13"
+    ],
+    [
+     "search",
+     "staging",
+     "4"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "A",
+   "sql": "select service,env,count(*) as deploy_count from deploys group by service order by service desc,env desc;",
+   "at": "2026-09-25T16:16:54.974Z",
+   "grade": "invalid",
+   "gradeReason": "selects env without grouping by it",
+   "rows": [
+    [
+     "search",
+     "staging",
+     "4"
+    ],
+    [
+     "payments",
+     "staging",
+     "13"
+    ],
+    [
+     "notify",
+     "staging",
+     "7"
+    ],
+    [
+     "billing",
+     "staging",
+     "10"
+    ],
+    [
+     "auth",
+     "staging",
+     "6"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "A",
+   "sql": "select service,env,count(*) as deploy_count from deploys group by service,env order by service desc,env desc;",
+   "at": "2026-09-25T16:17:12.641Z",
+   "grade": "wrong",
+   "gradeReason": "right rows, wrong order",
+   "rows": [
+    [
+     "search",
+     "staging",
+     "3"
+    ],
+    [
+     "search",
+     "prod",
+     "1"
+    ],
+    [
+     "payments",
+     "staging",
+     "3"
+    ],
+    [
+     "payments",
+     "prod",
+     "10"
+    ],
+    [
+     "notify",
+     "staging",
+     "5"
+    ],
+    [
+     "notify",
+     "prod",
+     "2"
+    ],
+    [
+     "billing",
+     "staging",
+     "7"
+    ],
+    [
+     "billing",
+     "prod",
+     "3"
+    ],
+    [
+     "auth",
+     "staging",
+     "5"
+    ],
+    [
+     "auth",
+     "prod",
+     "1"
+    ]
+   ],
+   "outcome": "right_rows_wrong_order"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "A",
+   "sql": "select service,env,count(*) as deploy_count from deploys group by service,env order by service,env",
+   "at": "2026-09-25T16:17:22.171Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "auth",
+     "prod",
+     "1"
+    ],
+    [
+     "auth",
+     "staging",
+     "5"
+    ],
+    [
+     "billing",
+     "prod",
+     "3"
+    ],
+    [
+     "billing",
+     "staging",
+     "7"
+    ],
+    [
+     "notify",
+     "prod",
+     "2"
+    ],
+    [
+     "notify",
+     "staging",
+     "5"
+    ],
+    [
+     "payments",
+     "prod",
+     "10"
+    ],
+    [
+     "payments",
+     "staging",
+     "3"
+    ],
+    [
+     "search",
+     "prod",
+     "1"
+    ],
+    [
+     "search",
+     "staging",
+     "3"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "A",
+   "sql": "select service,env,count() as deploy_count from deploys group by service,env order by service,env",
+   "at": "2026-09-25T16:17:32.555Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "auth",
+     "prod",
+     "1"
+    ],
+    [
+     "auth",
+     "staging",
+     "5"
+    ],
+    [
+     "billing",
+     "prod",
+     "3"
+    ],
+    [
+     "billing",
+     "staging",
+     "7"
+    ],
+    [
+     "notify",
+     "prod",
+     "2"
+    ],
+    [
+     "notify",
+     "staging",
+     "5"
+    ],
+    [
+     "payments",
+     "prod",
+     "10"
+    ],
+    [
+     "payments",
+     "staging",
+     "3"
+    ],
+    [
+     "search",
+     "prod",
+     "1"
+    ],
+    [
+     "search",
+     "staging",
+     "3"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P05",
+   "arm": "A",
+   "sql": "select service,env,count(*) as deploy_count from deploys group by service,env order by service,env",
+   "at": "2026-09-25T16:17:38.324Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "auth",
+     "prod",
+     "1"
+    ],
+    [
+     "auth",
+     "staging",
+     "5"
+    ],
+    [
+     "billing",
+     "prod",
+     "3"
+    ],
+    [
+     "billing",
+     "staging",
+     "7"
+    ],
+    [
+     "notify",
+     "prod",
+     "2"
+    ],
+    [
+     "notify",
+     "staging",
+     "5"
+    ],
+    [
+     "payments",
+     "prod",
+     "10"
+    ],
+    [
+     "payments",
+     "staging",
+     "3"
+    ],
+    [
+     "search",
+     "prod",
+     "1"
+    ],
+    [
+     "search",
+     "staging",
+     "3"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "help_decided",
+   "q": "P07",
+   "arm": "A",
+   "action": "refuse_gate",
+   "counted": 0,
+   "sinceHelp": null,
+   "at": "2026-09-25T16:18:03.935Z"
+  },
+  {
+   "type": "help_decided",
+   "q": "P07",
+   "arm": "A",
+   "action": "refuse_gate",
+   "counted": 0,
+   "sinceHelp": null,
+   "at": "2026-09-25T16:18:07.041Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P07",
+   "arm": "A",
+   "sql": "select service,count(*) as failed_count from deploys group by service order by service",
+   "at": "2026-09-25T16:19:37.381Z",
+   "grade": "wrong",
+   "gradeReason": "5 rows returned, 5 expected",
+   "rows": [
+    [
+     "auth",
+     "6"
+    ],
+    [
+     "billing",
+     "10"
+    ],
+    [
+     "notify",
+     "7"
+    ],
+    [
+     "payments",
+     "13"
+    ],
+    [
+     "search",
+     "4"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P07",
+   "arm": "A",
+   "sql": "select service,count(*) as failed_count from deploys group by service order by service desc;",
+   "at": "2026-09-25T16:19:56.477Z",
+   "grade": "wrong",
+   "gradeReason": "5 rows returned, 5 expected",
+   "rows": [
+    [
+     "search",
+     "4"
+    ],
+    [
+     "payments",
+     "13"
+    ],
+    [
+     "notify",
+     "7"
+    ],
+    [
+     "billing",
+     "10"
+    ],
+    [
+     "auth",
+     "6"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P07",
+   "arm": "A",
+   "sql": "select service,count(*) as failed_count from deploys where status is \"failed\" group by service order by service desc;",
+   "at": "2026-09-25T16:20:34.257Z",
+   "grade": "wrong",
+   "gradeReason": "right rows, wrong order",
+   "rows": [
+    [
+     "search",
+     "1"
+    ],
+    [
+     "payments",
+     "2"
+    ],
+    [
+     "notify",
+     "4"
+    ],
+    [
+     "billing",
+     "3"
+    ],
+    [
+     "auth",
+     "2"
+    ]
+   ],
+   "outcome": "right_rows_wrong_order"
+  },
+  {
+   "type": "attempt",
+   "q": "P07",
+   "arm": "A",
+   "sql": "select service,count(*) as failed_count from deploys where status is \"failed\" group by service order by service;",
+   "at": "2026-09-25T16:20:37.701Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "auth",
+     "2"
+    ],
+    [
+     "billing",
+     "3"
+    ],
+    [
+     "notify",
+     "4"
+    ],
+    [
+     "payments",
+     "2"
+    ],
+    [
+     "search",
+     "1"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P08",
+   "arm": "A",
+   "sql": "select city,round(avg(fare),1) as avg_fare from rides where rides>10 group by city order by city;",
+   "at": "2026-09-25T16:22:14.116Z",
+   "grade": "error",
+   "gradeReason": "no such column: rides",
+   "outcome": "error",
+   "error": "no such column: rides"
+  },
+  {
+   "type": "attempt",
+   "q": "P08",
+   "arm": "A",
+   "sql": "select city,round(avg(fare),1) as avg_fare from rides where distance_km>10 group by city order by city;",
+   "at": "2026-09-25T16:22:35.676Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "Delhi",
+     "294.2"
+    ],
+    [
+     "Indore",
+     "312.2"
+    ],
+    [
+     "Jaipur",
+     "299.9"
+    ],
+    [
+     "Kochi",
+     "287.5"
+    ],
+    [
+     "Pune",
+     "254"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P09",
+   "arm": "A",
+   "sql": "select team,count(ticket_id) as closed_p1 from tickets where status is \"closed\" group by team order by team;",
+   "at": "2026-09-25T16:24:08.092Z",
+   "grade": "wrong",
+   "gradeReason": "4 rows returned, 3 expected",
+   "rows": [
+    [
+     "data",
+     "6"
+    ],
+    [
+     "mobile",
+     "6"
+    ],
+    [
+     "platform",
+     "4"
+    ],
+    [
+     "web",
+     "4"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P09",
+   "arm": "A",
+   "sql": "select team,count(ticket_id) as closed_p1 from tickets where status is \"closed\" and priority is \"P1\" group by team order by team;",
+   "at": "2026-09-25T16:24:38.541Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "data",
+     "2"
+    ],
+    [
+     "mobile",
+     "1"
+    ],
+    [
+     "platform",
+     "3"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "help_decided",
+   "q": "P10",
+   "arm": "A",
+   "action": "refuse_gate",
+   "counted": 0,
+   "sinceHelp": null,
+   "at": "2026-09-25T16:24:49.679Z"
+  },
+  {
+   "type": "help_decided",
+   "q": "P10",
+   "arm": "A",
+   "action": "refuse_gate",
+   "counted": 0,
+   "sinceHelp": null,
+   "at": "2026-09-25T16:25:09.312Z"
+  },
+  {
+   "type": "help_decided",
+   "q": "P10",
+   "arm": "A",
+   "action": "refuse_gate",
+   "counted": 0,
+   "sinceHelp": null,
+   "at": "2026-09-25T16:25:10.344Z"
+  },
+  {
+   "type": "help_decided",
+   "q": "P10",
+   "arm": "A",
+   "action": "refuse_gate",
+   "counted": 0,
+   "sinceHelp": null,
+   "at": "2026-09-25T16:25:11.345Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P10",
+   "arm": "A",
+   "sql": "select services from deploy",
+   "at": "2026-09-25T16:25:12.255Z",
+   "grade": "error",
+   "gradeReason": "no such table: deploy",
+   "outcome": "error",
+   "error": "no such table: deploy"
+  },
+  {
+   "type": "help_decided",
+   "q": "P10",
+   "arm": "A",
+   "action": "refuse_gate",
+   "counted": 0,
+   "sinceHelp": null,
+   "at": "2026-09-25T16:25:14.596Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P10",
+   "arm": "A",
+   "sql": "select services from deploys",
+   "at": "2026-09-25T16:25:21.204Z",
+   "grade": "error",
+   "gradeReason": "no such column: services",
+   "outcome": "error",
+   "error": "no such column: services"
+  },
+  {
+   "type": "help_decided",
+   "q": "P10",
+   "arm": "A",
+   "action": "hint",
+   "counted": 1,
+   "sinceHelp": null,
+   "at": "2026-09-25T16:25:28.816Z"
+  },
+  {
+   "type": "help_delivered",
+   "q": "P10",
+   "arm": "A",
+   "action": "hint",
+   "source": "model",
+   "modelAttempts": 1,
+   "rejections": [],
+   "at": "2026-09-25T16:25:31.110Z",
+   "model": "openai/gpt-oss-120b",
+   "temperature": 0.3
+  },
+  {
+   "type": "attempt",
+   "q": "P10",
+   "arm": "A",
+   "sql": "select service , round(avg(duration_sec),1) as avg_seconds from deploys where env is \"prod\" group by service order by avg_seconds desc;",
+   "at": "2026-09-25T16:28:09.209Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "payments",
+     "268.9"
+    ],
+    [
+     "notify",
+     "264.5"
+    ],
+    [
+     "billing",
+     "238"
+    ],
+    [
+     "search",
+     "100"
+    ],
+    [
+     "auth",
+     "71"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P12",
+   "arm": "A",
+   "sql": "select priority , hours_to_close as logest_hours  from tickets order by priority;",
+   "at": "2026-09-25T16:29:38.002Z",
+   "grade": "wrong",
+   "gradeReason": "36 rows returned, 3 expected",
+   "rows": [
+    [
+     "P1",
+     "69"
+    ],
+    [
+     "P1",
+     "60"
+    ],
+    [
+     "P1",
+     "29"
+    ],
+    [
+     "P1",
+     "30"
+    ],
+    [
+     "P1",
+     "62"
+    ],
+    [
+     "P1",
+     "51"
+    ],
+    [
+     "P1",
+     "4"
+    ],
+    [
+     "P1",
+     "17"
+    ],
+    [
+     "P1",
+     "84"
+    ],
+    [
+     "P1",
+     "28"
+    ],
+    [
+     "P1",
+     "46"
+    ],
+    [
+     "P2",
+     "10"
+    ],
+    [
+     "P2",
+     "61"
+    ],
+    [
+     "P2",
+     "19"
+    ],
+    [
+     "P2",
+     "30"
+    ],
+    [
+     "P2",
+     "25"
+    ],
+    [
+     "P2",
+     "45"
+    ],
+    [
+     "P2",
+     "45"
+    ],
+    [
+     "P2",
+     "56"
+    ],
+    [
+     "P2",
+     "11"
+    ],
+    [
+     "P2",
+     "65"
+    ],
+    [
+     "P3",
+     "82"
+    ],
+    [
+     "P3",
+     "34"
+    ],
+    [
+     "P3",
+     "3"
+    ],
+    [
+     "P3",
+     "89"
+    ],
+    [
+     "P3",
+     "83"
+    ],
+    [
+     "P3",
+     "67"
+    ],
+    [
+     "P3",
+     "25"
+    ],
+    [
+     "P3",
+     "4"
+    ],
+    [
+     "P3",
+     "50"
+    ],
+    [
+     "P3",
+     "84"
+    ],
+    [
+     "P3",
+     "61"
+    ],
+    [
+     "P3",
+     "18"
+    ],
+    [
+     "P3",
+     "70"
+    ],
+    [
+     "P3",
+     "67"
+    ],
+    [
+     "P3",
+     "20"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "help_decided",
+   "q": "P12",
+   "arm": "A",
+   "action": "hint",
+   "counted": 1,
+   "sinceHelp": null,
+   "at": "2026-09-25T16:30:07.666Z"
+  },
+  {
+   "type": "help_delivered",
+   "q": "P12",
+   "arm": "A",
+   "action": "hint",
+   "source": "model",
+   "modelAttempts": 1,
+   "rejections": [],
+   "at": "2026-09-25T16:30:10.814Z",
+   "model": "openai/gpt-oss-120b",
+   "temperature": 0.3
+  },
+  {
+   "type": "attempt",
+   "q": "P12",
+   "arm": "A",
+   "sql": "select priority , hours_to_close as logest_hours  from tickets  where status is \"closed\" order by priority;",
+   "at": "2026-09-25T16:30:19.859Z",
+   "grade": "wrong",
+   "gradeReason": "20 rows returned, 3 expected",
+   "rows": [
+    [
+     "P1",
+     "69"
+    ],
+    [
+     "P1",
+     "29"
+    ],
+    [
+     "P1",
+     "30"
+    ],
+    [
+     "P1",
+     "62"
+    ],
+    [
+     "P1",
+     "17"
+    ],
+    [
+     "P1",
+     "46"
+    ],
+    [
+     "P2",
+     "19"
+    ],
+    [
+     "P2",
+     "25"
+    ],
+    [
+     "P2",
+     "65"
+    ],
+    [
+     "P3",
+     "82"
+    ],
+    [
+     "P3",
+     "34"
+    ],
+    [
+     "P3",
+     "3"
+    ],
+    [
+     "P3",
+     "89"
+    ],
+    [
+     "P3",
+     "83"
+    ],
+    [
+     "P3",
+     "25"
+    ],
+    [
+     "P3",
+     "4"
+    ],
+    [
+     "P3",
+     "50"
+    ],
+    [
+     "P3",
+     "70"
+    ],
+    [
+     "P3",
+     "67"
+    ],
+    [
+     "P3",
+     "20"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P12",
+   "arm": "A",
+   "sql": "select priority , hours_to_close as logest_hours  from tickets  where status is \"closed\" order by priority;",
+   "at": "2026-09-25T16:30:27.709Z",
+   "grade": "wrong",
+   "gradeReason": "20 rows returned, 3 expected",
+   "rows": [
+    [
+     "P1",
+     "69"
+    ],
+    [
+     "P1",
+     "29"
+    ],
+    [
+     "P1",
+     "30"
+    ],
+    [
+     "P1",
+     "62"
+    ],
+    [
+     "P1",
+     "17"
+    ],
+    [
+     "P1",
+     "46"
+    ],
+    [
+     "P2",
+     "19"
+    ],
+    [
+     "P2",
+     "25"
+    ],
+    [
+     "P2",
+     "65"
+    ],
+    [
+     "P3",
+     "82"
+    ],
+    [
+     "P3",
+     "34"
+    ],
+    [
+     "P3",
+     "3"
+    ],
+    [
+     "P3",
+     "89"
+    ],
+    [
+     "P3",
+     "83"
+    ],
+    [
+     "P3",
+     "25"
+    ],
+    [
+     "P3",
+     "4"
+    ],
+    [
+     "P3",
+     "50"
+    ],
+    [
+     "P3",
+     "70"
+    ],
+    [
+     "P3",
+     "67"
+    ],
+    [
+     "P3",
+     "20"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P12",
+   "arm": "A",
+   "sql": "select priority , max(hours_to_close) as logest_hours  from tickets  where status is \"closed\" order by priority;",
+   "at": "2026-09-25T16:30:56.770Z",
+   "grade": "wrong",
+   "gradeReason": "1 rows returned, 3 expected",
+   "rows": [
+    [
+     "P3",
+     "89"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "help_decided",
+   "q": "P12",
+   "arm": "A",
+   "action": "reveal",
+   "counted": 3,
+   "sinceHelp": 2,
+   "at": "2026-09-25T16:31:20.620Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P12",
+   "arm": "A",
+   "sql": "select priority , max(hours_to_close) as logest_hours  from tickets where status is \"closed\" group by priority order by priority;",
+   "at": "2026-09-25T16:31:50.045Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "P1",
+     "69"
+    ],
+    [
+     "P2",
+     "65"
+    ],
+    [
+     "P3",
+     "89"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P13",
+   "arm": "A",
+   "sql": "select env , count(*) as success_count from deploys where status is \"success\" and service is not \"auth\" group by env order by env;",
+   "at": "2026-09-25T16:33:41.254Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "prod",
+     "11"
+    ],
+    [
+     "staging",
+     "13"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P14",
+   "arm": "A",
+   "sql": "select service , count(*)  as deploy_count from deploys where deploy_count >6 order by service ;",
+   "at": "2026-09-25T16:35:45.041Z",
+   "grade": "error",
+   "gradeReason": "misuse of aggregate: count()",
+   "outcome": "error",
+   "error": "misuse of aggregate: count()"
+  },
+  {
+   "type": "attempt",
+   "q": "P14",
+   "arm": "A",
+   "sql": "select service , count(*)  as deploy_count from deploys where deploy_count >6 group by service order by service ;",
+   "at": "2026-09-25T16:36:03.421Z",
+   "grade": "error",
+   "gradeReason": "misuse of aggregate: count()",
+   "outcome": "error",
+   "error": "misuse of aggregate: count()"
+  },
+  {
+   "type": "attempt",
+   "q": "P14",
+   "arm": "A",
+   "sql": "select service , count(*)  as deploy_count from deploys where deploy_count >6 group by service order by service ;",
+   "at": "2026-09-25T16:36:04.635Z",
+   "grade": "error",
+   "gradeReason": "misuse of aggregate: count()",
+   "outcome": "error",
+   "error": "misuse of aggregate: count()"
+  },
+  {
+   "type": "attempt",
+   "q": "P14",
+   "arm": "A",
+   "sql": "select service , count(*)  as deploy_count from deploys where deploy_count >6 group by service order by service ;",
+   "at": "2026-09-25T16:36:05.286Z",
+   "grade": "error",
+   "gradeReason": "misuse of aggregate: count()",
+   "outcome": "error",
+   "error": "misuse of aggregate: count()"
+  },
+  {
+   "type": "attempt",
+   "q": "P14",
+   "arm": "A",
+   "sql": "select service , count(*)  as deploy_count from deploys where deploy_count >6 group by service order by service ;",
+   "at": "2026-09-25T16:36:05.768Z",
+   "grade": "error",
+   "gradeReason": "misuse of aggregate: count()",
+   "outcome": "error",
+   "error": "misuse of aggregate: count()"
+  },
+  {
+   "type": "attempt",
+   "q": "P14",
+   "arm": "A",
+   "sql": "select service , count(*)  as deploy_count from deploys where deploy_count >6 group by service order by service ;",
+   "at": "2026-09-25T16:36:06.958Z",
+   "grade": "error",
+   "gradeReason": "misuse of aggregate: count()",
+   "outcome": "error",
+   "error": "misuse of aggregate: count()"
+  },
+  {
+   "type": "help_decided",
+   "q": "P14",
+   "arm": "A",
+   "action": "hint",
+   "counted": 2,
+   "sinceHelp": null,
+   "at": "2026-09-25T16:36:33.821Z"
+  },
+  {
+   "type": "help_delivered",
+   "q": "P14",
+   "arm": "A",
+   "action": "hint",
+   "source": "model",
+   "modelAttempts": 1,
+   "rejections": [],
+   "at": "2026-09-25T16:36:34.848Z",
+   "model": "openai/gpt-oss-120b",
+   "temperature": 0.3
+  },
+  {
+   "type": "attempt",
+   "q": "P14",
+   "arm": "A",
+   "sql": "select service , count(*)  as deploy_count from deploys  group by service  having count(*) > 6 order by service ;",
+   "at": "2026-09-25T16:37:26.653Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "billing",
+     "10"
+    ],
+    [
+     "notify",
+     "7"
+    ],
+    [
+     "payments",
+     "13"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P15",
+   "arm": "A",
+   "sql": "select city ,round(avg(fare,1)) as avg_fare group by fare having avg(fare) > 200 order by avg(fare);",
+   "at": "2026-09-25T16:39:43.568Z",
+   "grade": "invalid",
+   "gradeReason": "selects city without grouping by it",
+   "outcome": "error",
+   "error": "no such column: city"
+  },
+  {
+   "type": "attempt",
+   "q": "P15",
+   "arm": "A",
+   "sql": "select city ,round(avg(fare,1)) as avg_fare from rides group by fare having avg(fare) > 200 order by avg(fare);",
+   "at": "2026-09-25T16:40:26.213Z",
+   "grade": "invalid",
+   "gradeReason": "selects city without grouping by it",
+   "outcome": "error",
+   "error": "wrong number of arguments to function avg()"
+  },
+  {
+   "type": "attempt",
+   "q": "P15",
+   "arm": "A",
+   "sql": "select city ,round(avg(fare),1) as avg_fare from rides group by fare having avg(fare) > 200 order by avg(fare);",
+   "at": "2026-09-25T16:41:00.035Z",
+   "grade": "invalid",
+   "gradeReason": "selects city without grouping by it",
+   "rows": [
+    [
+     "Delhi",
+     "219"
+    ],
+    [
+     "Delhi",
+     "232"
+    ],
+    [
+     "Indore",
+     "237"
+    ],
+    [
+     "Kochi",
+     "242"
+    ],
+    [
+     "Jaipur",
+     "244"
+    ],
+    [
+     "Pune",
+     "254"
+    ],
+    [
+     "Jaipur",
+     "275"
+    ],
+    [
+     "Jaipur",
+     "278"
+    ],
+    [
+     "Indore",
+     "307"
+    ],
+    [
+     "Delhi",
+     "311"
+    ],
+    [
+     "Delhi",
+     "324"
+    ],
+    [
+     "Delhi",
+     "333"
+    ],
+    [
+     "Delhi",
+     "346"
+    ],
+    [
+     "Indore",
+     "362"
+    ],
+    [
+     "Indore",
+     "370"
+    ],
+    [
+     "Jaipur",
+     "393"
+    ],
+    [
+     "Indore",
+     "409"
+    ],
+    [
+     "Jaipur",
+     "423"
+    ],
+    [
+     "Jaipur",
+     "430"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "help_decided",
+   "q": "P15",
+   "arm": "A",
+   "action": "hint",
+   "counted": 2,
+   "sinceHelp": null,
+   "at": "2026-09-25T16:41:04.824Z"
+  },
+  {
+   "type": "help_delivered",
+   "q": "P15",
+   "arm": "A",
+   "action": "hint",
+   "source": "model",
+   "modelAttempts": 1,
+   "rejections": [],
+   "at": "2026-09-25T16:41:08.673Z",
+   "model": "openai/gpt-oss-120b",
+   "temperature": 0.3
+  },
+  {
+   "type": "attempt",
+   "q": "P15",
+   "arm": "A",
+   "sql": "select city ,round(avg(fare),1) as avg_fare from rides group by city having avg(fare) > 200 order by avg(fare);",
+   "at": "2026-09-25T16:41:26.981Z",
+   "grade": "wrong",
+   "gradeReason": "right rows, wrong order",
+   "rows": [
+    [
+     "Indore",
+     "251.9"
+    ],
+    [
+     "Jaipur",
+     "277.2"
+    ]
+   ],
+   "outcome": "right_rows_wrong_order"
+  },
+  {
+   "type": "attempt",
+   "q": "P15",
+   "arm": "A",
+   "sql": "select city ,round(avg(fare),1) as avg_fare from rides group by city having avg(fare) > 200 order by avg(fare) desc;",
+   "at": "2026-09-25T16:41:52.264Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "Jaipur",
+     "277.2"
+    ],
+    [
+     "Indore",
+     "251.9"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P16",
+   "arm": "A",
+   "sql": "select team, sum(hours_to_close) as total_hours from tickets total_hours>300 and status is \"closed\" order by team",
+   "at": "2026-09-25T16:44:21.705Z",
+   "grade": "error",
+   "gradeReason": "near \">\": syntax error",
+   "outcome": "error",
+   "error": "near \">\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P16",
+   "arm": "A",
+   "sql": "select team, sum(hours_to_close) as total_hours from tickets total_hours > 300 and status is \"closed\" order by team",
+   "at": "2026-09-25T16:44:40.761Z",
+   "grade": "error",
+   "gradeReason": "near \">\": syntax error",
+   "outcome": "error",
+   "error": "near \">\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P16",
+   "arm": "A",
+   "sql": "select team, sum(hours_to_close) as total_hours from tickets where total_hours > 300 and status is \"closed\" order by team",
+   "at": "2026-09-25T16:45:10.461Z",
+   "grade": "error",
+   "gradeReason": "misuse of aggregate: sum()",
+   "outcome": "error",
+   "error": "misuse of aggregate: sum()"
+  },
+  {
+   "type": "attempt",
+   "q": "P16",
+   "arm": "A",
+   "sql": "select team, sum(hours_to_close) as total_hours from tickets group by team having sum(hours_to_close)> 300 and status is \"closed\" order by team",
+   "at": "2026-09-25T16:46:12.958Z",
+   "grade": "invalid",
+   "gradeReason": "filters groups on closed, status, which is a row value, not a group value",
+   "rows": [
+    [
+     "mobile",
+     "610"
+    ],
+    [
+     "web",
+     "480"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "help_decided",
+   "q": "P16",
+   "arm": "A",
+   "action": "hint",
+   "counted": 4,
+   "sinceHelp": null,
+   "at": "2026-09-25T16:46:38.779Z"
+  },
+  {
+   "type": "help_delivered",
+   "q": "P16",
+   "arm": "A",
+   "action": "hint",
+   "source": "model",
+   "modelAttempts": 1,
+   "rejections": [],
+   "at": "2026-09-25T16:46:40.163Z",
+   "model": "openai/gpt-oss-120b",
+   "temperature": 0.3
+  },
+  {
+   "type": "attempt",
+   "q": "P16",
+   "arm": "A",
+   "sql": "select team, sum(hours_to_close) as total_hours from tickets where status is \"closed\" group by team having sum(hours_to_close)> 300 order by team",
+   "at": "2026-09-25T16:47:13.370Z",
+   "grade": "wrong",
+   "gradeReason": "1 rows returned, 2 expected",
+   "rows": [
+    [
+     "mobile",
+     "326"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "help_decided",
+   "q": "P16",
+   "arm": "A",
+   "action": "refuse_retry",
+   "counted": 5,
+   "sinceHelp": 1,
+   "at": "2026-09-25T16:47:32.670Z"
+  },
+  {
+   "type": "help_decided",
+   "q": "P16",
+   "arm": "A",
+   "action": "refuse_retry",
+   "counted": 5,
+   "sinceHelp": 1,
+   "at": "2026-09-25T16:47:35.849Z"
+  },
+  {
+   "type": "help_decided",
+   "q": "P16",
+   "arm": "A",
+   "action": "refuse_retry",
+   "counted": 5,
+   "sinceHelp": 1,
+   "at": "2026-09-25T16:47:37.977Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P16",
+   "arm": "A",
+   "sql": "select team, sum(hours_to_close) as total_hours from tickets where status is \"closed\" group by team having sum(hours_to_close)> 300 order by team",
+   "at": "2026-09-25T16:47:52.710Z",
+   "grade": "wrong",
+   "gradeReason": "1 rows returned, 2 expected",
+   "rows": [
+    [
+     "mobile",
+     "326"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "help_decided",
+   "q": "P16",
+   "arm": "A",
+   "action": "refuse_retry",
+   "counted": 5,
+   "sinceHelp": 1,
+   "at": "2026-09-25T16:47:54.035Z"
+  },
+  {
+   "type": "help_decided",
+   "q": "P16",
+   "arm": "A",
+   "action": "refuse_retry",
+   "counted": 5,
+   "sinceHelp": 1,
+   "at": "2026-09-25T16:47:55.174Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P16",
+   "arm": "A",
+   "sql": "select team, sum(hours_to_close) as total_hours from tickets where status is \"closed\" group by team having sum(hours_to_close)> 300 order by team",
+   "at": "2026-09-25T16:47:55.946Z",
+   "grade": "wrong",
+   "gradeReason": "1 rows returned, 2 expected",
+   "rows": [
+    [
+     "mobile",
+     "326"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "help_decided",
+   "q": "P16",
+   "arm": "A",
+   "action": "refuse_retry",
+   "counted": 5,
+   "sinceHelp": 1,
+   "at": "2026-09-25T16:47:56.752Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P16",
+   "arm": "A",
+   "sql": "select team, sum(hours_to_close) as total_hours from tickets where status is \"closed\" group by team having sum(hours_to_close)> 300 order by team;",
+   "at": "2026-09-25T16:48:01.181Z",
+   "grade": "wrong",
+   "gradeReason": "1 rows returned, 2 expected",
+   "rows": [
+    [
+     "mobile",
+     "326"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "help_decided",
+   "q": "P16",
+   "arm": "A",
+   "action": "refuse_retry",
+   "counted": 5,
+   "sinceHelp": 1,
+   "at": "2026-09-25T16:48:02.209Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P16",
+   "arm": "A",
+   "sql": "select team, sum(hours_to_close) as total_hours from tickets where status is \"closed\" group by team having sum(hours_to_close)> 400 order by team;",
+   "at": "2026-09-25T16:48:09.954Z",
+   "grade": "wrong",
+   "gradeReason": "0 rows returned, 2 expected",
+   "rows": [],
+   "outcome": "wrong_columns"
+  },
+  {
+   "type": "help_decided",
+   "q": "P16",
+   "arm": "A",
+   "action": "reveal",
+   "counted": 6,
+   "sinceHelp": 2,
+   "at": "2026-09-25T16:48:13.899Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P16",
+   "arm": "A",
+   "sql": "select team, sum(hours_to_close) as total_hours from tickets group by team having sum(hours_to_close)> 400 order by team;",
+   "at": "2026-09-25T16:49:10.058Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "mobile",
+     "610"
+    ],
+    [
+     "web",
+     "480"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P16",
+   "arm": "A",
+   "sql": "select team, sum(hours_to_close) as total_hours from tickets group by team having sum(hours_to_close)> 300 order by team;",
+   "at": "2026-09-25T16:49:26.366Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "mobile",
+     "610"
+    ],
+    [
+     "web",
+     "480"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P17",
+   "arm": "A",
+   "sql": "select driver , count(*) as ride_count from rides group by driver having count(*) >=7 order by ride_count desc;",
+   "at": "2026-09-25T16:53:11.808Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "Divya",
+     "12"
+    ],
+    [
+     "Farhan",
+     "10"
+    ],
+    [
+     "Bela",
+     "7"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P18",
+   "arm": "A",
+   "sql": "select service , max(duration_sec) as fastest_seconds form deploys group by service having  max(duration_sec) > 60;",
+   "at": "2026-09-25T16:54:52.368Z",
+   "grade": "error",
+   "gradeReason": "near \"form\": syntax error",
+   "outcome": "error",
+   "error": "near \"form\": syntax error"
+  },
+  {
+   "type": "attempt",
+   "q": "P18",
+   "arm": "A",
+   "sql": "select service , max(duration_sec) as fastest_seconds from deploys group by service having  max(duration_sec) > 60 order by service;",
+   "at": "2026-09-25T16:55:05.137Z",
+   "grade": "wrong",
+   "gradeReason": "5 rows returned, 3 expected",
+   "rows": [
+    [
+     "auth",
+     "282"
+    ],
+    [
+     "billing",
+     "367"
+    ],
+    [
+     "notify",
+     "322"
+    ],
+    [
+     "payments",
+     "393"
+    ],
+    [
+     "search",
+     "243"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P18",
+   "arm": "A",
+   "sql": "select service , max(duration_sec) as fastest_seconds from deploys group by service having  max(duration_sec) < 60 order by service;",
+   "at": "2026-09-25T16:56:01.714Z",
+   "grade": "wrong",
+   "gradeReason": "0 rows returned, 3 expected",
+   "rows": [],
+   "outcome": "wrong_columns"
+  },
+  {
+   "type": "help_decided",
+   "q": "P18",
+   "arm": "A",
+   "action": "hint",
+   "counted": 3,
+   "sinceHelp": null,
+   "at": "2026-09-25T16:56:05.018Z"
+  },
+  {
+   "type": "help_delivered",
+   "q": "P18",
+   "arm": "A",
+   "action": "hint",
+   "source": "model",
+   "modelAttempts": 1,
+   "rejections": [],
+   "at": "2026-09-25T16:56:06.924Z",
+   "model": "openai/gpt-oss-120b",
+   "temperature": 0.3
+  },
+  {
+   "type": "attempt",
+   "q": "P18",
+   "arm": "A",
+   "sql": "select service , min(duration_sec) as fastest_seconds from deploys group by service having  max(duration_sec) < 60 order by service;",
+   "at": "2026-09-25T16:56:39.838Z",
+   "grade": "wrong",
+   "gradeReason": "0 rows returned, 3 expected",
+   "rows": [],
+   "outcome": "wrong_columns"
+  },
+  {
+   "type": "attempt",
+   "q": "P18",
+   "arm": "A",
+   "sql": "select service , min(duration_sec) as fastest_seconds from deploys group by service having  max(duration_sec) < 60 order by service;",
+   "at": "2026-09-25T16:56:41.062Z",
+   "grade": "wrong",
+   "gradeReason": "0 rows returned, 3 expected",
+   "rows": [],
+   "outcome": "wrong_columns"
+  },
+  {
+   "type": "attempt",
+   "q": "P18",
+   "arm": "A",
+   "sql": "select service , min(duration_sec) as fastest_seconds from deploys group by service having  max(duration_sec) > 60 order by service;",
+   "at": "2026-09-25T16:56:46.304Z",
+   "grade": "wrong",
+   "gradeReason": "5 rows returned, 3 expected",
+   "rows": [
+    [
+     "auth",
+     "69"
+    ],
+    [
+     "billing",
+     "46"
+    ],
+    [
+     "notify",
+     "42"
+    ],
+    [
+     "payments",
+     "167"
+    ],
+    [
+     "search",
+     "64"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "help_decided",
+   "q": "P18",
+   "arm": "A",
+   "action": "refuse_retry",
+   "counted": 4,
+   "sinceHelp": 1,
+   "at": "2026-09-25T16:56:56.068Z"
+  },
+  {
+   "type": "help_decided",
+   "q": "P18",
+   "arm": "A",
+   "action": "refuse_retry",
+   "counted": 4,
+   "sinceHelp": 1,
+   "at": "2026-09-25T16:56:57.086Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P18",
+   "arm": "A",
+   "sql": "select service , min(duration_sec) as fastest_seconds from deploys group by service having  duration_sec > 60 order by service;",
+   "at": "2026-09-25T16:57:25.535Z",
+   "grade": "invalid",
+   "gradeReason": "filters groups on duration_sec, which is a row value, not a group value",
+   "rows": [
+    [
+     "auth",
+     "69"
+    ],
+    [
+     "payments",
+     "167"
+    ],
+    [
+     "search",
+     "64"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P18",
+   "arm": "A",
+   "sql": "select service , min(duration_sec) as fastest_seconds from deploys group by service having  duration_sec < 60 order by service;",
+   "at": "2026-09-25T16:57:31.609Z",
+   "grade": "invalid",
+   "gradeReason": "filters groups on duration_sec, which is a row value, not a group value",
+   "rows": [
+    [
+     "billing",
+     "46"
+    ],
+    [
+     "notify",
+     "42"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "help_decided",
+   "q": "P18",
+   "arm": "A",
+   "action": "reveal",
+   "counted": 6,
+   "sinceHelp": 3,
+   "at": "2026-09-25T16:57:34.085Z"
+  },
+  {
+   "type": "attempt",
+   "q": "P18",
+   "arm": "A",
+   "sql": "select service , min(duration_sec) as fastest_seconds from deploys group by service having  MIN(duration_sec) >= 60 order by service;",
+   "at": "2026-09-25T16:57:51.147Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "auth",
+     "69"
+    ],
+    [
+     "payments",
+     "167"
+    ],
+    [
+     "search",
+     "64"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P20",
+   "arm": "A",
+   "sql": "select city , round(sum(distance_km),1) as total_km  from rides group by city having sum(distance_km) > 100 order by total_km desc;",
+   "at": "2026-09-25T17:00:10.269Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "Jaipur",
+     "162.5"
+    ],
+    [
+     "Delhi",
+     "139.2"
+    ],
+    [
+     "Indore",
+     "111.3"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P20",
+   "arm": "A",
+   "sql": "select city , round(distance_km,1) as total_km  from rides group by city having sum(distance_km) > 100 order by total_km desc;",
+   "at": "2026-09-25T17:00:45.657Z",
+   "grade": "invalid",
+   "gradeReason": "selects distance_km, total_km without grouping by it",
+   "rows": [
+    [
+     "Jaipur",
+     "17.2"
+    ],
+    [
+     "Delhi",
+     "13.3"
+    ],
+    [
+     "Indore",
+     "1.6"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "P20",
+   "arm": "A",
+   "sql": "select city , round(sum(distance_km),1) as total_km  from rides group by city having sum(distance_km) > 100 order by total_km desc;",
+   "at": "2026-09-25T17:00:56.731Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "Jaipur",
+     "162.5"
+    ],
+    [
+     "Delhi",
+     "139.2"
+    ],
+    [
+     "Indore",
+     "111.3"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "P19",
+   "arm": "A",
+   "sql": "select priority , round(avg(hours_to_close),1) from tickets group by priority having avg(hours_to_close) < 45 order by priority asc;",
+   "at": "2026-09-25T17:02:18.936Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "P1",
+     "43.6"
+    ],
+    [
+     "P2",
+     "36.7"
+    ]
+   ],
+   "outcome": "correct"
+  }
+ ],
+ "finished": "2026-09-25T17:04:51.742Z",
+ "summary": {
+  "byAction": {
+   "A:refuse_gate": 7,
+   "A:hint": 6,
+   "A:reveal": 3,
+   "A:refuse_retry": 9
+  },
+  "hintsDelivered": 6,
+  "fallbacks": 0,
+  "fallbackRate": 0
+ }
+}
