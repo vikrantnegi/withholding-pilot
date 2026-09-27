@@ -2,8 +2,8 @@
 
 > **27 Sep:** removal page hosted at `https://teal-marzipan-e1b49a.netlify.app/` and verified
 > from a browser: byte-identical to `app/dist-removal` once Netlify's injections are stripped.
-> The send sheet has the real links. **Still owed before Mon 28 Sep 11:58 IST:** take the
-> practice site down (still live today), send ritesh his date change.
+> The send sheet has the real links. The practice site is disabled, checked: "Site not found".
+> **Still owed before Mon 28 Sep 11:58 IST:** send ritesh his date change.
 
 > **26 Sep:** the removal test is **built and verified, not hosted.** `app/removal.html` is
 > generated from the practice page by `study-questions/mkremoval.py`: the 12 held-out items, no

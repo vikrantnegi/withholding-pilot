@@ -19,8 +19,9 @@ with sql.js from cdnjs. **If you rebuild, re-upload and re-verify before sending
 2. ~~**Open it with `?arm=A`, not a participant link.**~~ Done 27 Sep, from the browser. Example: `https://teal-marzipan-e1b49a.netlify.app/index.html?arm=A`.
    It should load 12 questions and no Help button. Loading a participant's link starts their
    session under their code.
-3. **Take the practice site down, or replace it, before the first session (Mon 28 Sep 11:58 IST).**
-   **Still live on 27 Sep:** `tranquil-starlight-f0129e.netlify.app` served `policy.js` when checked.
+3. ~~**Take the practice site down, or replace it, before the first session (Mon 28 Sep 11:58 IST).**~~
+   **Done 27 Sep.** Vikrant disabled `tranquil-starlight-f0129e.netlify.app`. Checked from a browser:
+   `policy.js` now returns Netlify's "Site not found". Every practice link is dead.
    The practice links still work. A tester could reopen theirs mid-test, and Arm B's practice
    Help returns full answers to items paired with the held-out ones. The removal test is only
    "no help" if no help is one tab away.
