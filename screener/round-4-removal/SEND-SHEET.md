@@ -1,4 +1,4 @@
-# Send sheet — removal test (session 2), 28 Sep to 1 Oct 2026
+# Send sheet — removal test (session 2), 29 Sep to 1 Oct 2026
 
 **DO NOT SEND THIS FILE TO ANYONE.** Send each person only their own message block from section 4.
 
@@ -19,7 +19,7 @@ with sql.js from cdnjs. **If you rebuild, re-upload and re-verify before sending
 2. ~~**Open it with `?arm=A`, not a participant link.**~~ Done 27 Sep, from the browser. Example: `https://teal-marzipan-e1b49a.netlify.app/index.html?arm=A`.
    It should load 12 questions and no Help button. Loading a participant's link starts their
    session under their code.
-3. ~~**Take the practice site down, or replace it, before the first session (Mon 28 Sep 11:58 IST).**~~
+3. ~~**Take the practice site down, or replace it, before the first session.**~~
    **Done 27 Sep.** Vikrant disabled `tranquil-starlight-f0129e.netlify.app`. Checked from a browser:
    `policy.js` now returns Netlify's "Site not found". Every practice link is dead.
    The practice links still work. A tester could reopen theirs mid-test, and Arm B's practice
@@ -44,11 +44,17 @@ days, and their latest is finish plus 7 days.
 Send each message **on the morning of that person's window**, not days ahead: a message sent
 early is a message acted on early.
 
+**Changed 27 Sep:** Vikrant sends everyone on **Tue 29 Sep**, one day later than planned, except
+ritesh (Wed 30). Every window below still holds: each message opens no earlier than finish + 5
+days and closes before finish + 7. The cost is slack at the far end. nabin now has Tuesday and
+Wednesday morning only, and he is one of 3 in Arm A. Chase him on Tuesday evening if nothing
+has come back.
+
 | # | person | practice finished (IST) | session 2 window (IST) | sent | log received |
 |---|---|---|---|---|---|
-| 1 | nabin   | Wed 23 Sep 11:58 | **Mon 28 Sep 11:58** to Wed 30 Sep 11:58 | | |
-| 2 | anuj    | Wed 23 Sep 20:29 | **Mon 28 Sep 20:29** to Wed 30 Sep 20:29 | | |
-| 3 | manish  | Wed 23 Sep 22:43 | **Mon 28 Sep 22:43** to Wed 30 Sep 22:43 (Tue 29 is easiest) | | |
+| 1 | nabin   | Wed 23 Sep 11:58 | **Tue 29 Sep, any time**, hard stop Wed 30 Sep 11:58 | | |
+| 2 | anuj    | Wed 23 Sep 20:29 | **Tue 29 Sep, any time**, hard stop Wed 30 Sep 20:29 | | |
+| 3 | manish  | Wed 23 Sep 22:43 | **Tue 29 Sep, any time**, hard stop Wed 30 Sep 22:43 | | |
 | 4 | gaurav  | Wed 23 Sep 15:36 | **Tue 29 Sep, any time** (on leave; hard stop Wed 30 Sep 15:36) | | |
 | 5 | rishabh | Wed 23 Sep 23:01 | **Tue 29 Sep, any time** (hard stop Wed 30 Sep 23:01) | | |
 | 6 | vikash  | Thu 24 Sep 21:42 | **Tue 29 Sep 21:42** to Thu 1 Oct 21:42 | | |
@@ -66,11 +72,11 @@ File each returned log as `logs/learning-os-removal-log-<code>.json`, and fill i
 
 Each block is complete. Copy it and send. Do not send two people the same link.
 
-### nabin — send Mon 28 Sep morning
+### nabin — send Tue 29 Sep morning
 
 > Hey nabin — session 2 of the SQL thing is ready. This is the one that matters.
 >
-> Any time from 12 noon today, and before 11:30 am on Wed. About 30 minutes, in one sitting, from your laptop.
+> Any time today (Tue 29), or tomorrow before 11:30 am at the latest. About 30 minutes, in one sitting, from your laptop.
 >
 > Your link: https://teal-marzipan-e1b49a.netlify.app/index.html?p=4cwkq
 >
@@ -82,11 +88,11 @@ Each block is complete. Copy it and send. Do not send two people the same link.
 >
 > Still completely voluntary. Thanks for doing both!
 
-### anuj — send Mon 28 Sep
+### anuj — send Tue 29 Sep
 
 > Hey anuj — session 2 of the SQL thing is ready. This is the one that matters.
 >
-> Any time from 8:30 pm today, and before 8 pm on Wed. About 30 minutes, in one sitting, from your laptop.
+> Any time today (Tue 29), or tomorrow before 8 pm at the latest. About 30 minutes, in one sitting, from your laptop.
 >
 > Your link: https://teal-marzipan-e1b49a.netlify.app/index.html?p=gnas5
 >
@@ -98,11 +104,11 @@ Each block is complete. Copy it and send. Do not send two people the same link.
 >
 > Still completely voluntary. Thanks for doing both!
 
-### manish — send Mon 28 Sep
+### manish — send Tue 29 Sep
 
 > Hey manish — session 2 of the SQL thing is ready. This is the one that matters.
 >
-> Any time after 10:45 pm tonight, or any time tomorrow (Tue 29). About 30 minutes, in one sitting, from your laptop.
+> Any time today (Tue 29), or tomorrow before 10 pm at the latest. About 30 minutes, in one sitting, from your laptop.
 >
 > Your link: https://teal-marzipan-e1b49a.netlify.app/index.html?p=rqkkx
 >
@@ -148,7 +154,7 @@ Each block is complete. Copy it and send. Do not send two people the same link.
 
 > Hey vikash — session 2 of the SQL thing is ready. This is the one that matters.
 >
-> Any time after 9:45 pm tonight (Tue 29), or Wed 30. About 30 minutes, in one sitting, from your laptop.
+> Any time after 9:45 pm tonight (Tue 29), or tomorrow (Wed 30). About 30 minutes, in one sitting, from your laptop.
 >
 > Your link: https://teal-marzipan-e1b49a.netlify.app/index.html?p=s6nqb
 >

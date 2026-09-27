@@ -3,7 +3,10 @@
 > **27 Sep:** removal page hosted at `https://teal-marzipan-e1b49a.netlify.app/` and verified
 > from a browser: byte-identical to `app/dist-removal` once Netlify's injections are stripped.
 > The send sheet has the real links. The practice site is disabled, checked: "Site not found".
-> **Still owed before Mon 28 Sep 11:58 IST:** send ritesh his date change.
+> **Sends move to Tue 29 Sep** for all six, one day late by choice; ritesh stays Wed 30 Sep.
+> Every window still sits inside 5 to 7 days, checked to the minute. nabin (Arm A, 1 of 3)
+> now has only Tue and Wed morning, hard stop Wed 30 Sep 11:58 IST. Removal data lands 29 Sep
+> to 1 Oct, so the analysis runs 30 Sep to 2 Oct. Still owed: send ritesh his date change.
 
 > **26 Sep:** the removal test is **built and verified, not hosted.** `app/removal.html` is
 > generated from the practice page by `study-questions/mkremoval.py`: the 12 held-out items, no
