@@ -5,19 +5,22 @@
 Written 26 Sep 2026. Codes and names come from `../participant-links.md`. Arms are deliberately
 absent from this file.
 
-Hosted removal page: `REMOVAL-URL` — **not hosted yet.** Replace `REMOVAL-URL` everywhere in this
-file with the Netlify Drop URL once it is up. Nothing below may be sent while that word remains.
+Hosted removal page: `https://teal-marzipan-e1b49a.netlify.app/` — hosted 26 Sep, **verified 27 Sep** from a browser: after
+stripping Netlify's two injections (an ad comment and a HUD script), `index.html` is
+byte-identical to `app/dist-removal` (SHA-256 `9d0a9534…`), and `grade-rule.js` is identical
+(`51993f08…`). H01-H12 load, no Help button, the help modules 404, and a run grades correctly
+with sql.js from cdnjs. **If you rebuild, re-upload and re-verify before sending another link.**
 
 ---
 
 ## 1. Before you send anything — four checks
 
-1. **Build and host.** `bash app/make-removal-dist.sh`, then drag `app/dist-removal` into
-   netlify.com/drop as a **new** site. Never onto the practice site.
-2. **Open it with `?arm=A`, not a participant link.** Example: `REMOVAL-URL/index.html?arm=A`.
+1. ~~**Build and host.**~~ Done 26 Sep, verified 27 Sep. See the header.
+2. ~~**Open it with `?arm=A`, not a participant link.**~~ Done 27 Sep, from the browser. Example: `https://teal-marzipan-e1b49a.netlify.app/index.html?arm=A`.
    It should load 12 questions and no Help button. Loading a participant's link starts their
    session under their code.
 3. **Take the practice site down, or replace it, before the first session (Mon 28 Sep 11:58 IST).**
+   **Still live on 27 Sep:** `tranquil-starlight-f0129e.netlify.app` served `policy.js` when checked.
    The practice links still work. A tester could reopen theirs mid-test, and Arm B's practice
    Help returns full answers to items paired with the held-out ones. The removal test is only
    "no help" if no help is one tab away.
@@ -68,7 +71,7 @@ Each block is complete. Copy it and send. Do not send two people the same link.
 >
 > Any time from 12 noon today, and before 11:30 am on Wed. About 30 minutes, in one sitting, from your laptop.
 >
-> Your link: REMOVAL-URL/index.html?p=4cwkq
+> Your link: https://teal-marzipan-e1b49a.netlify.app/index.html?p=4cwkq
 >
 > Only open it when you're ready to start — the session starts the moment the page loads.
 >
@@ -84,7 +87,7 @@ Each block is complete. Copy it and send. Do not send two people the same link.
 >
 > Any time from 8:30 pm today, and before 8 pm on Wed. About 30 minutes, in one sitting, from your laptop.
 >
-> Your link: REMOVAL-URL/index.html?p=gnas5
+> Your link: https://teal-marzipan-e1b49a.netlify.app/index.html?p=gnas5
 >
 > Only open it when you're ready to start — the session starts the moment the page loads.
 >
@@ -100,7 +103,7 @@ Each block is complete. Copy it and send. Do not send two people the same link.
 >
 > Any time after 10:45 pm tonight, or any time tomorrow (Tue 29). About 30 minutes, in one sitting, from your laptop.
 >
-> Your link: REMOVAL-URL/index.html?p=rqkkx
+> Your link: https://teal-marzipan-e1b49a.netlify.app/index.html?p=rqkkx
 >
 > Only open it when you're ready to start — the session starts the moment the page loads.
 >
@@ -114,7 +117,7 @@ Each block is complete. Copy it and send. Do not send two people the same link.
 
 > Hey gaurav — session 2 of the SQL thing is ready, whenever suits you today (Tue 29), or tomorrow before 3:30 pm at the latest. About 30 minutes, in one sitting, from your laptop.
 >
-> Your link: REMOVAL-URL/index.html?p=geu2z
+> Your link: https://teal-marzipan-e1b49a.netlify.app/index.html?p=geu2z
 >
 > Only open it when you're ready to start — the session starts the moment the page loads.
 >
@@ -130,7 +133,7 @@ Each block is complete. Copy it and send. Do not send two people the same link.
 >
 > Any time today (Tue 29). About 30 minutes, in one sitting, from your laptop.
 >
-> Your link: REMOVAL-URL/index.html?p=3b3xe
+> Your link: https://teal-marzipan-e1b49a.netlify.app/index.html?p=3b3xe
 >
 > Only open it when you're ready to start — the session starts the moment the page loads.
 >
@@ -146,7 +149,7 @@ Each block is complete. Copy it and send. Do not send two people the same link.
 >
 > Any time after 9:45 pm tonight (Tue 29), or Wed 30. About 30 minutes, in one sitting, from your laptop.
 >
-> Your link: REMOVAL-URL/index.html?p=s6nqb
+> Your link: https://teal-marzipan-e1b49a.netlify.app/index.html?p=s6nqb
 >
 > Only open it when you're ready to start — the session starts the moment the page loads.
 >
@@ -160,7 +163,7 @@ Each block is complete. Copy it and send. Do not send two people the same link.
 
 > Hey ritesh — session 2 of the SQL thing is ready, as promised. Any time after 10:35 pm tonight (Wed 30), or tomorrow (Thu 1 Oct). About 30 minutes, in one sitting, from your laptop.
 >
-> Your link: REMOVAL-URL/index.html?p=efkxn
+> Your link: https://teal-marzipan-e1b49a.netlify.app/index.html?p=efkxn
 >
 > Only open it when you're ready to start — the session starts the moment the page loads.
 >
