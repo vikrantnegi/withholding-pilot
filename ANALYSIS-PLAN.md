@@ -390,6 +390,30 @@ That hypothesis claims nothing about willingness to try.
 fixed at question-set freeze. Blanks score zero. Never use "questions attempted". The gate trains
 Arm A to always type something. That denominator would shrink less for Arm A than for Arm B.
 
+**Applied 30 Sep, confirmed by Vikrant.** rishabh (Arm B) answered H01-H09 and never opened
+H10-H12. The likely cause is time: he stopped at 27 minutes after a message saying "about 30
+minutes". His 3 blanks score zero, so he is 9 of 12. The rule is unchanged; it was fixed on
+19 Sep, before any removal data. Report questions reached per person next to the score.
+
+**Extended 30 Sep, confirmed by Vikrant.** manish (Arm B) also stopped after H09, 6 minutes in,
+so time is not his cause. A layout issue is possible: under about 1100 px wide the question rail
+cuts off Question 10 onwards. Blanks score zero whatever the cause, time, layout or choice.
+Report the likely cause per person in the write-up, not in the score.
+
+**manish: kept, flagged. Decided 30 Sep by Vikrant, before anuj's and ritesh's logs.** His
+removal log shows a likely outside-help signature: `deployments` and `duration_seconds` return
+twice after he had corrected them, uniform 4-space formatting, 20-40 s per question. His practice
+log carried the same flag. He stays in every result at 9 of 12. Every table and chart marks him,
+and the write-up states the flag and its evidence next to Arm B's mean.
+
+**Superseded 30 Sep, same evening, by Vikrant: manish is excluded.** Still decided before anuj's
+and ritesh's logs. Reason: his data has been unreliable in every round, not only this one. Round 2
+took 55 seconds; the practice log was flagged for outside help; the removal log carries the
+signature above. The exclusion rests on that record, not on his score. It also works *against*
+the hypothesis: dropping a 9 raises Arm B's mean. Arm B falls to 3 people (vikash, rishabh,
+anuj). Report the with-manish result once, in a footnote, so a reader can see it changes nothing
+that matters. If anuj's log does not arrive, Arm B is 2 people, the minimum check 0a allows.
+
 **Satisfaction.** Predicted direction: Arm A reports lower satisfaction and lower perceived
 learning than Arm B.
 

@@ -57,10 +57,10 @@ it cannot be reconstructed afterwards.
 
 | person | arm | practice 23 Sep | removal test 28 Sep |
 |---|---|---|---|
-| gaurav | A | yes, 15:18-15:36 IST, stopped after 7 of 16 | |
-| nabin | A | yes, 10:58-11:58 IST | |
-| ritesh | A | yes, 25 Sep 21:36-22:35 IST, 16 of 16 (practised a day late) | |
-| anuj | B | yes, 20:00-20:29 IST | |
-| manish | B | yes, 17:46-22:43 IST (4h20m gap), flagged | |
-| rishabh | B | yes, 22:12-23:01 IST | |
-| vikash | B | yes, 24 Sep 21:17-21:42 IST, 16 of 16 | |
+| gaurav | A | yes, 15:18-15:36 IST, stopped after 7 of 16 | yes, 30 Sep 18:03-18:24 IST, 12 of 12, gap 7d 2h (over 7 days) |
+| nabin | A | yes, 10:58-11:58 IST | yes, 30 Sep 14:05-14:52 IST, 12 of 12, gap 7d 2h (over 7 days) |
+| ritesh | A | yes, 25 Sep 21:36-22:35 IST, 16 of 16 (practised a day late) | yes, 2 Oct 10:57-11:38 IST, 12 of 12 |
+| anuj | B | yes, 20:00-20:29 IST | yes, 30 Sep 19:38-19:57 IST, 4 of 12, stopped after H08 |
+| manish | B | yes, 17:46-22:43 IST (4h20m gap), flagged | yes, 30 Sep 19:25-19:31 IST, 9 of 12, stopped after H09, flagged again. **Excluded 30 Sep** (ANALYSIS-PLAN §5) |
+| rishabh | B | yes, 22:12-23:01 IST | yes, 30 Sep 17:29-17:56 IST, 9 of 12, stopped after H09, H10-H12 unattempted |
+| vikash | B | yes, 24 Sep 21:17-21:42 IST, 16 of 16 | yes, 30 Sep 11:48-12:03 IST, 12 of 12 |

@@ -1,0 +1,658 @@
+{
+ "version": "removal-1",
+ "session": "removal",
+ "participant": "geu2z",
+ "arm": "A",
+ "started": "2026-09-30T12:33:08.805Z",
+ "events": [
+  {
+   "type": "attempt",
+   "q": "H01",
+   "arm": "A",
+   "sql": "SELECT CITY, COUNT(*) AS ride_count\nFROM rides\nGROUP BY city\nORDER BY ride_count DESC;",
+   "at": "2026-09-30T12:35:11.714Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "Delhi",
+     "13"
+    ],
+    [
+     "Jaipur",
+     "10"
+    ],
+    [
+     "Indore",
+     "8"
+    ],
+    [
+     "Kochi",
+     "6"
+    ],
+    [
+     "Pune",
+     "5"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "H02",
+   "arm": "A",
+   "sql": "SELECT env, ROUND(AVG(duration_sec),1) AS avg_seconds\nFROM deploys\nGROUP BY env\nORDER BY env ASC;",
+   "at": "2026-09-30T12:37:44.260Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "prod",
+     "241.4"
+    ],
+    [
+     "staging",
+     "190.9"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "H03",
+   "arm": "A",
+   "sql": "SELECT driver , MAX(fare) as top_fare\nFROM rides\nGROUP BY driver\nORDER BY driver ASC",
+   "at": "2026-09-30T12:39:26.722Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "Amit",
+     "393"
+    ],
+    [
+     "Bela",
+     "430"
+    ],
+    [
+     "Chetan",
+     "423"
+    ],
+    [
+     "Divya",
+     "409"
+    ],
+    [
+     "Farhan",
+     "362"
+    ],
+    [
+     "Gita",
+     "127"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "H04",
+   "arm": "A",
+   "sql": "SELECT team, COUNT(*) AS open_tickets \nFROM tickets\nWHERE status = 'open'\nGROUP BY team\nORDER BY open_tickets DESC;",
+   "at": "2026-09-30T12:40:39.397Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "mobile",
+     "6"
+    ],
+    [
+     "web",
+     "5"
+    ],
+    [
+     "platform",
+     "3"
+    ],
+    [
+     "data",
+     "2"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "H05",
+   "arm": "A",
+   "sql": "SELECT service,ROUND(AVERAGE(duration_sec),1) AS avg_seconds\nFROM deploys\nWHERE status= 'failed'\nGROUP BY service\nORDER BY service ASC",
+   "at": "2026-09-30T12:42:24.147Z",
+   "grade": "invalid",
+   "gradeReason": "selects average, duration_sec without grouping by it",
+   "outcome": "error",
+   "error": "no such function: AVERAGE"
+  },
+  {
+   "type": "attempt",
+   "q": "H05",
+   "arm": "A",
+   "sql": "SELECT service,ROUND(AVG(duration_sec),1) AS avg_seconds\nFROM deploys\nWHERE status= 'failed'\nGROUP BY service\nORDER BY service ASC",
+   "at": "2026-09-30T12:42:28.468Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "auth",
+     "181"
+    ],
+    [
+     "billing",
+     "185"
+    ],
+    [
+     "notify",
+     "190.8"
+    ],
+    [
+     "payments",
+     "249.5"
+    ],
+    [
+     "search",
+     "100"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "H06",
+   "arm": "A",
+   "sql": "SELECT city,SUM(fare) AS total_fare\nFROM rides\nWHERE rating = 5\nGROUP BY city\nORDER BY city ASC;",
+   "at": "2026-09-30T12:43:36.989Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "Delhi",
+     "587"
+    ],
+    [
+     "Indore",
+     "608"
+    ],
+    [
+     "Jaipur",
+     "582"
+    ],
+    [
+     "Kochi",
+     "127"
+    ],
+    [
+     "Pune",
+     "254"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "H07",
+   "arm": "A",
+   "sql": "SELECT team,COUNT(*) AS ticket_count\nFROM tickets\nGROUP BY team\nORDER BY team ASC",
+   "at": "2026-09-30T12:44:19.248Z",
+   "grade": "wrong",
+   "gradeReason": "4 rows returned, 2 expected",
+   "rows": [
+    [
+     "data",
+     "8"
+    ],
+    [
+     "mobile",
+     "12"
+    ],
+    [
+     "platform",
+     "7"
+    ],
+    [
+     "web",
+     "9"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "H07",
+   "arm": "A",
+   "sql": "SELECT team,COUNT(*) AS ticket_count\nFROM tickets\nGROUP BY team\nHAVING ticket_count > 10\nORDER BY team ASC",
+   "at": "2026-09-30T12:44:44.310Z",
+   "grade": "wrong",
+   "gradeReason": "1 rows returned, 2 expected",
+   "rows": [
+    [
+     "mobile",
+     "12"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "H07",
+   "arm": "A",
+   "sql": "SELECT team,COUNT(*) AS ticket_count\nFROM tickets\nGROUP BY team\nHAVING COUNT(*) > 10\nORDER BY team ASC",
+   "at": "2026-09-30T12:44:53.852Z",
+   "grade": "wrong",
+   "gradeReason": "1 rows returned, 2 expected",
+   "rows": [
+    [
+     "mobile",
+     "12"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "H07",
+   "arm": "A",
+   "sql": "SELECT team,COUNT(*) AS ticket_count\nFROM tickets\nGROUP BY team\nORDER BY team DESC",
+   "at": "2026-09-30T12:45:46.540Z",
+   "grade": "wrong",
+   "gradeReason": "4 rows returned, 2 expected",
+   "rows": [
+    [
+     "web",
+     "9"
+    ],
+    [
+     "platform",
+     "7"
+    ],
+    [
+     "mobile",
+     "12"
+    ],
+    [
+     "data",
+     "8"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "H07",
+   "arm": "A",
+   "sql": "SELECT team,COUNT(*) AS ticket_count\nFROM tickets\nGROUP BY team\nHAVING COUNT(*) > 8\nORDER BY team DESC",
+   "at": "2026-09-30T12:45:55.735Z",
+   "grade": "wrong",
+   "gradeReason": "right rows, wrong order",
+   "rows": [
+    [
+     "web",
+     "9"
+    ],
+    [
+     "mobile",
+     "12"
+    ]
+   ],
+   "outcome": "right_rows_wrong_order"
+  },
+  {
+   "type": "attempt",
+   "q": "H07",
+   "arm": "A",
+   "sql": "SELECT team,COUNT(*) AS ticket_count\nFROM tickets\nGROUP BY team\nHAVING COUNT(*) > 8\nORDER BY team ASC",
+   "at": "2026-09-30T12:46:00.790Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "mobile",
+     "12"
+    ],
+    [
+     "web",
+     "9"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "H08",
+   "arm": "A",
+   "sql": "SELECT service, ROUND(AVG(duration_sec),1) AS avg_seconds \nFROM deploys\nGROUP BY service\nHAVING avg_seconds > 175\nORDER BY service ASC;",
+   "at": "2026-09-30T12:47:39.494Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "billing",
+     "204.5"
+    ],
+    [
+     "payments",
+     "279.5"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "H09",
+   "arm": "A",
+   "sql": "SELECT driver,SUM(fare) AS total_fare\nFROM rides\nGROUP BY driver\nORDER BY total_fare desc;",
+   "at": "2026-09-30T12:48:36.986Z",
+   "grade": "wrong",
+   "gradeReason": "6 rows returned, 3 expected",
+   "rows": [
+    [
+     "Farhan",
+     "2382"
+    ],
+    [
+     "Divya",
+     "2198"
+    ],
+    [
+     "Bela",
+     "1874"
+    ],
+    [
+     "Chetan",
+     "1222"
+    ],
+    [
+     "Amit",
+     "1023"
+    ],
+    [
+     "Gita",
+     "315"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "H09",
+   "arm": "A",
+   "sql": "SELECT driver,SUM(fare) AS total_fare\nFROM rides\nGROUP BY driver\nHAVING total_fare > 1500\nORDER BY total_fare desc;",
+   "at": "2026-09-30T12:48:55.869Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "Farhan",
+     "2382"
+    ],
+    [
+     "Divya",
+     "2198"
+    ],
+    [
+     "Bela",
+     "1874"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "H10",
+   "arm": "A",
+   "sql": "SELECT service,COUNT(*) as prod_deploys\nFROM deploys\nWHERE env = 'prod'\nGROUP BY service\nHAVING prod_deploys>3\nORDER BY service ASC;",
+   "at": "2026-09-30T12:50:06.286Z",
+   "grade": "wrong",
+   "gradeReason": "1 rows returned, 2 expected",
+   "rows": [
+    [
+     "payments",
+     "10"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "H10",
+   "arm": "A",
+   "sql": "SELECT service,COUNT(*) as prod_deploys\nFROM deploys\nWHERE env = 'prod'\nGROUP BY service\nORDER BY service ASC;",
+   "at": "2026-09-30T12:50:23.582Z",
+   "grade": "wrong",
+   "gradeReason": "5 rows returned, 2 expected",
+   "rows": [
+    [
+     "auth",
+     "1"
+    ],
+    [
+     "billing",
+     "3"
+    ],
+    [
+     "notify",
+     "2"
+    ],
+    [
+     "payments",
+     "10"
+    ],
+    [
+     "search",
+     "1"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "H10",
+   "arm": "A",
+   "sql": "SELECT service,COUNT(*) as prod_deploys\nFROM deploys\nWHERE env = 'prod'\nGROUP BY service\nHAVING prod_deploys>=3\nORDER BY service ASC;",
+   "at": "2026-09-30T12:50:30.482Z",
+   "grade": "wrong",
+   "gradeReason": "right rows, wrong order",
+   "rows": [
+    [
+     "billing",
+     "3"
+    ],
+    [
+     "payments",
+     "10"
+    ]
+   ],
+   "outcome": "right_rows_wrong_order"
+  },
+  {
+   "type": "attempt",
+   "q": "H10",
+   "arm": "A",
+   "sql": "SELECT service,COUNT(*) as prod_deploys\nFROM deploys\nWHERE env = 'prod'\nGROUP BY service\nHAVING prod_deploys>=3\nORDER BY service DESC;",
+   "at": "2026-09-30T12:50:36.728Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "payments",
+     "10"
+    ],
+    [
+     "billing",
+     "3"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "H11",
+   "arm": "A",
+   "sql": "SELECT city,ROUND(AVG(fare),1) as avg_fare\nFROM rides\nWHERE distance_km >5\nGROUP BY city\nHAVING avg_fare>250 \nORDER BY city",
+   "at": "2026-09-30T12:52:45.515Z",
+   "grade": "wrong",
+   "gradeReason": "right rows, wrong order",
+   "rows": [
+    [
+     "Delhi",
+     "253.8"
+    ],
+    [
+     "Indore",
+     "312.2"
+    ],
+    [
+     "Jaipur",
+     "299.9"
+    ],
+    [
+     "Pune",
+     "254"
+    ]
+   ],
+   "outcome": "right_rows_wrong_order"
+  },
+  {
+   "type": "attempt",
+   "q": "H11",
+   "arm": "A",
+   "sql": "SELECT city,ROUND(AVG(fare),1) as avg_fare\nFROM rides\nWHERE distance_km >5\nGROUP BY city\nHAVING avg_fare>250 \nORDER BY city DESC;",
+   "at": "2026-09-30T12:52:51.861Z",
+   "grade": "wrong",
+   "gradeReason": "right rows, wrong order",
+   "rows": [
+    [
+     "Pune",
+     "254"
+    ],
+    [
+     "Jaipur",
+     "299.9"
+    ],
+    [
+     "Indore",
+     "312.2"
+    ],
+    [
+     "Delhi",
+     "253.8"
+    ]
+   ],
+   "outcome": "right_rows_wrong_order"
+  },
+  {
+   "type": "attempt",
+   "q": "H11",
+   "arm": "A",
+   "sql": "SELECT city,ROUND(AVG(fare),1) as avg_fare\nFROM rides\nWHERE distance_km >5\nGROUP BY city\nHAVING avg_fare>250 \nORDER BY avg_fare DESC;",
+   "at": "2026-09-30T12:52:57.653Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "Indore",
+     "312.2"
+    ],
+    [
+     "Jaipur",
+     "299.9"
+    ],
+    [
+     "Pune",
+     "254"
+    ],
+    [
+     "Delhi",
+     "253.8"
+    ]
+   ],
+   "outcome": "correct"
+  },
+  {
+   "type": "attempt",
+   "q": "H12",
+   "arm": "A",
+   "sql": "SELECT team,ROUND(AVG(hours_to_close),1) AS avg_hours\nFROM tickets\nGROUP BY team\nHAVING avg_hours >35\nORDER BY team;",
+   "at": "2026-09-30T12:54:16.982Z",
+   "grade": "wrong",
+   "gradeReason": "3 rows returned, 3 expected",
+   "rows": [
+    [
+     "mobile",
+     "50.8"
+    ],
+    [
+     "platform",
+     "36.9"
+    ],
+    [
+     "web",
+     "53.3"
+    ]
+   ],
+   "outcome": "wrong"
+  },
+  {
+   "type": "attempt",
+   "q": "H12",
+   "arm": "A",
+   "sql": "SELECT team,ROUND(AVG(hours_to_close),1) AS avg_hours\nFROM tickets\nWHERE status = 'closed'\nGROUP BY team\nHAVING avg_hours >35\nORDER BY team;",
+   "at": "2026-09-30T12:54:39.803Z",
+   "grade": "wrong",
+   "gradeReason": "right rows, wrong order",
+   "rows": [
+    [
+     "data",
+     "36.2"
+    ],
+    [
+     "mobile",
+     "54.3"
+    ],
+    [
+     "web",
+     "61.3"
+    ]
+   ],
+   "outcome": "right_rows_wrong_order"
+  },
+  {
+   "type": "attempt",
+   "q": "H12",
+   "arm": "A",
+   "sql": "SELECT team,ROUND(AVG(hours_to_close),1) AS avg_hours\nFROM tickets\nWHERE status = 'closed'\nGROUP BY team\nHAVING avg_hours >35\nORDER BY team DESC;",
+   "at": "2026-09-30T12:54:47.074Z",
+   "grade": "correct",
+   "gradeReason": "",
+   "rows": [
+    [
+     "web",
+     "61.3"
+    ],
+    [
+     "mobile",
+     "54.3"
+    ],
+    [
+     "data",
+     "36.2"
+    ]
+   ],
+   "outcome": "correct"
+  }
+ ],
+ "survey": {
+  "enjoyed": null,
+  "learned": null,
+  "confident": null
+ },
+ "finished": "2026-09-30T12:54:50.470Z"
+}
