@@ -443,3 +443,20 @@ prose-dictation attack before the walkthrough rule was added.
 **And then ask: did the hypothesis move?** If the run changed the design, `HYPOTHESIS-LOG.md`
 needs an entry too. That check is here because it was skipped for a week — `LEARNING-LOG.md`
 L14.
+
+## Run 6 — the removal test, 30 Sep to 2 Oct 2026
+
+**What ran.** The 12 held-out items, no Help for either arm, 5 to 7 days after practice. Seven
+learners; manish excluded before the last two logs arrived (`ANALYSIS-PLAN.md` §5).
+
+**What came out.** Arm A 36 of 36 person-questions (3 learners x 12 questions), Arm B 25 of 36.
+First-attempt correct 17 of 36 in both. Arm B left 7 blank, 6 of them on S4. Checks 1c and 3
+failed. Every number is in `RESULTS.md`, from `evals/analyse-removal.py`.
+
+**What it cost.** Six WhatsApp messages and two chases. Two learners ran about 2 hours past 7
+days and were kept, as deviations.
+
+**What it changed.** The design, for any next study: randomised item order, harder items, and
+first-attempt correct as the primary score.
+
+**Did the hypothesis move?** Yes. `HYPOTHESIS-LOG.md` v2, 4 Oct.

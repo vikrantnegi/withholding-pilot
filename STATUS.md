@@ -1,4 +1,10 @@
-# Status — as of 27 Sep 2026
+# Status — as of 4 Oct 2026
+
+> **4 Oct:** the study is done. All 7 removal logs are in and committed. Arm A 36 of 36, Arm B
+> 25 of 36 (3 learners x 12 questions each), manish excluded. First-attempt correct is 17 of 36
+> in both arms. Checks 1c and 3 failed, so the gap is not credited to withholding. `RESULTS.md`
+> has every number; `HYPOTHESIS-LOG.md` v2 has the changed claim. **Left before 7 Oct:**
+> re-host the practice site as the live link, case study, README, demo video, dry run.
 
 > **27 Sep:** removal page hosted at `https://teal-marzipan-e1b49a.netlify.app/` and verified
 > from a browser: byte-identical to `app/dist-removal` once Netlify's injections are stripped.

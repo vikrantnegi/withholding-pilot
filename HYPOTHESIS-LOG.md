@@ -9,14 +9,18 @@ reader does not have to reconstruct the story from three entries written out of 
 
 ## Where the hypothesis stands today
 
-> If the assistant **requires an attempt** before giving anything, and gives a **hint before the
-> answer**, then unaided performance 5–7 days after removal improves against an answer-giving
-> baseline — **on the sub-skills that were practised, and not on the one that was not.**
+> **v2, 4 Oct.** If the assistant **requires an attempt** before giving anything, and gives a
+> **hint before the answer**, then learners **keep going after a wrong answer and fix it** more
+> often than with an answer-giving baseline. It does **not** change what they get right on a
+> first try.
 >
-> Measured per person-question on the 26 Sep removal test, graded by
-> `study-questions/grade_rule.py`, against the thresholds in `ANALYSIS-PLAN.md` §4 (v1).
+> Proposed by the 30 Sep removal test, not supported by it: 3 learners per arm, and checks 1c and
+> 3 failed. `RESULTS.md` has the numbers.
 
-Two things to notice against the 30 Aug statement. The independent variable is **withholding**,
+**The v1 claim, superseded 4 Oct.** Unaided performance 5–7 days after removal improves on the
+practised sub-skills, and not on the one that was not.
+
+Two things to notice in v1 against the 30 Aug statement. The independent variable is **withholding**,
 not *adaptive* withholding: the competence estimator is cut, so nothing adapts per learner. And
 the final clause is new — it is what makes a positive result attributable rather than merely
 positive.
@@ -32,6 +36,7 @@ v0.2 describes an earlier change than v0.1 because it was logged a week late.
 | **v0.2** | 7–10 Sep | **14 Sep, late** | four levels → two (hint, reveal); competence estimator cut; **the gate added**. The independent variable moves from adaptive withholding to withholding | an estimator cannot converge at n=6 over a short set; with a gate in front, the nudge is redundant; the gate is what actually implements retrieval | Koedinger & Aleven on the assistance dilemma; Bastani's GPT Tutor prompt in the SI appendix |
 | **v0.1** | 13–14 Sep | 13–14 Sep | two concepts → **one** (GROUP BY/HAVING), with four sub-skills: three practised, one held back as a within-person control. Held-out items hand-paired to practice items by sub-skill | T3 is dead (3 of 7 tried with an editor, 0 solved); the moments arithmetic does not close at four cells; questions cannot be screened without burning participants | `EXPERIMENT-LOG.md` Run 2; `LEARNING-LOG.md` L3, L4, L5 |
 | **v1** | 19 Sep | 19 Sep | no new mechanism. The claim becomes falsifiable: thresholds attached, and "correct" narrows from *right rows* to *right rows by grouping correctly* (scoring rule clause 2). Records that practice is skewed S1 x3 / S2 x6 / S3 x7, so a null on S1 is weaker evidence than a null on S3 | the thresholds and the question set both exist now, so a refuting result can be specified; clause 2 exists because the seed data was silently doing half the grading | `ANALYSIS-PLAN.md` §4; `study-questions/DECISIONS.md`; `LEARNING-LOG.md` L15, L16 |
+| **v2** | 4 Oct | 4 Oct | the claim moves from **recall** to **persistence and recovery**. v1's S4 contrast fails in the reverse direction, and is explained by blanks on the last three items | first-attempt correct is 17 of 36 in both arms; Arm A opened 36 of 36 and recovered 19 of 19 misses, Arm B 29 of 36 and 8 of 12. Checks 1c and 3 failed | `RESULTS.md`; `evals/analyse-removal.py` |
 
 **Why v0.2 is late and says so:** three design changes went into `PRD-v1.md` and none reached
 this file for a week. Caught by a reader, not by the process. `LEARNING-LOG.md` L14 has the
@@ -328,3 +333,67 @@ under the new definition before 28 Sep: separability between S3 and a compositio
 is a different question from separability between two unrelated skills.
 
 `PRD-v1.md` §6 item 4 was corrected the same day and quotes the superseded wording.
+
+---
+
+## v2: 4 Oct 2026 — the removal test ran, and the evidence moved the claim
+
+**What arrived.** Seven removal logs, 30 Sep to 2 Oct. manish excluded (`ANALYSIS-PLAN.md` §5).
+Full numbers in `RESULTS.md`, reproducible with `evals/analyse-removal.py`.
+
+**What v1 predicted.** A gap between the arms on the practised sub-skills S1 to S3, and no gap on
+S4, the unpractised composition.
+
+**What came back.** Arm A 36 of 36 person-questions (3 learners x 12 questions), Arm B 25 of 36.
+By sub-skill the gaps are S1 1, S2 1, S3 3, S4 6. The largest gap is on S4, the reverse of v1.
+
+**Why the S4 gap does not mean transfer.** All 6 S4 points are blanks. rishabh and anuj never
+opened H10 to H12, and S4 items sit last on the page. Item order and sub-skill are the same
+variable, so stopping early lands on S4 first.
+
+**The number that moved the claim.** First-attempt correct is 17 of 36 in both arms. The
+difference is downstream of the first try:
+
+| | Arm A | Arm B |
+|---|---|---|
+| questions opened | 36 of 36 | 29 of 36 |
+| first-attempt misses recovered | 19 of 19 | 8 of 12 |
+
+**Two pre-registered checks failed.** Check 1c: Arm B tried 0.83 times before pressing Help,
+above the 0.5 limit, so the gate did not create a behaviour Arm B lacked. Check 3: Arm A scored
+100%, above the 80% ceiling.
+
+**What changes.**
+
+> **v1:** withholding improves unaided performance on practised sub-skills, not on the
+> unpractised one.
+>
+> **v2:** withholding may change what a learner does *after* a wrong answer — they keep going
+> and fix it — rather than what they recall on a first try. In this pilot it did not change
+> first-try recall at all.
+
+v2 is a narrower and different mechanism. v1 was about retrieval strength. v2 is about
+persistence and error recovery. The 14 Sep plan predicted the attempt-rate half of it
+(`ANALYSIS-PLAN.md` §5: "Arm A attempts more of the held-out items than Arm B") and said it is
+not evidence for v1. It is evidence for v2.
+
+**What v2 is not.** It is not supported either. Three learners per arm, a failed manipulation
+check, a failed ceiling check, and one Arm A learner (gaurav) who never pressed Help in practice
+yet scored 12. v2 is the hypothesis this pilot hands to the next study.
+
+**The assumptions, updated.**
+
+| # | assumption | state after the removal test |
+|---|---|---|
+| 3 | withholding does not cost motivation | **no sign of cost.** Every survey answer given was 4 or 5, in both arms; gaurav and rishabh skipped it. anuj answered 5, 5, 5 at 4 of 12 correct |
+| 4 | a floor and a ceiling both exist | **false at the top.** Arm A hit 100% |
+| 5 | S4 is not at the floor for everyone | **true.** 4 of 6 solved at least one S4 item |
+| 7 | the sub-skills are separable | **untested.** The order confound hides it |
+
+**What the next study changes, in order of value.**
+
+1. **Randomise item order per learner.** Otherwise stopping early always looks like an S4 effect.
+2. **Harder held-out items, or more of them.** Arm A needs headroom above 80%.
+3. **Make first-attempt correct the primary score.** It is the measure v2 says the policy does
+   not move, so it is the one that can falsify v2.
+4. **Log every Help press as treatment received.** Report per-protocol beside intention-to-treat.

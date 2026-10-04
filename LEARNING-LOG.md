@@ -745,3 +745,25 @@ both arms the same way, and lands before any removal-test data exists.
 
 **So what:** the grader has to resolve names the way the database does. Every gap between the
 two is a place where a learner can be right and be marked wrong.
+
+---
+
+## L23 — 4 Oct 2026. Item order was a variable, and nobody counted it
+
+**What happened.** Three of six learners stopped early on the removal test, after H08 or H09.
+The held-out items run S1, S2, S3, S4 in page order. So every early stop landed on S4. Arm B's
+6 blanks on S4 became a 6-point S4 gap, the largest in the study.
+
+**The assumption.** That every learner reaches every item, so item position does not matter.
+The 30-minute guide in the message and a narrow-screen layout both broke it.
+
+**Why it matters.** S4 is the attribution control. The order confound turned "they stopped" into
+"S4 shows the biggest effect", which reads as the opposite of the hypothesis's prediction.
+
+**The fix, for a next study.** Randomise item order per learner, logged with the session. Then
+stopping early spreads across sub-skills instead of landing on one.
+
+**This is the wrong-unit trap again.** The grain was right, per person-question. The missing
+column was position.
+
+**So what:** any variable that changes along with the outcome is a variable, even page order.
