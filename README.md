@@ -2,9 +2,66 @@
 
 **Vikrant Negi. Solo. Demo Day track. Submission 7 Oct 2026.**
 
-Start here. This file says what the project is and what to read next.
+An SQL tutor that makes you try before it helps, and a 6-person pilot testing whether that
+changes what you can do a week later, with the tutor gone.
 
 For where things stand **today**, read `STATUS.md`. That is the only file that claims to be current.
+
+---
+
+## Try it
+
+**Live app:** https://tranquil-starlight-f0129e.netlify.app/
+
+- Withholding tutor: https://tranquil-starlight-f0129e.netlify.app/index.html?arm=A
+- Answer-giving baseline: https://tranquil-starlight-f0129e.netlify.app/index.html?arm=B
+
+What each one does:
+
+- `?arm=A` opens the withholding tutor. Press Help before trying, and it refuses. Try once, and
+  Help gives a hint. Two more tries, and it gives the answer.
+- `?arm=B` opens the baseline. Help gives the full answer at once.
+
+Same page, same 16 practice questions, same grader. One config flag is the only difference.
+
+---
+
+## The result
+
+**Arm A scored 36 of 36 person-questions (3 learners x 12 held-out questions). Arm B scored 25
+of 36.** The direction favours withholding.
+
+**But on a cold first try, the arms were identical: 17 of 36 each.** The gap came after the
+first try:
+
+| | Arm A, withholding | Arm B, answer-giving |
+|---|---|---|
+| correct on any attempt | 36 of 36 | 25 of 36 |
+| correct on the first attempt | 17 of 36 | 17 of 36 |
+| questions opened | 36 of 36 | 29 of 36 |
+| wrong first tries later fixed | 19 of 19 | 8 of 12 |
+
+**Two of the study's own pre-registered checks failed.** Arm B also tried before asking for help
+(check 1c), and Arm A hit a 100% ceiling (check 3). So the gap is not credited to withholding.
+
+`RESULTS.md` has every number, in the order the plan fixed before any data existed.
+`evals/analyse-removal.py` reproduces them from the raw logs.
+
+**So what:** withholding seems to change what a learner does *after* a wrong answer. It did not
+change what they could produce on a first try.
+
+## How the hypothesis moved
+
+The diff is the deliverable. `HYPOTHESIS-LOG.md` keeps every version.
+
+| version | claim |
+|---|---|
+| v0, 30 Aug | help sized to what the learner can already do, chosen by a competence estimate |
+| v1, 19 Sep | require an attempt, hint before answer; better recall on practised sub-skills, not on the unpractised one |
+| **v2, 4 Oct** | **the same policy changes persistence and error recovery, not first-try recall** |
+
+v2 is what this pilot proposes. It is not what the pilot proves. Three learners per arm cannot
+prove either version.
 
 ---
 
@@ -26,13 +83,13 @@ policy.
 
 **Why it matters:** one boolean in a config file is the whole difference between the two groups.
 
-## The hypothesis
+## The hypothesis the study was built to test (v1)
 
 Withhold the answer until the learner has tried. Give a hint before giving the answer. Then unaided
 performance improves, measured 5 to 7 days after the app is taken away.
 
 The mechanism: making someone retrieve an answer builds durable memory faster than letting them read
-one.
+one. The result above says the mechanism, if any, is different.
 
 ## The claim is deliberately weak
 
@@ -54,6 +111,7 @@ There is no third group working without any assistant. It is not affordable at s
 | question | file |
 |---|---|
 | What is being built, and why that design? | `PRD-v1.md` §1 and §3 |
+| What came out? | `RESULTS.md` |
 | What has actually been done? | `EXPERIMENT-LOG.md` |
 | What was learned, and what turned out wrong? | `LEARNING-LOG.md` |
 | Where does it stand, and what is next? | `STATUS.md` |
@@ -69,7 +127,7 @@ also means the log can prove the two groups differed.
 
 ## Reading order
 
-- **Ten minutes:** this file, then `STATUS.md`.
+- **Ten minutes, judging:** this file, then `RESULTS.md`, then `HYPOTHESIS-LOG.md` v2.
 - **Taking the project over:** add `PRD-v1.md` in full, then `LEARNING-LOG.md`, then
   `CAPSTONE-RULES.md` §E for how it is marked.
 - **Reviewing the research design:** `PRD-v1.md` §2 and §4, then `EXPERIMENT-LOG.md`, then
@@ -87,6 +145,7 @@ Sorted this way on purpose. How a file behaves over time tells you how much to t
 |---|---|
 | `README.md` | this file |
 | `STATUS.md` | **where things stand today.** Wins any disagreement about the present |
+| `RESULTS.md` | the removal-test analysis: every check in `ANALYSIS-PLAN.md` §4, per person and per sub-skill |
 | `PRD-v1.md` | the spec: scope, hypothesis, architecture, the policy, cut list, open decisions |
 | `HYPOTHESIS-LOG.md` | formal hypothesis versions and what evidence changed them (FAQ rule B4) |
 | `EXPERIMENT-LOG.md` | append only: every run, what came out, what it changed |
@@ -115,7 +174,7 @@ Sorted this way on purpose. How a file behaves over time tells you how much to t
 |---|---|
 | `PRD-SEED.md` | first-pass spec. Had a four-level ladder and a skill estimator. Both cut. Replaced by `PRD-v1.md` |
 | `100x-CURRICULUM.md` | read 30 Aug to find a participant pool, and it found one: the cohort's low-code path. 100x ruled cohort members out on 1 Sep, so three of its four sections describe a plan that was replaced. The module map and the "why this question is worth asking" framing are still live |
-| `ANALYSIS-PLAN.md` | the measurement decisions fixed before data exists: unit of analysis, question pairing, budget arithmetic, and the null-result checklist read on 28 Sep. Was TODO-HYPOTHESIS-v1.md |
+| `ANALYSIS-PLAN.md` | the measurement decisions fixed before data existed: unit of analysis, question pairing, budget arithmetic, the checklist `RESULTS.md` runs, and the dated scoring decisions of 30 Sep. Was TODO-HYPOTHESIS-v1.md |
 
 ### Working folders
 
@@ -125,8 +184,8 @@ Sorted this way on purpose. How a file behaves over time tells you how much to t
 | `study-questions/` | **the instrument. Frozen 19 Sep**: 28 items (16 practice, 12 held-out), the study schema, the scoring rule, and the three verifiers that must report `problems: 0` before any freeze. Start at `study-questions/README.md`; the decisions and their reasons are in `study-questions/DECISIONS.md` |
 | `app/` | the study app. Participants open `index.html?p=<their code>`, which sets the arm and identifies the log; `?arm=` is the test path. `policy.js`, `hint-guard.js`, `hint-writer.js`, `help-session.js` and `grade-rule.js` hold everything that decides anything, and are covered by 123 unit tests |
 | `diagrams/` | the architecture, drawn in Excalidraw: `architecture-arm-a.png` and `architecture-arm-b.png`, three zones each, Arm B being the same drawing with its unused half greyed out. Both are embedded in `PRD-v1.md` §3. `.excalidraw` sources alongside |
-| `evals/` | `replay.js` hint quality, replayed from stored attempts (the 18 Sep checkpoint). `verify-app.mjs` drives the real page in a headless browser. `grader-conformance.mjs` proves the app's grader and the scoring rule agree. `link-check.mjs` fails if the docs name a file that is not on disk. `check-hint-function.mjs` proves a deployed hint function actually answers; `check-hosted.mjs` proves the hosted files are the build you made. Both run from your own terminal. Start at `evals/README.md` |
-| `supabase/` | `supabase/functions/hint/` — the edge function that holds the Groq key, so it is never in the page. **Not deployed.** Deploy and verification steps: `supabase/README.md` |
+| `evals/` | `replay.js` hint quality, replayed from stored attempts (the 18 Sep checkpoint). `verify-app.mjs` drives the real page in a headless browser. `grader-conformance.mjs` proves the app's grader and the scoring rule agree. `link-check.mjs` fails if the docs name a file that is not on disk. `check-hint-function.mjs` proves a deployed hint function actually answers; `check-hosted.mjs` proves the hosted files are the build you made. Both run from your own terminal. `analyse-removal.py` produces every number in `RESULTS.md`. Start at `evals/README.md` |
+| `supabase/` | `supabase/functions/hint/` — the edge function that holds the Groq key, so it is never in the page. Deployed 19 Sep; deploy and verification steps: `supabase/README.md` |
 
 **Why it matters:** a new reader can trust the Living files and skip the Superseded ones. That is
 the whole point of the grouping.
@@ -148,8 +207,10 @@ the classmate exclusion.
 
 ## Key dates
 
-**7 Oct 2026, submit.** 9 Oct is a backstop, not the plan.
-**26 or 27 Sep, the removal test.** The 5-to-7-day gap sets the floor, freeze sets the ceiling. Unbooked — `STATUS.md` has the live date.
-**30 Sep, feature freeze.** Demo Day **11 Oct**, 100x HQ.
-
-Full checkpoint table with current state: `STATUS.md`.
+| date | what |
+|---|---|
+| 23 to 25 Sep | practice session, both arms |
+| 30 Sep to 2 Oct | removal test, 5 to 7 days later |
+| 4 Oct | analysis and hypothesis v2 |
+| **7 Oct** | **submission.** 9 Oct is a backstop, not the plan |
+| 11 Oct | Demo Day, 100x HQ |
