@@ -16,7 +16,7 @@ scored 36 of 36 person-questions (3 learners x 12 questions); Arm B scored 25 of
 cold first try, both arms scored exactly 17 of 36. The gap came from what people did after a
 wrong answer: Arm A opened every question and fixed every miss. Two of my own pre-registered
 checks failed, so I do not credit the gap to withholding. The finding I can defend is narrower,
-and different from the one I set out to test.
+and different from the hypothesis the brief started us with.
 
 ---
 
@@ -130,7 +130,7 @@ The hypothesis moved three times. Each move is in `HYPOTHESIS-LOG.md`, with the 
 
 | version | the claim | what moved it |
 |---|---|---|
-| v0, 30 Aug | help sized to the learner's skill, set by a competence estimate | — |
+| v0, 30 Aug | the brief's hypothesis: help sized to the learner's skill | given by the Learning OS brief |
 | v0.2, 7–10 Sep | the estimator and two of four help levels cut; a gate added | an estimator cannot converge on 6 people |
 | v0.1 and v1, 13–19 Sep | one concept, four sub-skills; better recall on practised ones, not the held-back one | the arithmetic: about 23 help decisions in the whole study |
 | **v2, 4 Oct** | **withholding changes persistence and recovery, not first-try recall** | **17 of 36 first-try correct in both arms** |

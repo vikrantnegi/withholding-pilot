@@ -1,7 +1,8 @@
 # Hypothesis & evidence log
 
 > **In plain English, added 5 Oct 2026.** The hypothesis changed four times, each time because of
-> evidence. It started as "size the help to the learner's skill" (30 Aug). It became "make them
+> evidence. It started as the Learning OS brief's own hypothesis, "size the help to the learner's
+> skill" (30 Aug). It became "make them
 > try first, then hint before answering, and they remember more" (19 Sep). The test on 30 Sep to
 > 2 Oct showed both arms got 17 of 36 right on the first try, so it became v2: "making them try
 > first changes what they do after a wrong answer, not what they recall" (4 Oct). The table under
@@ -41,7 +42,7 @@ week late; the numbers follow the order they were logged.
 
 | version | decided | the claim, in one line | what moved it |
 |---|---|---|---|
-| **v0** | 30 Aug | help sized to each learner's skill, picked by a skill estimate from four levels | the submitted statement |
+| **v0** | 30 Aug | help sized to each learner's skill, picked by a skill estimate from four levels | given by the Learning OS brief, and submitted as the statement |
 | **v0.2** | 7–10 Sep | one fixed rule for everyone: try first, then hint, then answer | a skill estimate cannot settle on 6 people; research showed "try first" does the work |
 | **v0.1** | 13–14 Sep | one SQL topic, four sub-skills, one held back as a control | joins: 0 of 3 solved; only about 23 help decisions in the whole study |
 | **v1** | 19 Sep | same claim, now with pass/fail thresholds so it can be proven wrong | the questions and the scoring rule were frozen |

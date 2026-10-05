@@ -56,7 +56,7 @@ The diff is the deliverable. `HYPOTHESIS-LOG.md` keeps every version.
 
 | version | claim |
 |---|---|
-| v0, 30 Aug | help sized to what the learner can already do, chosen by a competence estimate |
+| v0, 30 Aug | the brief's hypothesis: help sized to what the learner can already do |
 | v1, 19 Sep | require an attempt, hint before answer; better recall on practised sub-skills, not on the unpractised one |
 | **v2, 4 Oct** | **the same policy changes persistence and error recovery, not first-try recall** |
 
