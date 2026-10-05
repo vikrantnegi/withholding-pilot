@@ -1,4 +1,8 @@
-# Status — as of 4 Oct 2026
+# Status — as of 5 Oct 2026
+
+> **5 Oct:** the practice site is live again at `https://tranquil-starlight-f0129e.netlify.app/`,
+> for judges. The README leads with the result. The repo is public at
+> github.com/vikrantnegi/withholding-pilot. **Left before 7 Oct:** case study, demo video, dry run.
 
 > **4 Oct:** the study is done. All 7 removal logs are in and committed. Arm A 36 of 36, Arm B
 > 25 of 36 (3 learners x 12 questions each), manish excluded. First-attempt correct is 17 of 36
