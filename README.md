@@ -111,6 +111,7 @@ There is no third group working without any assistant. It is not affordable at s
 | question | file |
 |---|---|
 | What is being built, and why that design? | `PRD-v1.md` §1 and §3 |
+| The whole story, for a judge | `CASE-STUDY.md` |
 | What came out? | `RESULTS.md` |
 | What has actually been done? | `EXPERIMENT-LOG.md` |
 | What was learned, and what turned out wrong? | `LEARNING-LOG.md` |
@@ -127,7 +128,7 @@ also means the log can prove the two groups differed.
 
 ## Reading order
 
-- **Ten minutes, judging:** this file, then `RESULTS.md`, then `HYPOTHESIS-LOG.md` v2.
+- **Ten minutes, judging:** `CASE-STUDY.md`, then `RESULTS.md`, then `HYPOTHESIS-LOG.md` v2.
 - **Taking the project over:** add `PRD-v1.md` in full, then `LEARNING-LOG.md`, then
   `CAPSTONE-RULES.md` §E for how it is marked.
 - **Reviewing the research design:** `PRD-v1.md` §2 and §4, then `EXPERIMENT-LOG.md`, then
