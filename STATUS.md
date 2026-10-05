@@ -3,6 +3,10 @@
 > **5 Oct:** the practice site is live again at `https://tranquil-starlight-f0129e.netlify.app/`,
 > for judges. The README leads with the result. The repo is public at
 > github.com/vikrantnegi/withholding-pilot. **Left before 7 Oct:** case study, demo video, dry run.
+>
+> **Hint function, 5 Oct:** Supabase had paused the free-tier project after about 10 idle days,
+> so Arm A was silently serving fallbacks. Restored 5 Oct; `evals/check-hint-function.mjs` 5 of 5.
+> It pauses again after a week without traffic: **re-run the check on 10 Oct, before Demo Day.**
 
 > **4 Oct:** the study is done. All 7 removal logs are in and committed. Arm A 36 of 36, Arm B
 > 25 of 36 (3 learners x 12 questions each), manish excluded. First-attempt correct is 17 of 36
