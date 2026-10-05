@@ -1,5 +1,15 @@
 # Analysis plan
 
+> **In plain English, added 5 Oct 2026.** This file says how the test result would be read,
+> decided before any test data existed. It sets the unit to count (one person on one question),
+> and a ten-step checklist of ways a result can be broken: people dropping out, too short a gap,
+> the arms not actually behaving differently, a test too hard or too easy, and questions that do
+> not test what was practised. It was **not** rewritten for plain English, on purpose. Its value
+> is that the text predates the data. The only later changes are dated entries in §5, all made
+> before the logs they could affect. `RESULTS.md` runs the checklist: two checks failed, 1c and 3.
+
+---
+
 **What this is.** The measurement decisions that must be fixed before any study data exists.
 Four came from the Bastani appendix, read 2 Sep 2026. The rest were added 14 Sep 2026.
 

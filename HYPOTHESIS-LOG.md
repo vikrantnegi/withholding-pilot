@@ -1,4 +1,13 @@
 # Hypothesis & evidence log
+
+> **In plain English, added 5 Oct 2026.** The hypothesis changed four times, each time because of
+> evidence. It started as "size the help to the learner's skill" (30 Aug). It became "make them
+> try first, then hint before answering, and they remember more" (19 Sep). The test on 30 Sep to
+> 2 Oct showed both arms got 17 of 36 right on the first try, so it became v2: "making them try
+> first changes what they do after a wrong answer, not what they recall" (4 Oct). The table under
+> "The versions" has each step. The entries below it are as written on the day, never edited.
+
+---
 Per FAQ rule B4: "Keep the before and after; the diff is the deliverable."
 You are expected to change the hypothesis. Append new entries. Never edit history.
 

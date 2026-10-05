@@ -1,5 +1,26 @@
 # Learning log — assumptions that broke
 
+> **In plain English, added 5 Oct 2026.** 24 entries so far, L1 to L23 plus a second L10 (a
+> numbering slip, kept as written). Each title is a belief that turned out wrong. They cluster
+> into a few repeating lessons:
+>
+> | lesson | entries |
+> |---|---|
+> | the test measured something other than the skill | L1, L4, L6, L19 |
+> | counting at the wrong grain, per person or per question instead of per person-question | L5 |
+> | the comparison group has its own quality | L7 |
+> | the grader is part of the experiment, and can be wrong | L15, L16, L21, L22 |
+> | the hint guard: what counts as a leak | L12, L13 |
+> | what counts as a real attempt | L11, the second L10 |
+> | records and copies drift unless something forces them not to | L8, the first L10, L14, L17, L18, L20 |
+> | who can be a participant | L2, L3, L9 |
+> | page order is a variable too | L23 |
+>
+> The entries below are as written on the day, never edited. The count in the header under this
+> box ("fourteen") was written mid-September.
+
+---
+
 **Fourteen assumptions have broken so far.** Each entry says what was believed, what proved it wrong,
 what changed, and the lesson.
 

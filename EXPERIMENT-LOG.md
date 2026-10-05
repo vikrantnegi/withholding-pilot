@@ -1,5 +1,21 @@
 # Experiment log
 
+> **In plain English, added 5 Oct 2026.** Six runs, in order:
+>
+> | run | what | what came out |
+> |---|---|---|
+> | 1 | 7 people, 10 SQL questions, no way to run a query | 4 solved of 35 tried |
+> | 2 | the same 7, with a Run button | 11 solved of 16 tried. Feedback from running was the bottleneck |
+> | 3 | the hint writer, replayed on 20 real wrong attempts | 1 leaked hint, caught by the guard |
+> | 4 | the same, on all 104 wrong attempts | 8 rejections, all the guard's own mistakes; no real leaks |
+> | 5 | 24 leaks written on purpose, to test the guard | 22 caught, 92% |
+> | 6 | the removal test | Arm A 36 of 36, Arm B 25 of 36; 17 of 36 first-try in both |
+>
+> The entries below are as written on the day, never edited. The header under this box was
+> written before run 6.
+
+---
+
 **Two rounds of screening, and three offline evals of the hint writer and its guard.** All five are recorded below, in order.
 
 Each entry answers the same five things, in the same order. What it was for. What was predicted.

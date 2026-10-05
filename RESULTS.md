@@ -47,8 +47,9 @@ Correct on any attempt is the primary score (fixed 26 Sep, `screener/round-4-rem
 **Arm totals, manish excluded:** correct 36 vs 25. First attempt 17 vs 17. First executing 25
 vs 19. Opened 36 vs 29.
 
-**The gap is 30.6 points, with a learner-clustered standard error of 15.9 points.** That is
-direction only. `ANALYSIS-PLAN.md` §1 forbids a p-value at 3 learners per arm.
+**The gap is 30.6 percentage points, give or take 15.9.** The "give or take" treats each
+person's 12 answers as one unit, not 12 separate facts. Read it as direction only:
+`ANALYSIS-PLAN.md` §1 rules out a significance test with 3 people per arm.
 
 ---
 
@@ -70,8 +71,8 @@ recovery, not on recall.
 **Read S4's gap.** Arm B's 3 S4 points are all vikash's. rishabh and anuj never opened H10 to H12.
 So the 6-point S4 gap is 6 blanks.
 
-**So what:** the hypothesis's attribution clause, "and not on the one that was not", fails. The
-gap is not on the practised skills. It sits on the last three questions, where it is confounded
+**So what:** the hypothesis said "better on the practised skills, and not on the held-back one".
+That fails. The gap is not on the practised skills. It sits on the last three questions, where it is confounded
 with stopping early.
 
 ---
@@ -82,8 +83,8 @@ with stopping early.
 |---|---|---|---|
 | 0a attrition | both arms complete 3 of 3 | 3 of 3 each. manish excluded on his record, not his score | pass, with exclusion reported |
 | 0b gap | nobody under 5 days | shortest 5d 14h (vikash). Two ran ~2h past 7 days | pass |
-| 1a volume | Arm A logs at least 8 HINT or REVEAL | 23 (nabin 14, ritesh 9, gaurav 0) | pass |
-| 1b ladder | REVEAL follows HINT in no more than 70% | 6 of 15 hint sequences, 40% | pass, the hint half ran |
+| 1a volume | Arm A got help at least 8 times | 23 times (nabin 14, ritesh 9, gaurav 0) | pass |
+| 1b ladder | the answer follows a hint in no more than 70% of cases | 6 of 15, 40% | pass, hints often did the job |
 | **1c behaviour** | **Arm B attempts before first help below 0.5** | **0.83, over 12 items** | **fail** |
 | 1d per sub-skill | at least 3 Arm A help decisions per sub-skill | S1 2, S2 8, S3 13 | **S1 not tested** |
 | 2 floor | Arm B mean under 15% and gap under 15 points | Arm B 69% | pass |
@@ -98,8 +99,8 @@ anyway. So the gate, Arm A's defining difference, did not create a behaviour Arm
 
 **3 fails.** Arm A sits at 100%. A test with no headroom cannot show how far ahead an arm is.
 
-**So what:** the positive direction is real in the data. The machinery that would attribute it
-to withholding did not hold.
+**So what:** the gap is real in the data. The checks that would let me say withholding caused it
+did not hold.
 
 ---
 
@@ -120,8 +121,8 @@ scores are about them, not about either policy.
 Of the four who received their arm as designed, Arm A (nabin, ritesh) scored 24 of 24. Arm B
 (vikash, rishabh) scored 21 of 24.
 
-**So what:** intention-to-treat is the reported result. The per-protocol view shrinks the gap
-from 11 questions to 3.
+**So what:** the headline counts everyone in the arm they were assigned to. Counting only the
+people who actually used help as designed shrinks the gap from 11 questions to 3.
 
 ---
 
@@ -143,7 +144,8 @@ from 11 questions to 3.
 
 > In a 6-person pilot, learners who had to attempt before getting help, and got a hint before
 > the answer, finished more of a held-out SQL test and recovered from every wrong first attempt.
-> They did not answer more questions correctly on the first try. The study's manipulation check
-> and ceiling check both failed, so the gap cannot be credited to withholding.
+> They did not answer more questions correctly on the first try. Two of the study's own checks
+> failed: the arms did not behave differently enough, and Arm A hit the ceiling. So the gap
+> cannot be credited to withholding.
 
 `HYPOTHESIS-LOG.md` v2 records how this changes the claim.

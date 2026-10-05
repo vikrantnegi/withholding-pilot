@@ -69,142 +69,96 @@ prove either version.
 
 A controlled experiment about how much help an AI tutor should give.
 
-One web app. A learner reads a question in English. They write SQL in an editor. They hit Run. The
-app tells them right or wrong. When stuck, they press **Help**.
+One web page. A learner reads a question in English, writes SQL, and presses Run. The page says
+right or wrong. When stuck, they press **Help**. What Help returns is the whole experiment.
 
-What Help returns is the entire experiment.
+Everything else is identical between the arms: the editor, the questions, the feedback, the look.
+One setting in a config file is the only difference.
 
-- **Arm A** must try first. Its first help is a hint, not the answer.
-- **Arm B** gets the answer whenever it asks.
+**The design rule that matters most: the LLM never decides whether to help.** Plain code makes
+that decision. The LLM only writes the hint's wording afterwards. So the log can prove exactly
+what each arm received. Diagrams: `diagrams/architecture-arm-a.png` and `diagrams/architecture-arm-b.png`.
 
-Everything else is identical. Same editor, same runner, same questions, same right-or-wrong
-feedback, same look. If the two settings differed, the result could not be pinned on the help
-policy.
-
-**Why it matters:** one boolean in a config file is the whole difference between the two groups.
-
-## The hypothesis the study was built to test (v1)
-
-Withhold the answer until the learner has tried. Give a hint before giving the answer. Then unaided
-performance improves, measured 5 to 7 days after the app is taken away.
-
-The mechanism: making someone retrieve an answer builds durable memory faster than letting them read
-one. The result above says the mechanism, if any, is different.
-
-## The claim is deliberately weak
-
-Bastani et al. (PNAS 2025) found something specific. Their answer-giving group scored *below* a
-group with no AI at all. Their guardrailed group only matched it.
-
-Arm B here is their answer-giving group. So a good result here means **"withholding avoids the harm
-that answer-giving does"**. It does not mean "withholding builds skill".
-
-There is no third group working without any assistant. It is not affordable at six people.
-`PRD-v1.md` §2 says so openly instead of pretending otherwise.
-
-**Why it matters:** the weaker claim is the honest one at this sample size.
+**The claim is deliberately weak.** A large study (Bastani and colleagues, PNAS 2025) found that
+students given AI answers scored *below* students with no AI at all. Arm B here is that
+answer-giving group. So a good result means "withholding avoids the harm answer-giving does", not
+"withholding builds skill". The stronger claim needs a third group with no AI, and six people
+cannot fill three groups.
 
 ---
-
-## The four questions a new reader asks
-
-| question | file |
-|---|---|
-| What is being built, and why that design? | `PRD-v1.md` §1 and §3 |
-| The whole story, for a judge | `CASE-STUDY.md` |
-| What came out? | `RESULTS.md` |
-| What has actually been done? | `EXPERIMENT-LOG.md` |
-| What was learned, and what turned out wrong? | `LEARNING-LOG.md` |
-| Where does it stand, and what is next? | `STATUS.md` |
-
-**The architecture diagram is `PRD-v1.md` §3.** It is a mermaid flowchart.
-The presentable version is `diagrams/architecture-arm-a.png` — same graph, with the three zones drawn.
-
-Its one load-bearing claim: **the LLM never decides whether to help.** Plain code makes that
-decision. The LLM only writes the hint text afterwards.
-
-**Why it matters:** that split keeps the thing being tested under the experimenter's control. It
-also means the log can prove the two groups differed.
 
 ## Reading order
 
-- **Ten minutes, judging:** `CASE-STUDY.md`, then `RESULTS.md`, then `HYPOTHESIS-LOG.md` v2.
-- **Taking the project over:** add `PRD-v1.md` in full, then `LEARNING-LOG.md`, then
-  `CAPSTONE-RULES.md` §E for how it is marked.
-- **Reviewing the research design:** `PRD-v1.md` §2 and §4, then `EXPERIMENT-LOG.md`, then
-  `research-papers/RESEARCH-READING.md`.
+| you are | read |
+|---|---|
+| a judge, with ten minutes | `CASE-STUDY.md`, then `RESULTS.md`, then `HYPOTHESIS-LOG.md` v2 |
+| reviewing the research design | `PRD-v1.md`, then `ANALYSIS-PLAN.md`, then `research-papers/RESEARCH-READING.md` |
+| taking the project over | `STATUS.md`, `PRD-v1.md`, then `LEARNING-LOG.md` |
 
 ---
 
-## Files, grouped by how they change
+## The files
 
-Sorted this way on purpose. How a file behaves over time tells you how much to trust it.
+Grouped by how they change over time, because that tells you how far to trust each one.
 
-### Living — one copy, always current, edited as things move
+### Current: one copy, kept up to date
 
 | file | what |
 |---|---|
 | `README.md` | this file |
-| `STATUS.md` | **where things stand today.** Wins any disagreement about the present |
-| `RESULTS.md` | the removal-test analysis: every check in `ANALYSIS-PLAN.md` §4, per person and per sub-skill |
-| `PRD-v1.md` | the spec: scope, hypothesis, architecture, the policy, cut list, open decisions |
-| `HYPOTHESIS-LOG.md` | formal hypothesis versions and what evidence changed them (FAQ rule B4) |
-| `EXPERIMENT-LOG.md` | append only: every run, what came out, what it changed |
-| `LEARNING-LOG.md` | append only: every assumption that broke, and the lesson |
-| `CLAUDE.md` | working agreements for Claude sessions in this folder |
-| `RECRUITMENT.md` | participant rules still in force: consent, matched-pair arm assignment, dropout, session dates |
+| `STATUS.md` | where things stand today. Wins any disagreement about the present |
+| `CASE-STUDY.md` | the whole project, in the order the rubric marks it |
+| `RESULTS.md` | every number from the test, and every check, in the order fixed in advance |
+| `PRD-v1.md` | the spec: the hypothesis, the architecture, the help policy, what was cut |
 
-### History — written on a date, never edited again
+### Records: added to, never rewritten
 
 | file | what |
 |---|---|
-| `TEAM-DECISION.md` | solo or team, decided 1 Sep. Settled. Reopen triggers are listed inside |
-| `CAPSTONE-PLAN.md` | the original milestone table and why the schedule looks like that |
+| `HYPOTHESIS-LOG.md` | every version of the hypothesis, and the evidence that moved it. The diff is the deliverable |
+| `EXPERIMENT-LOG.md` | every run, what came out, what it changed |
+| `LEARNING-LOG.md` | every assumption that broke, and the lesson |
+| `ANALYSIS-PLAN.md` | how the result would be read, fixed before any data existed. Its value is that it was not edited after |
 
-### Reference — came from outside, not ours to change
+Each record opens with a plain-English summary. The entries below it are as written on the day.
 
-| file | what |
-|---|---|
-| `CAPSTONE-RULES.md` | **the rules, from the C7 FAQ, plus §E the marking rubric. Check before every checkpoint. If a plan conflicts with a rule here, the rule wins** |
-| `c7-capstone-decoded.md` | plain-language decode of the Learning OS brief (other four tracks cut 13 Sep) |
-| `research-papers/` | the four papers the design rests on, plus `research-papers/RESEARCH-READING.md` |
-
-### Superseded — kept on purpose, because the diff is the deliverable
+### Background
 
 | file | what |
 |---|---|
-| `PRD-SEED.md` | first-pass spec. Had a four-level ladder and a skill estimator. Both cut. Replaced by `PRD-v1.md` |
-| `100x-CURRICULUM.md` | read 30 Aug to find a participant pool, and it found one: the cohort's low-code path. 100x ruled cohort members out on 1 Sep, so three of its four sections describe a plan that was replaced. The module map and the "why this question is worth asking" framing are still live |
-| `ANALYSIS-PLAN.md` | the measurement decisions fixed before data existed: unit of analysis, question pairing, budget arithmetic, the checklist `RESULTS.md` runs, and the dated scoring decisions of 30 Sep. Was TODO-HYPOTHESIS-v1.md |
+| `CAPSTONE-RULES.md` | the capstone rules and the five-part marking rubric |
+| `c7-capstone-decoded.md` | the Learning OS brief, in plain language |
+| `research-papers/` | notes on the four papers the design rests on |
+| `RECRUITMENT.md` | how participants were chosen, consent, and arm assignment |
+| `TEAM-DECISION.md`, `CAPSTONE-PLAN.md` | solo or team, and the original schedule. Written once, not updated |
+| `PRD-SEED.md`, `100x-CURRICULUM.md` | early plans, replaced. Kept because the diff is part of the record |
+| `CLAUDE.md` | working rules for the AI assistant used on this project |
 
-### Working folders
+### Code and data
 
 | folder | what |
 |---|---|
-| `screener/` | both screening rounds. Start at `screener/README.md` |
-| `study-questions/` | **the instrument. Frozen 19 Sep**: 28 items (16 practice, 12 held-out), the study schema, the scoring rule, and the three verifiers that must report `problems: 0` before any freeze. Start at `study-questions/README.md`; the decisions and their reasons are in `study-questions/DECISIONS.md` |
-| `app/` | the study app. Participants open `index.html?p=<their code>`, which sets the arm and identifies the log; `?arm=` is the test path. `policy.js`, `hint-guard.js`, `hint-writer.js`, `help-session.js` and `grade-rule.js` hold everything that decides anything, and are covered by 123 unit tests |
-| `diagrams/` | the architecture, drawn in Excalidraw: `architecture-arm-a.png` and `architecture-arm-b.png`, three zones each, Arm B being the same drawing with its unused half greyed out. Both are embedded in `PRD-v1.md` §3. `.excalidraw` sources alongside |
-| `evals/` | `replay.js` hint quality, replayed from stored attempts (the 18 Sep checkpoint). `verify-app.mjs` drives the real page in a headless browser. `grader-conformance.mjs` proves the app's grader and the scoring rule agree. `link-check.mjs` fails if the docs name a file that is not on disk. `check-hint-function.mjs` proves a deployed hint function actually answers; `check-hosted.mjs` proves the hosted files are the build you made. Both run from your own terminal. `analyse-removal.py` produces every number in `RESULTS.md`. Start at `evals/README.md` |
-| `supabase/` | `supabase/functions/hint/` — the edge function that holds the Groq key, so it is never in the page. Deployed 19 Sep; deploy and verification steps: `supabase/README.md` |
-
-**Why it matters:** a new reader can trust the Living files and skip the Superseded ones. That is
-the whole point of the grouping.
+| `app/` | the tutor. `policy.js`, `hint-guard.js`, `hint-writer.js`, `help-session.js` and `grade-rule.js` make every decision, covered by 123 unit tests. Open `index.html?arm=A` or `?arm=B` |
+| `study-questions/` | the 28 questions (16 practice, 12 held back), the database, and the scoring rule. Frozen 19 Sep |
+| `screener/` | the screening rounds, the practice session and the test, one folder each, with every returned log |
+| `evals/` | the checks: hint quality, leak catching, both graders agreeing, the page in a real browser, the hint function being live. `analyse-removal.py` produces every number in `RESULTS.md` |
+| `supabase/` | the edge function that holds the LLM key, so it never reaches the page |
+| `diagrams/` | the architecture, drawn in Excalidraw, one picture per arm |
 
 ---
 
 ## Primary sources
 
-Read these, not our summaries, when a rule is in question.
+When a rule is in question, read these, not my summaries.
 
-- Problem statements hub (Notion): https://app.notion.com/p/Cohort-7-Final-Capstone-Problem-Statements-3c47d3dc689280d0a88be524ff15ed1e
-- **Learning OS statement** (Google Doc): https://docs.google.com/document/d/1PsfmN3ip6Hj7nwFNO-vbK27Bpk5506-6JgsHUxnqA3w/edit
+- Problem statements hub: https://app.notion.com/p/Cohort-7-Final-Capstone-Problem-Statements-3c47d3dc689280d0a88be524ff15ed1e
+- **The Learning OS brief:** https://docs.google.com/document/d/1PsfmN3ip6Hj7nwFNO-vbK27Bpk5506-6JgsHUxnqA3w/edit
 - Capstone FAQ, "The Brief Is Not a Spec": https://docs.google.com/document/d/16SIqITTCK4QzeJbUjJWKeS3n1wQWM6h8mPLMDyrgCsw
 
-The **brief** gives the hypothesis and the five-part rubric. The **FAQ** gives the process rules and
-the classmate exclusion.
+The brief gives the hypothesis and the rubric. The FAQ gives the process rules. They are
+different documents.
 
-**Why it matters:** they are different documents. Do not attribute one to the other.
+---
 
 ## Key dates
 
@@ -213,5 +167,5 @@ the classmate exclusion.
 | 23 to 25 Sep | practice session, both arms |
 | 30 Sep to 2 Oct | removal test, 5 to 7 days later |
 | 4 Oct | analysis and hypothesis v2 |
-| **7 Oct** | **submission.** 9 Oct is a backstop, not the plan |
+| **7 Oct** | **submission** |
 | 11 Oct | Demo Day, 100x HQ |

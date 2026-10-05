@@ -62,7 +62,7 @@ Three kinds of part, each where it belongs:
 **The LLM never decides whether to help, or how much.** Plain code decides; the LLM only words a
 hint once that decision is made. If an LLM judged "this learner seems stuck", Arm A's treatment
 would vary unpredictably, and I could not say what Arm A received. Diagrams:
-`diagrams/architecture-arm-a.png` and `-arm-b.png`. Arm B is the same drawing with half greyed out.
+`diagrams/architecture-arm-a.png` and `diagrams/architecture-arm-b.png`. Arm B is the same drawing with half greyed out.
 
 ### Keeping the LLM honest
 
