@@ -4,6 +4,7 @@
 
 Live app: https://tranquil-starlight-f0129e.netlify.app/ (`?arm=A` withholds, `?arm=B` gives answers)
 Repo: https://github.com/vikrantnegi/withholding-pilot
+Demo video: linked in the submission form (about 12 minutes; the live app demo runs from 1:50 to 3:53)
 
 ---
 
@@ -79,7 +80,8 @@ A hint that contains the answer turns Arm A into Arm B without anyone noticing. 
 
 123 unit tests across the five modules that decide anything. 42 headless-browser checks on both
 arms. Two graders, Python and JS, checked against each other on 75 queries with zero
-disagreement. Every number in the results is reproduced by one script.
+disagreement. Every number in the results is reproduced by one script, `evals/analyse-removal.py`. The leak
+guard's adversarial run is in `evals/adversarial.md`.
 
 **So what:** the system is small on purpose. The thing being tested is one config flag, and
 everything around it exists to keep that flag the only difference.
@@ -168,5 +170,16 @@ of why it moved.
 
 ---
 
-**Where to look:** `RESULTS.md` for every number, `HYPOTHESIS-LOG.md` for the diff,
-`ANALYSIS-PLAN.md` for what was decided in advance, `LEARNING-LOG.md` for what broke.
+## Where to look
+
+| file | what it holds |
+|---|---|
+| `RESULTS.md` | every number in section 3 |
+| `HYPOTHESIS-LOG.md` | the v0 to v2 diff, with the evidence for each move |
+| `ANALYSIS-PLAN.md` | what was decided before the data |
+| `PRD-v1.md` | the scope lock and the cut list |
+| `EXPERIMENT-LOG.md` | every run, in order |
+| `LEARNING-LOG.md` | every assumption that broke |
+| `app/` | the tutor's code and its 123 unit tests |
+| `evals/` | the leak-guard evals, grader cross-check, and the analysis script |
+| `diagrams/` | the Arm A and Arm B architecture diagrams |

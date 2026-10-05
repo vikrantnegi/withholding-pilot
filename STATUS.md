@@ -13,16 +13,16 @@ questions); Arm B scored 25 of 36. Both arms scored 17 of 36 on the first try. T
 pre-registered checks failed, so the gap is not credited to withholding. `RESULTS.md` has the
 numbers; `HYPOTHESIS-LOG.md` v2 has the changed claim.
 
-**Submission is 7 Oct.** Four items are due:
+**Submitted 5 Oct, two days before the 7 Oct deadline.** All four items are in:
 
 | item | state |
 |---|---|
 | live link | **done.** https://tranquil-starlight-f0129e.netlify.app/ |
 | GitHub repo | **done.** github.com/vikrantnegi/withholding-pilot |
 | written case study | **done.** `CASE-STUDY.md` |
-| demo video | **not started** |
+| demo video | **done.** `~/Desktop/steps/capstone-demo-full.mp4`, 11 min 50 s, stitched from 8 step clips |
 
-Also left: a dry run of the whole package, opening every link as a judge would.
+Still worth doing: a dry run of the whole package, opening every link as a judge would.
 
 ---
 
@@ -44,7 +44,7 @@ Also left: a dry run of the whole package, opening every link as a judge would.
 | 23 to 25 Sep | practice session |
 | 30 Sep to 2 Oct | removal test |
 | 4 Oct | analysis, hypothesis v2 |
-| 5 Oct | live link back up, case study, repo public |
+| 5 Oct | live link back up, case study, repo public, demo video, form submitted |
 | **7 Oct** | **submit** |
 | 10 Oct | re-check the hint function |
 | 11 Oct | Demo Day, 100x HQ |
