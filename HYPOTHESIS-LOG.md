@@ -36,16 +36,32 @@ positive.
 
 ## The versions
 
-Ordered by **when the change was decided**, which is not the order the entries were written.
-v0.2 describes an earlier change than v0.1 because it was logged a week late.
+In the order each change was **decided**. v0.2 comes before v0.1 because it was written down a
+week late; the numbers follow the order they were logged.
 
-| version | decided | logged | what changed | why | evidence |
-|---|---|---|---|---|---|
-| **v0** | 30 Aug | 30 Aug | the submitted statement: adaptive help, four levels chosen by a competence estimate | — | Bastani et al. (PNAS 2025), Kestin et al., Wu et al. |
-| **v0.2** | 7–10 Sep | **14 Sep, late** | four levels → two (hint, reveal); competence estimator cut; **the gate added**. The independent variable moves from adaptive withholding to withholding | an estimator cannot converge at n=6 over a short set; with a gate in front, the nudge is redundant; the gate is what actually implements retrieval | Koedinger & Aleven on the assistance dilemma; Bastani's GPT Tutor prompt in the SI appendix |
-| **v0.1** | 13–14 Sep | 13–14 Sep | two concepts → **one** (GROUP BY/HAVING), with four sub-skills: three practised, one held back as a within-person control. Held-out items hand-paired to practice items by sub-skill | T3 is dead (3 of 7 tried with an editor, 0 solved); the moments arithmetic does not close at four cells; questions cannot be screened without burning participants | `EXPERIMENT-LOG.md` Run 2; `LEARNING-LOG.md` L3, L4, L5 |
-| **v1** | 19 Sep | 19 Sep | no new mechanism. The claim becomes falsifiable: thresholds attached, and "correct" narrows from *right rows* to *right rows by grouping correctly* (scoring rule clause 2). Records that practice is skewed S1 x3 / S2 x6 / S3 x7, so a null on S1 is weaker evidence than a null on S3 | the thresholds and the question set both exist now, so a refuting result can be specified; clause 2 exists because the seed data was silently doing half the grading | `ANALYSIS-PLAN.md` §4; `study-questions/DECISIONS.md`; `LEARNING-LOG.md` L15, L16 |
-| **v2** | 4 Oct | 4 Oct | the claim moves from **recall** to **persistence and recovery**. v1's S4 contrast fails in the reverse direction, and is explained by blanks on the last three items | first-attempt correct is 17 of 36 in both arms; Arm A opened 36 of 36 and recovered 19 of 19 misses, Arm B 29 of 36 and 8 of 12. Checks 1c and 3 failed | `RESULTS.md`; `evals/analyse-removal.py` |
+| version | decided | the claim, in one line | what moved it |
+|---|---|---|---|
+| **v0** | 30 Aug | help sized to each learner's skill, picked by a skill estimate from four levels | the submitted statement |
+| **v0.2** | 7–10 Sep | one fixed rule for everyone: try first, then hint, then answer | a skill estimate cannot settle on 6 people; research showed "try first" does the work |
+| **v0.1** | 13–14 Sep | one SQL topic, four sub-skills, one held back as a control | joins: 0 of 3 solved; only about 23 help decisions in the whole study |
+| **v1** | 19 Sep | same claim, now with pass/fail thresholds so it can be proven wrong | the questions and the scoring rule were frozen |
+| **v2** | 4 Oct | trying first changes what learners do after a mistake, not what they recall | first try: 17 of 36 in both arms; Arm A fixed 19 of 19 misses, Arm B 8 of 12 |
+
+**The detail behind each row:**
+
+- **v0.2:** four help levels became two, hint and answer. The skill estimator was cut. The gate
+  was added. So the thing being tested moved from *adaptive* withholding to plain withholding.
+  Evidence: Koedinger and Aleven on the assistance dilemma; the "don't help until they try" rule
+  in Bastani's tutor prompt.
+- **v0.1:** two topics became one, `GROUP BY` and `HAVING`. Each test question is paired with
+  the practice question that taught its sub-skill. Evidence: `EXPERIMENT-LOG.md` Run 2;
+  `LEARNING-LOG.md` L3, L4, L5.
+- **v1:** no new mechanism. "Correct" narrowed from *right rows* to *right rows from correct
+  grouping*. Practice is uneven, S1 x3, S2 x6, S3 x7, so a null result on S1 counts for less.
+  Evidence: `ANALYSIS-PLAN.md` §4; `study-questions/DECISIONS.md`; `LEARNING-LOG.md` L15, L16.
+- **v2:** v1 predicted no gap on the held-back skill, S4. The S4 gap came out largest, and all
+  of it was questions Arm B never opened. Two pre-set checks failed, 1c and 3. Evidence:
+  `RESULTS.md`; `evals/analyse-removal.py`.
 
 **Why v0.2 is late and says so:** three design changes went into `PRD-v1.md` and none reached
 this file for a week. Caught by a reader, not by the process. `LEARNING-LOG.md` L14 has the
