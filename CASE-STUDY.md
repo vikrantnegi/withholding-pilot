@@ -92,7 +92,9 @@ everything around it exists to keep that flag the only difference.
 
 **Design.** Matched pairs on round-2 skill, then split into Arm A (3) and Arm B (4). A practice
 session on 16 items, then 5 to 7 days later, 12 held-out items with no help for anyone. Each
-held-out item is hand-paired to the practice item that taught its sub-skill.
+held-out item is hand-paired to the practice item that taught its sub-skill. The test
+instrument is kept live deliberately as evidence (https://teal-marzipan-e1b49a.netlify.app/);
+its 12 questions are burned for any future study.
 
 **Decided before the data.** The unit of analysis (per person-question), the scoring rule, the
 5-to-7-day window, and a ten-step checklist of how a result could be broken

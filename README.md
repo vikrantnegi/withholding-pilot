@@ -154,6 +154,7 @@ When a rule is in question, read these, not my summaries.
 - Problem statements hub: https://app.notion.com/p/Cohort-7-Final-Capstone-Problem-Statements-3c47d3dc689280d0a88be524ff15ed1e
 - **The Learning OS brief:** https://docs.google.com/document/d/1PsfmN3ip6Hj7nwFNO-vbK27Bpk5506-6JgsHUxnqA3w/edit
 - Capstone FAQ, "The Brief Is Not a Spec": https://docs.google.com/document/d/16SIqITTCK4QzeJbUjJWKeS3n1wQWM6h8mPLMDyrgCsw
+- The removal-test instrument, kept live deliberately as evidence: https://teal-marzipan-e1b49a.netlify.app/ — the 12 held-out questions, now burned for any future study.
 
 The brief gives the hypothesis and the rubric. The FAQ gives the process rules. They are
 different documents.
