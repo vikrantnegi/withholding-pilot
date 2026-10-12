@@ -9,3 +9,8 @@ app/dist/
 supabase/.temp/
 app/dist-removal/
 DEMO-SCRIPT.md
+DEMO-SCRIPT-video.md
+DEMO-DAY.md
+
+# dev.to drafts — published on dev.to, kept local only
+articles/

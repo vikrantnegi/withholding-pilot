@@ -788,3 +788,35 @@ stopping early spreads across sub-skills instead of landing on one.
 column was position.
 
 **So what:** any variable that changes along with the outcome is a variable, even page order.
+
+---
+
+## L24 — 12 Oct 2026. The audience knows the study was unsupervised
+
+**Believed through Demo Day, 11 Oct.** The slides described the four stages: screening,
+practice, exam 5 to 7 days later, results. How each stage was run was treated as a detail.
+
+**What broke it.** A judge asked whether practice and the exam were done live with the learners.
+They were not. Each learner got a link and worked in their own time. The slides never said so.
+He had assumed live, because live is the default reading of an experiment.
+
+**Why it matters for the result, not just the slide.** Unsupervised means outside help (Google,
+ChatGPT, a friend) is invisible. And it is not equal across arms. Arm B never needs to leave the
+page: the answer is one click away. Arm A is held at the gate until it makes an attempt, which is
+exactly when a learner would open another tab. Outside help there skips the struggle the gate
+exists to create. That dilutes the treatment in Arm A only and pulls the gap toward zero. An
+unsupervised exam does the same from the other side: it lifts both arms and compresses the gap.
+So this confound most likely made the result look weaker, not stronger.
+
+**What changed.** Nothing in the data. The project is closed. Written up in the dev.to series
+"Arm Wrestling: an AI tutor experiment" (Part 1, 12 Oct 2026).
+
+**The lesson.** A condition that changes how a result is read belongs on the slide. Leaving it
+off does not omit context. It lets the audience assume a study you did not run.
+
+**For a next study.** Run the exam live, or log tab switches and paste events per
+person-question. A long pause followed by a perfect answer after two failures is the pattern to
+flag.
+
+**So what:** a study's conditions are part of its result. Report them with the numbers, not after
+someone asks.
